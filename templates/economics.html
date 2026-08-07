@@ -336,6 +336,33 @@
 </div>
 </div>
 </div>
+<!-- Cohort Comparison -->
+<div class="card-base p-stack-md mt-stack-lg">
+    <div class="flex justify-between items-center mb-stack-md">
+        <h3 class="label-base mb-0">Cohort Comparison</h3>
+        <span class="chip">
+            <span class="material-symbols-outlined text-[14px]">compare_arrows</span>
+            Current vs. Simulated
+        </span>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+        <!-- Current -->
+        <div class="bg-surface-container-low rounded p-stack-md border-l-4 border-l-primary">
+            <p class="label-base">CURRENT</p>
+            <p class="font-data-mono-bold text-[20px] text-on-surface mt-2" id="cohort-ltv-cac-current">—</p>
+            <p class="text-on-surface-variant text-sm mt-1">LTV:CAC Ratio</p>
+        </div>
+        <!-- Simulated -->
+        <div class="bg-surface-container-low rounded p-stack-md border-l-4 border-l-tertiary">
+            <p class="label-base">SIMULATED</p>
+            <p class="font-data-mono-bold text-[20px] text-on-surface mt-2" id="cohort-ltv-cac-simulated">—</p>
+            <p class="text-on-surface-variant text-sm mt-1">LTV:CAC Ratio</p>
+        </div>
+    </div>
+    <div class="mt-stack-md p-3 bg-surface-container-high rounded border-l-4 border-l-primary">
+        <p class="text-sm text-on-surface" id="cohort-insight">Adjust scenario sliders to compare your current metrics against simulated outcomes.</p>
+    </div>
+</div>
 </div>
 </main>
 <!-- Footer -->
@@ -584,115 +611,39 @@ function handleFileSelect(file) {
     if (errorEl) errorEl.style.display = 'none';
     if (successEl) successEl.style.display = 'none';
 
-    if (!file) {
-        console.error('No file provided');
-        return;
-    }
+    if (!file) return;
     if (!file.name.toLowerCase().endsWith('.csv')) {
-        if (errorEl) {
-            errorEl.textContent = 'Please upload a .csv file';
-            errorEl.style.display = 'block';
-        }
+        if (errorEl) { errorEl.textContent = 'Please upload a .csv file'; errorEl.style.display = 'block'; }
         return;
     }
 
-    console.log('Reading file:', file.name, 'Size:', file.size);
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const text = e.target.result;
-        console.log('File loaded, length:', text.length);
-        parseAndSubmitCSV(text);
-    };
-    reader.onerror = function(e) {
-        console.error('FileReader error:', e);
-        if (errorEl) {
-            errorEl.textContent = 'Failed to read file';
-            errorEl.style.display = 'block';
-        }
-    };
-    reader.readAsText(file);
-}
+    if (successEl) { successEl.textContent = 'Uploading & analyzing...'; successEl.style.display = 'block'; }
 
-function parseAndSubmitCSV(text) {
-    const errorEl = document.getElementById('csv-error');
-    const successEl = document.getElementById('csv-success');
-    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const formData = new FormData();
+    formData.append('file', file);
 
-    console.log('Parsed lines:', lines.length);
-    if (lines.length < 2) {
-        if (errorEl) {
-            errorEl.textContent = 'CSV must have a header row and at least one data row';
-            errorEl.style.display = 'block';
-        }
-        return;
-    }
-
-    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g, ''));
-    console.log('Headers found:', headers);
-
-    const required = ['mrr', 'total_customers', 'new_customers', 'churned_customers', 'ad_spend', 'sales_cost', 'cogs'];
-    const missing = required.filter(col => !headers.includes(col));
-
-    if (missing.length > 0) {
-        if (errorEl) {
-            errorEl.textContent = 'Missing columns: ' + missing.join(', ');
-            errorEl.style.display = 'block';
-        }
-        return;
-    }
-
-    const lastRow = lines[lines.length - 1].split(',').map(v => v.trim().replace(/"/g, ''));
-    console.log('Data row:', lastRow);
-
-    const getVal = (col) => {
-        const idx = headers.indexOf(col);
-        return idx >= 0 ? (parseFloat(lastRow[idx]) || 0) : 0;
-    };
-
-    const payload = {
-        mrr: getVal('mrr'),
-        total_customers: getVal('total_customers'),
-        new_customers: getVal('new_customers'),
-        churned_customers: getVal('churned_customers'),
-        ad_spend: getVal('ad_spend'),
-        sales_cost: getVal('sales_cost'),
-        cogs: getVal('cogs')
-    };
-
-    console.log('Submitting payload:', payload);
-    if (successEl) {
-        successEl.textContent = 'Analyzing...';
-        successEl.style.display = 'block';
-    }
-
-    fetch('/analyze', {
+    fetch('/upload', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: formData
     })
     .then(res => {
-        console.log('Response status:', res.status);
         if (!res.ok) throw new Error('Server returned ' + res.status);
         return res.json();
     })
     .then(data => {
-        console.log('Analysis result:', data);
-        if (successEl) {
-            successEl.textContent = 'Analysis complete! Health Score: ' + (data.health_score || 'N/A');
-        }
+        console.log('Upload result:', data);
+        if (successEl) successEl.textContent = 'Analysis complete! Health Score: ' + (data.health_score || 'N/A');
         renderAnalysisResults(data);
         if (typeof updateChartData === 'function') updateChartData(data.ltv, data.cac);
         if (typeof updateStylesAndInsights === 'function') updateStylesAndInsights(data.ltv_cac_ratio, data.payback, data.churn_rate, data.health_score);
     })
     .catch(err => {
-        console.error('Fetch error:', err);
-        if (errorEl) {
-            errorEl.textContent = 'Analysis failed: ' + err.message;
-            errorEl.style.display = 'block';
-        }
+        console.error('Upload error:', err);
+        if (errorEl) { errorEl.textContent = 'Upload failed: ' + err.message; errorEl.style.display = 'block'; }
         if (successEl) successEl.style.display = 'none';
     });
 }
+
 
 // ============================================
 // RENDER RESULTS
@@ -824,6 +775,13 @@ async function calculateScenario() {
     };
 
     try {
+        const baseResponse = await fetch('/analyze', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reqData)
+        });
+        const currentData = await baseResponse.json();
+
         const response = await fetch('/predict/scenario', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -840,8 +798,32 @@ async function calculateScenario() {
         
         updateStylesAndInsights(data.ltv_cac_ratio, data.payback, data.churn_rate, data.health_score);
         updateChartData(data.ltv, data.cac);
+        updateCohortComparison(currentData, data);
     } catch (err) {
         console.error("Scenario prediction failed", err);
+    }
+}
+
+function updateCohortComparison(currentData, simulatedData) {
+    const currentEl = document.getElementById('cohort-ltv-cac-current');
+    const simulatedEl = document.getElementById('cohort-ltv-cac-simulated');
+    const insightEl = document.getElementById('cohort-insight');
+
+    if (currentEl) currentEl.textContent = (currentData.ltv_cac_ratio || 0).toFixed(1) + 'x';
+    if (simulatedEl) simulatedEl.textContent = (simulatedData.ltv_cac_ratio || 0).toFixed(1) + 'x';
+
+    if (insightEl && simulatedData.ltv_cac_ratio && currentData.ltv_cac_ratio) {
+        const diff = simulatedData.ltv_cac_ratio - currentData.ltv_cac_ratio;
+        const pct = (diff / currentData.ltv_cac_ratio * 100).toFixed(0);
+        if (diff > 0) {
+            insightEl.textContent = `Your simulated scenario improves LTV:CAC by ${pct}% (${diff.toFixed(1)}x). This trajectory is investor-ready.`;
+            insightEl.className = 'text-sm text-tertiary';
+        } else if (diff < 0) {
+            insightEl.textContent = `Warning: Your simulated scenario reduces LTV:CAC by ${Math.abs(pct)}%. Review your assumptions.`;
+            insightEl.className = 'text-sm text-error';
+        } else {
+            insightEl.textContent = 'Adjust scenario sliders to compare outcomes.';
+        }
     }
 }
 

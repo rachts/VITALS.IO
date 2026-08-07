@@ -1,4 +1,3 @@
-cat << 'EOF' > .gitignore
 # Python
 __pycache__/
 *.py[cod]
@@ -49,6 +48,9 @@ Thumbs.db
 # Data files (generated datasets — keep only a sample if needed)
 *.csv
 !sample_single_month.csv
+!data/healthy_startup.csv
+!data/struggling_startup.csv
+!data/exploding_startup.csv
 
 # Temporary / patch scripts used during development
 patch_*.py
@@ -56,6 +58,7 @@ fix_*.py
 update_script*.py
 bigdata.py
 test_api.py
+test_endpoints.py
 
 # Duplicate HTML files in root (actual pages are in templates/)
 /features.html
@@ -73,4 +76,3 @@ test_api.py
 
 # Node (if any)
 node_modules/
-EOF
