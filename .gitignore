@@ -1,0 +1,76 @@
+cat << 'EOF' > .gitignore
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# FastAPI / Uvicorn
+*.log
+
+# Data files (generated datasets — keep only a sample if needed)
+*.csv
+!sample_single_month.csv
+
+# Temporary / patch scripts used during development
+patch_*.py
+fix_*.py
+update_script*.py
+bigdata.py
+test_api.py
+
+# Duplicate HTML files in root (actual pages are in templates/)
+/features.html
+/solutions.html
+
+# Image assets not used in app (screenshots, etc.)
+**/*.png
+*.jpg
+*.jpeg
+!static/**/*.png
+!static/**/*.jpg
+
+# Antigravity / AI artifacts
+*.prompt.txt
+
+# Node (if any)
+node_modules/
+EOF

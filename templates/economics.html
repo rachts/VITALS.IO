@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Economics Analyzer - vitals.io</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#261900",
+                        "on-secondary": "#32302d",
+                        "primary-fixed-dim": "#e4c285",
+                        "surface-container-lowest": "#0f0e0c",
+                        "surface-variant": "#363531",
+                        "primary-container": "#c9a96e",
+                        "primary": "#e6c487",
+                        "on-primary": "#412d00",
+                        "tertiary-container": "#7bbc8d",
+                        "on-surface": "#e6e2dd",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#494643",
+                        "on-primary-fixed-variant": "#5a4312",
+                        "on-tertiary-container": "#014c28",
+                        "surface": "#141311",
+                        "on-tertiary": "#00391c",
+                        "surface-bright": "#3b3936",
+                        "on-tertiary-fixed": "#00210e",
+                        "primary-fixed": "#ffdea4",
+                        "error-container": "#93000a",
+                        "on-surface-variant": "#d0c5b5",
+                        "surface-container": "#211f1d",
+                        "outline": "#998f81",
+                        "on-background": "#e6e2dd",
+                        "on-tertiary-fixed-variant": "#0b522d",
+                        "secondary-container": "#4c4945",
+                        "surface-container-low": "#1d1b19",
+                        "surface-dim": "#141311",
+                        "inverse-primary": "#745a27",
+                        "inverse-surface": "#e6e2dd",
+                        "outline-variant": "#4d463a",
+                        "secondary": "#cbc5c0",
+                        "on-secondary-container": "#bdb7b3",
+                        "surface-tint": "#e4c285",
+                        "background": "#141311",
+                        "tertiary-fixed-dim": "#93d5a5",
+                        "secondary-fixed-dim": "#cbc5c0",
+                        "on-secondary-fixed": "#1d1b18",
+                        "inverse-on-surface": "#32302d",
+                        "surface-container-highest": "#363531",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#2b2a27",
+                        "tertiary": "#95d8a7",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#aef2bf",
+                        "secondary-fixed": "#e7e1dc",
+                        "on-primary-container": "#543d0c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "card-padding": "32px",
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "margin-page": "40px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["DM Serif Display"],
+                        "data-mono": ["JetBrains Mono"],
+                        "heading-md": ["Space Grotesk"],
+                        "display-lg-mobile": ["DM Serif Display"],
+                        "heading-sm": ["Space Grotesk"],
+                        "data-mono-bold": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+                        "data-mono": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "heading-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                        "heading-sm": ["18px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "data-mono-bold": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .nav-link { position: relative; }
+        .nav-link::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 0; height: 2px; background-color: theme('colors.primary'); transition: width 0.2s ease; }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        
+        /* Utility classes for specific styles */
+        .card-base { @apply bg-surface border border-outline-variant rounded p-card-padding; }
+        .metric-card { @apply bg-surface border border-outline-variant rounded p-stack-md flex flex-col gap-stack-sm min-w-0 overflow-hidden; }
+        .metric-card-success { border-top: 2px solid theme('colors.tertiary'); }
+        .metric-card-warning { border-top: 2px solid theme('colors.primary'); }
+        .metric-card-danger { border-top: 2px solid theme('colors.error'); }
+        
+        .btn-primary { @apply bg-primary text-on-primary font-heading-sm font-bold px-4 py-2 hover:opacity-90 transition-opacity; }
+        .btn-secondary { @apply bg-transparent border border-outline-variant text-on-surface font-body-md px-4 py-2 hover:bg-surface-container-high transition-colors; }
+        
+        .input-base { @apply bg-surface-container-low border border-outline-variant rounded focus:border-primary focus:ring-0 text-on-surface p-2 w-full font-data-mono; }
+        .label-base { @apply font-label-caps text-label-caps text-on-surface-variant block mb-unit uppercase tracking-wider; }
+        
+        .chip { @apply bg-surface-container-low border border-outline-variant rounded font-data-mono text-data-mono px-2 py-1 inline-flex items-center gap-1; }
+        
+        /* Circular Progress */
+        .progress-ring { transform: rotate(-90deg); transform-origin: 50% 50%; }
+        .progress-ring__circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
+    </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="font-body-md text-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full h-[64px] bg-surface border-b border-outline-variant z-50 flex justify-between items-center px-margin-page mx-auto">
+<div class="flex items-center gap-gutter">
+<a class="font-heading-md text-heading-md font-bold text-primary flex items-center gap-2" href="/">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+                vitals.io
+            </a>
+<div class="hidden md:flex gap-stack-lg items-center ml-stack-lg border-l border-outline-variant pl-stack-lg">
+<a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/">Home</a>
+<a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/product">Product</a>
+<a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/solutions">Solutions</a>
+<a class="nav-link active font-heading-sm text-heading-sm text-primary font-bold border-b-2 border-primary pb-[14px] transition-colors duration-200 py-4" href="/economics">Economics</a>
+<a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/api">API</a>
+<a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/contact">Contact</a>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<span class="chip hidden md:inline-flex">
+<span class="material-symbols-outlined text-[16px]" data-icon="database">database</span>
+                Source: Manual
+            </span>
+<button class="btn-secondary" onclick="resetForm()">Reset</button>
+<button class="btn-primary" onclick="exportData()">Export</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[88px] pb-margin-page px-margin-page max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Header -->
+<header class="col-span-1 lg:col-span-12 mb-stack-lg">
+<h1 class="font-display-lg text-display-lg mb-unit">Unit Economics Analyzer</h1>
+<p class="text-on-surface-variant max-w-2xl">Evaluate your SaaS viability through rigorous LTV:CAC, payback periods, and margin analysis. Input data below to generate institutional-grade metrics.</p>
+</header>
+<!-- Left Column: Input -->
+<div class="col-span-1 lg:col-span-4 flex flex-col gap-stack-lg">
+<div class="card-base flex flex-col">
+<!-- Tabs -->
+<div class="flex border-b border-outline-variant mb-stack-md gap-stack-md overflow-x-auto pb-1">
+<button class="font-heading-sm text-heading-sm text-primary font-bold border-b-2 border-primary pb-2 px-1 focus:outline-none whitespace-nowrap" id="tab-manual" onclick="switchTab('manual')">Manual Entry</button>
+<button class="font-heading-sm text-heading-sm text-secondary font-medium pb-2 px-1 hover:text-primary focus:outline-none whitespace-nowrap" id="tab-csv" onclick="switchTab('csv')">Upload CSV</button>
+<button class="font-heading-sm text-heading-sm text-secondary font-medium pb-2 px-1 hover:text-primary focus:outline-none whitespace-nowrap" id="tab-sample" onclick="loadSampleData()">Sample Data</button>
+<button class="font-heading-sm text-heading-sm text-secondary font-medium pb-2 px-1 hover:text-primary focus:outline-none whitespace-nowrap" id="tab-scenario" onclick="switchTab('scenario')">Scenario</button>
+</div>
+<!-- Manual Entry Form -->
+<form class="flex flex-col gap-stack-md" id="calcForm" oninput="calculateMetrics()">
+<div class="grid grid-cols-2 gap-stack-md">
+<div>
+<label class="label-base" for="mrr">Monthly Recurring Rev (MRR)</label>
+<input class="input-base" id="mrr" min="0" step="1000" type="number" value="50000"/>
+</div>
+<div>
+<label class="label-base" for="customers">Total Customers</label>
+<input class="input-base" id="total_customers" min="1" step="1" type="number" value="500"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-stack-md">
+<div>
+<label class="label-base" for="new_customers">New Customers (Mo)</label>
+<input class="input-base" id="new_customers" min="0" step="1" type="number" value="25"/>
+</div>
+<div>
+<label class="label-base" for="churned_customers">Churned Customers (Mo)</label>
+<input class="input-base" id="churned_customers" min="0" step="1" type="number" value="10"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-stack-md">
+<div>
+<label class="label-base" for="ad_spend">Marketing/Ad Spend (Mo)</label>
+<input class="input-base" id="ad_spend" min="0" step="1000" type="number" value="15000"/>
+</div>
+<div>
+<label class="label-base" for="sales_cost">Sales Cost (Mo)</label>
+<input class="input-base" id="sales_cost" min="0" step="1000" type="number" value="10000"/>
+</div>
+</div>
+<div>
+<label class="label-base" for="cogs">Cost of Goods Sold (Mo)</label>
+<input class="input-base" id="cogs" min="0" step="1000" type="number" value="10000"/>
+</div>
+</form>
+<!-- Scenario Simulator Zone -->
+<div class="hidden flex-col gap-stack-md" id="scenario-zone">
+<div class="bg-surface-container border border-outline-variant p-stack-md rounded mb-stack-md">
+  <p class="font-body-md text-body-md text-on-surface-variant mb-unit">Adjust sliders to simulate impacts based on current inputs.</p>
+</div>
+<form class="flex flex-col gap-stack-md" id="scenarioForm" oninput="calculateScenario()">
+<div>
+<label class="label-base flex justify-between" for="scenario_churn"><span>Churn Rate</span><span id="sc_churn_val" class="text-primary">0%</span></label>
+<input class="w-full accent-primary" id="scenario_churn" type="range" min="-0.5" max="0.5" step="0.01" value="0"/>
+</div>
+<div>
+<label class="label-base flex justify-between" for="scenario_cac"><span>CAC</span><span id="sc_cac_val" class="text-primary">0%</span></label>
+<input class="w-full accent-primary" id="scenario_cac" type="range" min="-0.5" max="0.5" step="0.01" value="0"/>
+</div>
+<div>
+<label class="label-base flex justify-between" for="scenario_mrr_growth"><span>MRR Growth</span><span id="sc_mrr_val" class="text-primary">0%</span></label>
+<input class="w-full accent-primary" id="scenario_mrr_growth" type="range" min="-0.5" max="0.5" step="0.01" value="0"/>
+</div>
+<div>
+<label class="label-base flex justify-between" for="scenario_margin"><span>Gross Margin</span><span id="sc_margin_val" class="text-primary">0%</span></label>
+<input class="w-full accent-primary" id="scenario_margin" type="range" min="-0.5" max="0.5" step="0.01" value="0"/>
+</div>
+<div class="flex gap-4 mt-stack-md">
+<button type="button" class="btn-primary w-full" onclick="saveScenario()">Save Scenario</button>
+<button type="button" class="btn-secondary w-full" onclick="loadScenario()">Load Scenario</button>
+</div>
+</form>
+</div>
+<!-- CSV Upload Zone -->
+<div id="csv-zone" class="hidden"
+     style="border:2px dashed #332F2B; border-radius:4px; padding:60px; text-align:center; cursor:pointer; transition:all 0.2s; align-items:center; justify-content:center; flex-direction:column; min-height: 300px;"
+     ondrop="handleDrop(event)" 
+     ondragover="handleDragOver(event)" 
+     ondragleave="handleDragLeave(event)"
+     onclick="document.getElementById('csv-upload').click()">
+    
+    <input type="file" id="csv-upload" accept=".csv" style="display:none;" onchange="handleFileSelect(this.files[0])" onclick="event.stopPropagation()">
+    
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#5C534A" stroke-width="1.5" style="margin-bottom:16px;">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+    </svg>
+    
+    <p style="font-family:'Space Grotesk',sans-serif; font-weight:500; color:#F5F0EB; margin-bottom:8px;">
+        Drop your CSV here or click to browse
+    </p>
+    <p style="color:#5C534A; font-size:13px;">
+        Supports: Stripe, QuickBooks, Zoho Books, custom formats
+    </p>
+    
+    <p id="csv-error" style="color:#B85C5C; font-size:13px; margin-top:16px; display:none;"></p>
+    <p id="csv-success" style="color:#5A9A6E; font-size:13px; margin-top:16px; display:none;"></p>
+</div>
+</div>
+</div>
+<!-- Right Column: Results & Analytics -->
+<div id="results-section" class="col-span-1 lg:col-span-8 flex flex-col gap-[48px]" style="display:none;">
+<!-- Top Dashboard Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Health Score -->
+<div class="metric-card col-span-1 lg:col-span-1 flex flex-col items-center justify-center text-center p-stack-md">
+<h3 class="label-base self-start w-full text-left mb-stack-md">Vitals Health Score</h3>
+<div class="relative w-[140px] h-[140px] flex items-center justify-center overflow-visible">
+<svg class="progress-ring" height="140" width="140" style="overflow:visible">
+<circle class="text-surface-container-high stroke-current" cx="70" cy="70" fill="transparent" r="62" stroke-width="8"></circle>
+<circle class="text-tertiary stroke-current progress-ring__circle" cx="70" cy="70" fill="transparent" id="score-circle" r="62" stroke-dasharray="389.5" stroke-dashoffset="0" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-heading-md text-[30px] leading-none font-bold text-on-surface" id="val-health">8.4</span>
+<span class="font-label-caps text-tertiary mt-1" id="health-status">EXCELLENT</span>
+</div>
+</div>
+</div>
+<!-- Key Metrics Grid -->
+<div class="col-span-1 lg:col-span-2">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="metric-card metric-card-success" id="card-ltv-cac">
+<span class="label-base">LTV : CAC</span>
+<span class="font-data-mono text-2xl text-on-surface break-words" id="val-ltv-cac">3.8x</span>
+</div>
+<div class="metric-card metric-card-warning" id="card-payback">
+<span class="label-base">Payback Period</span>
+<span class="font-data-mono text-2xl text-on-surface break-words" id="val-payback">12.5m</span>
+</div>
+<div class="metric-card metric-card-danger" id="card-churn">
+<span class="label-base">Mo. Churn</span>
+<span class="font-data-mono text-2xl text-on-surface break-words" id="val-churn">2.0%</span>
+</div>
+<div class="metric-card" id="card-ltv">
+<span class="label-base">LTV</span>
+<span class="font-data-mono text-2xl text-on-surface break-words" id="val-ltv">₹4,000</span>
+</div>
+<div class="metric-card" id="card-cac">
+<span class="label-base">CAC</span>
+<span class="font-data-mono text-2xl text-on-surface break-words" id="val-cac">₹1,000</span>
+</div>
+<div class="metric-card" id="card-margin">
+<span class="label-base">Gross Margin</span>
+<span class="font-data-mono text-2xl text-on-surface break-words" id="val-margin">80%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Chart & Insights -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter pt-[16px] border-t border-outline-variant">
+<!-- Chart Area -->
+<div class="card-base p-stack-md flex flex-col h-[400px]">
+<div class="flex justify-between items-center mb-stack-md">
+<h3 class="label-base mb-0">LTV vs CAC Trend (Projected)</h3>
+<span class="chip">
+<span class="material-symbols-outlined text-[14px]" data-icon="show_chart">show_chart</span>
+                            6 Mo
+                        </span>
+</div>
+<div class="flex-grow relative w-full min-h-[300px]">
+<canvas id="ltvCacChart"></canvas>
+</div>
+</div>
+<!-- Insights/Rules Panel -->
+<div class="card-base p-stack-md flex flex-col">
+<h3 class="label-base mb-stack-md">Diagnostic Rules &amp; Insights</h3>
+<div class="flex flex-col gap-3 overflow-y-auto" id="insights-panel">
+<!-- Populated by JS -->
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant px-margin-page py-stack-lg mt-auto">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-gutter">
+    <div>
+      <span class="font-heading-sm text-heading-sm font-bold text-primary block mb-2">vitals.io</span>
+      <p class="font-body-md text-body-md text-on-surface-variant">The financial health monitor for startups.</p>
+    </div>
+    <div>
+      <h4 class="font-label-caps text-label-caps text-on-surface mb-stack-sm">Product</h4>
+      <div class="flex flex-col gap-2">
+        <a href="/product" class="text-on-surface-variant hover:text-primary transition-colors">Features</a>
+        <a href="/economics" class="text-on-surface-variant hover:text-primary transition-colors">Economics</a>
+        <a href="/api" class="text-on-surface-variant hover:text-primary transition-colors">API</a>
+      </div>
+    </div>
+    <div>
+      <h4 class="font-label-caps text-label-caps text-on-surface mb-stack-sm">Resources</h4>
+      <div class="flex flex-col gap-2">
+        <a href="/solutions" class="text-on-surface-variant hover:text-primary transition-colors">Solutions</a>
+        <a href="/contact" class="text-on-surface-variant hover:text-primary transition-colors">Contact</a>
+      </div>
+    </div>
+    <div>
+      <h4 class="font-label-caps text-label-caps text-on-surface mb-stack-sm">Company</h4>
+      <div class="flex flex-col gap-2">
+        <a href="/" class="text-on-surface-variant hover:text-primary transition-colors">About</a>
+        <a href="/contact" class="text-on-surface-variant hover:text-primary transition-colors">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto mt-stack-lg pt-stack-md border-t border-outline-variant flex justify-between items-center">
+    <p class="text-on-surface-variant text-sm">© 2026 vitals.io. Built for HackLabify.</p>
+    <p class="text-on-surface-variant text-sm">All calculations are deterministic. No AI hallucinations.</p>
+  </div>
+</footer>
+<script>
+let chartInstance = null;
+
+function initChart() {
+    const ctx = document.getElementById('ltvCacChart').getContext('2d');
+    const primaryColor = '#e6c487';
+    const secondaryColor = '#cbc5c0';
+    const outlineColor = '#4d463a';
+    const textColor = '#e6e2dd';
+
+    Chart.defaults.color = textColor;
+    Chart.defaults.font.family = 'JetBrains Mono';
+
+    chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'],
+            datasets: [
+                {
+                    label: 'LTV',
+                    data: [3200, 3400, 3500, 3800, 4000, 4200],
+                    backgroundColor: primaryColor,
+                    borderRadius: 2,
+                    barPercentage: 0.6
+                },
+                {
+                    label: 'CAC',
+                    data: [1200, 1150, 1100, 1050, 1000, 950],
+                    backgroundColor: secondaryColor,
+                    borderRadius: 2,
+                    barPercentage: 0.6
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { boxWidth: 12, padding: 20 } },
+                tooltip: { backgroundColor: '#211f1d', titleColor: '#e6c487', bodyColor: '#e6e2dd', borderColor: '#4d463a', borderWidth: 1 }
+            },
+            scales: {
+                y: { 
+                    beginAtZero: true, 
+                    grid: { color: outlineColor, drawBorder: false },
+                    ticks: { callback: function(value) { return '$' + value; } }
+                },
+                x: { 
+                    grid: { display: false, drawBorder: false }
+                }
+            },
+            interaction: { mode: 'index', intersect: false }
+        }
+    });
+}
+
+function formatCurrency(val) {
+    if (!val || val === 0) return '₹0';
+    return '₹' + Math.round(val).toLocaleString('en-IN');
+}
+
+function updateStylesAndInsights(ratio, payback, churn, backend_score) {
+    const successClass = 'metric-card-success';
+    const warningClass = 'metric-card-warning';
+    const dangerClass = 'metric-card-danger';
+
+    const cardLtvCac = document.getElementById('card-ltv-cac');
+    const cardPayback = document.getElementById('card-payback');
+    const cardChurn = document.getElementById('card-churn');
+
+    [cardLtvCac, cardPayback, cardChurn].forEach(el => {
+        if (el) el.classList.remove(successClass, warningClass, dangerClass);
+    });
+
+    const insights = [];
+    let score = backend_score !== undefined ? backend_score : 10.0;
+
+    if (ratio >= 3.0) {
+        if (cardLtvCac) cardLtvCac.classList.add(successClass);
+        insights.push({ level: 'success', text: `LTV:CAC is strong (${ratio.toFixed(1)}x). Indicates sustainable growth engine.` });
+    } else if (ratio >= 1.5) {
+        if (cardLtvCac) cardLtvCac.classList.add(warningClass);
+        insights.push({ level: 'warning', text: `LTV:CAC is marginal (${ratio.toFixed(1)}x). Monitor acquisition costs closely.` });
+    } else {
+        if (cardLtvCac) cardLtvCac.classList.add(dangerClass);
+        insights.push({ level: 'danger', text: `LTV:CAC is critical (<1.5x). You are losing money on acquisition.` });
+    }
+
+    if (payback <= 12) {
+        if (cardPayback) cardPayback.classList.add(successClass);
+        insights.push({ level: 'success', text: `Payback period is healthy (${payback.toFixed(1)}m). Fast capital recovery.` });
+    } else if (payback <= 18) {
+        if (cardPayback) cardPayback.classList.add(warningClass);
+        insights.push({ level: 'warning', text: `Payback period extended (${payback.toFixed(1)}m). Typical for enterprise, risky for SMB.` });
+    } else {
+        if (cardPayback) cardPayback.classList.add(dangerClass);
+        insights.push({ level: 'danger', text: `Payback period too long (>18m). Cash flow risk identified.` });
+    }
+
+    if (churn <= 0.02) {
+        if (cardChurn) cardChurn.classList.add(successClass);
+    } else if (churn <= 0.05) {
+        if (cardChurn) cardChurn.classList.add(warningClass);
+        insights.push({ level: 'warning', text: `Monthly churn is elevated (${(churn*100).toFixed(1)}%). Investigate retention.` });
+    } else {
+        if (cardChurn) cardChurn.classList.add(dangerClass);
+        insights.push({ level: 'danger', text: `High churn rate (${(churn*100).toFixed(1)}%). Leaky bucket dynamic detected.` });
+    }
+
+    const insightsContainer = document.getElementById('insights-panel');
+    if (insightsContainer) {
+        insightsContainer.innerHTML = '';
+        if (insights.length === 0) {
+            insightsContainer.innerHTML = '<div class="p-3 bg-surface-container border border-outline-variant rounded border-l-4 border-l-tertiary"><p class="text-sm">All primary metrics fall within institutional benchmarks.</p></div>';
+        } else {
+            insights.forEach(insight => {
+                let borderClass = 'border-l-tertiary';
+                let icon = 'check_circle';
+                let iconColor = 'text-tertiary';
+                
+                if (insight.level === 'warning') { borderClass = 'border-l-primary'; icon = 'warning'; iconColor = 'text-primary'; }
+                if (insight.level === 'danger') { borderClass = 'border-l-error'; icon = 'error'; iconColor = 'text-error'; }
+
+                insightsContainer.innerHTML += `
+                    <div class="p-3 bg-surface-container border border-outline-variant rounded border-l-4 ${borderClass} flex gap-2 items-start">
+                        <span class="material-symbols-outlined text-[18px] ${iconColor}" data-icon="${icon}">${icon}</span>
+                        <p class="text-sm text-on-surface">${insight.text}</p>
+                    </div>
+                `;
+            });
+        }
+    }
+
+    score = Math.max(0, score).toFixed(1);
+    const scoreEl = document.getElementById('val-health');
+    if (scoreEl) scoreEl.textContent = score;
+    
+    const circle = document.getElementById('score-circle');
+    if (circle) {
+        const radius = circle.r.baseVal.value;
+        const circumference = radius * 2 * Math.PI;
+        const offset = circumference - (score / 10) * circumference;
+        circle.style.strokeDashoffset = offset;
+    }
+
+    const statusEl = document.getElementById('health-status');
+    if (statusEl && circle) {
+        if (score >= 8) {
+            statusEl.textContent = 'EXCELLENT';
+            statusEl.className = 'font-label-caps text-tertiary mt-1';
+            circle.setAttribute('class', 'text-tertiary stroke-current progress-ring__circle');
+        } else if (score >= 5) {
+            statusEl.textContent = 'NEEDS REVIEW';
+            statusEl.className = 'font-label-caps text-primary mt-1';
+            circle.setAttribute('class', 'text-primary stroke-current progress-ring__circle');
+        } else {
+            statusEl.textContent = 'CRITICAL';
+            statusEl.className = 'font-label-caps text-error mt-1';
+            circle.setAttribute('class', 'text-error stroke-current progress-ring__circle');
+        }
+    }
+}
+
+function updateChartData(ltv, cac) {
+    if (!chartInstance) return;
+    const baseLTV = ltv * 0.8;
+    const ltvData = [baseLTV, baseLTV*1.05, baseLTV*1.1, baseLTV*1.15, baseLTV*1.2, ltv];
+    const baseCAC = cac * 1.2;
+    const cacData = [baseCAC, baseCAC*0.95, baseCAC*0.9, baseCAC*0.85, baseCAC*0.8, cac];
+
+    chartInstance.data.datasets[0].data = ltvData.map(v => Math.round(v));
+    chartInstance.data.datasets[1].data = cacData.map(v => Math.round(v));
+    chartInstance.update();
+}
+
+// ============================================
+// CSV UPLOAD - BULLETPROOF VERSION
+// ============================================
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.currentTarget.style.borderColor = '#C9A96E';
+    e.currentTarget.style.background = 'rgba(201,169,110,0.05)';
+}
+
+function handleDragLeave(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.currentTarget.style.borderColor = '#332F2B';
+    e.currentTarget.style.background = 'transparent';
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.currentTarget.style.borderColor = '#332F2B';
+    e.currentTarget.style.background = 'transparent';
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        console.log('Dropped file:', files[0].name);
+        handleFileSelect(files[0]);
+    }
+}
+
+function handleFileSelect(file) {
+    const errorEl = document.getElementById('csv-error');
+    const successEl = document.getElementById('csv-success');
+    if (errorEl) errorEl.style.display = 'none';
+    if (successEl) successEl.style.display = 'none';
+
+    if (!file) {
+        console.error('No file provided');
+        return;
+    }
+    if (!file.name.toLowerCase().endsWith('.csv')) {
+        if (errorEl) {
+            errorEl.textContent = 'Please upload a .csv file';
+            errorEl.style.display = 'block';
+        }
+        return;
+    }
+
+    console.log('Reading file:', file.name, 'Size:', file.size);
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const text = e.target.result;
+        console.log('File loaded, length:', text.length);
+        parseAndSubmitCSV(text);
+    };
+    reader.onerror = function(e) {
+        console.error('FileReader error:', e);
+        if (errorEl) {
+            errorEl.textContent = 'Failed to read file';
+            errorEl.style.display = 'block';
+        }
+    };
+    reader.readAsText(file);
+}
+
+function parseAndSubmitCSV(text) {
+    const errorEl = document.getElementById('csv-error');
+    const successEl = document.getElementById('csv-success');
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+    console.log('Parsed lines:', lines.length);
+    if (lines.length < 2) {
+        if (errorEl) {
+            errorEl.textContent = 'CSV must have a header row and at least one data row';
+            errorEl.style.display = 'block';
+        }
+        return;
+    }
+
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g, ''));
+    console.log('Headers found:', headers);
+
+    const required = ['mrr', 'total_customers', 'new_customers', 'churned_customers', 'ad_spend', 'sales_cost', 'cogs'];
+    const missing = required.filter(col => !headers.includes(col));
+
+    if (missing.length > 0) {
+        if (errorEl) {
+            errorEl.textContent = 'Missing columns: ' + missing.join(', ');
+            errorEl.style.display = 'block';
+        }
+        return;
+    }
+
+    const lastRow = lines[lines.length - 1].split(',').map(v => v.trim().replace(/"/g, ''));
+    console.log('Data row:', lastRow);
+
+    const getVal = (col) => {
+        const idx = headers.indexOf(col);
+        return idx >= 0 ? (parseFloat(lastRow[idx]) || 0) : 0;
+    };
+
+    const payload = {
+        mrr: getVal('mrr'),
+        total_customers: getVal('total_customers'),
+        new_customers: getVal('new_customers'),
+        churned_customers: getVal('churned_customers'),
+        ad_spend: getVal('ad_spend'),
+        sales_cost: getVal('sales_cost'),
+        cogs: getVal('cogs')
+    };
+
+    console.log('Submitting payload:', payload);
+    if (successEl) {
+        successEl.textContent = 'Analyzing...';
+        successEl.style.display = 'block';
+    }
+
+    fetch('/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(res => {
+        console.log('Response status:', res.status);
+        if (!res.ok) throw new Error('Server returned ' + res.status);
+        return res.json();
+    })
+    .then(data => {
+        console.log('Analysis result:', data);
+        if (successEl) {
+            successEl.textContent = 'Analysis complete! Health Score: ' + (data.health_score || 'N/A');
+        }
+        renderAnalysisResults(data);
+        if (typeof updateChartData === 'function') updateChartData(data.ltv, data.cac);
+        if (typeof updateStylesAndInsights === 'function') updateStylesAndInsights(data.ltv_cac_ratio, data.payback, data.churn_rate, data.health_score);
+    })
+    .catch(err => {
+        console.error('Fetch error:', err);
+        if (errorEl) {
+            errorEl.textContent = 'Analysis failed: ' + err.message;
+            errorEl.style.display = 'block';
+        }
+        if (successEl) successEl.style.display = 'none';
+    });
+}
+
+// ============================================
+// RENDER RESULTS
+// ============================================
+
+function renderAnalysisResults(data) {
+    const setText = (id, text) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+    };
+
+    const formatCurrency = (val) => {
+        return '₹' + (val || 0).toLocaleString('en-IN');
+    };
+
+    setText('val-ltv', formatCurrency(data.ltv));
+    setText('val-cac', formatCurrency(data.cac));
+    setText('val-ltv-cac', (data.ltv_cac_ratio || 0).toFixed(1) + 'x');
+    setText('val-payback', (data.payback || 0).toFixed(1) + ' mo');
+    setText('val-margin', ((data.gross_margin_pct || 0) * 100).toFixed(0) + '%');
+    setText('val-churn', ((data.churn_rate || 0) * 100).toFixed(1) + '%');
+    setText('val-health', (data.health_score || 0).toFixed(1));
+
+    const resultsSection = document.getElementById('results-section');
+    if (resultsSection) resultsSection.style.display = 'block';
+
+    const healthEl = document.getElementById('val-health');
+    if (healthEl) {
+        if (data.health_score >= 8) healthEl.style.color = '#5A9A6E';
+        else if (data.health_score >= 5) healthEl.style.color = '#C9A03C';
+        else healthEl.style.color = '#B85C5C';
+    }
+}
+
+// ============================================
+// MANUAL ENTRY
+// ============================================
+
+function calculateMetrics() {
+    const getVal = (id) => parseFloat(document.getElementById(id)?.value) || 0;
+    const payload = {
+        mrr: getVal('mrr'),
+        total_customers: getVal('total_customers'),
+        new_customers: getVal('new_customers'),
+        churned_customers: getVal('churned_customers'),
+        ad_spend: getVal('ad_spend'),
+        sales_cost: getVal('sales_cost'),
+        cogs: getVal('cogs')
+    };
+
+    fetch('/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+        renderAnalysisResults(data);
+        if (typeof updateChartData === 'function') updateChartData(data.ltv, data.cac);
+        if (typeof updateStylesAndInsights === 'function') updateStylesAndInsights(data.ltv_cac_ratio, data.payback, data.churn_rate, data.health_score);
+    })
+    .catch(err => console.error('Manual entry failed:', err));
+}
+
+// ============================================
+// SAMPLE DATA
+// ============================================
+
+function loadSampleData() {
+    const sample = {
+        mrr: 500000,
+        total_customers: 500,
+        new_customers: 100,
+        churned_customers: 25,
+        ad_spend: 200000,
+        sales_cost: 150000,
+        cogs: 50000
+    };
+
+    Object.keys(sample).forEach(key => {
+        const el = document.getElementById(key);
+        if (el) el.value = sample[key];
+    });
+
+    // Switch to manual tab to show the filled form
+    switchTab('manual');
+
+    fetch('/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sample)
+    })
+    .then(res => res.json())
+    .then(data => {
+        renderAnalysisResults(data);
+        if (typeof updateChartData === 'function') updateChartData(data.ltv, data.cac);
+        if (typeof updateStylesAndInsights === 'function') updateStylesAndInsights(data.ltv_cac_ratio, data.payback, data.churn_rate, data.health_score);
+    })
+    .catch(err => console.error('Sample data failed:', err));
+}
+
+// ============================================
+// SCENARIO SIMULATOR
+// ============================================
+
+async function calculateScenario() {
+    const c_adj = document.getElementById('scenario_churn').value;
+    const cac_adj = document.getElementById('scenario_cac').value;
+    const mrr_adj = document.getElementById('scenario_mrr_growth').value;
+    const margin_adj = document.getElementById('scenario_margin').value;
+    
+    document.getElementById('sc_churn_val').textContent = (c_adj > 0 ? '+' : '') + (c_adj * 100).toFixed(0) + '%';
+    document.getElementById('sc_cac_val').textContent = (cac_adj > 0 ? '+' : '') + (cac_adj * 100).toFixed(0) + '%';
+    document.getElementById('sc_mrr_val').textContent = (mrr_adj > 0 ? '+' : '') + (mrr_adj * 100).toFixed(0) + '%';
+    document.getElementById('sc_margin_val').textContent = (margin_adj > 0 ? '+' : '') + (margin_adj * 100).toFixed(0) + '%';
+
+    const reqData = {
+        mrr: parseFloat(document.getElementById('mrr').value) || 0,
+        total_customers: parseInt(document.getElementById('total_customers').value) || 0,
+        new_customers: parseInt(document.getElementById('new_customers').value) || 0,
+        churned_customers: parseInt(document.getElementById('churned_customers').value) || 0,
+        ad_spend: parseFloat(document.getElementById('ad_spend').value) || 0,
+        sales_cost: parseFloat(document.getElementById('sales_cost').value) || 0,
+        cogs: parseFloat(document.getElementById('cogs').value) || 0,
+        churn_rate_adj: parseFloat(c_adj),
+        cac_adj: parseFloat(cac_adj),
+        mrr_growth_adj: parseFloat(mrr_adj),
+        gross_margin_adj: parseFloat(margin_adj)
+    };
+
+    try {
+        const response = await fetch('/predict/scenario', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reqData)
+        });
+        const data = await response.json();
+        
+        document.getElementById('val-ltv-cac').textContent = data.ltv_cac_ratio.toFixed(1) + 'x';
+        document.getElementById('val-payback').textContent = data.payback.toFixed(1) + 'm';
+        document.getElementById('val-churn').textContent = (data.churn_rate * 100).toFixed(1) + '%';
+        document.getElementById('val-ltv').textContent = formatCurrency(data.ltv);
+        document.getElementById('val-cac').textContent = formatCurrency(data.cac);
+        document.getElementById('val-margin').textContent = (data.gross_margin_pct * 100).toFixed(0) + '%';
+        
+        updateStylesAndInsights(data.ltv_cac_ratio, data.payback, data.churn_rate, data.health_score);
+        updateChartData(data.ltv, data.cac);
+    } catch (err) {
+        console.error("Scenario prediction failed", err);
+    }
+}
+
+function saveScenario() {
+    const scenario = {
+        churn_rate_adj: document.getElementById('scenario_churn').value,
+        cac_adj: document.getElementById('scenario_cac').value,
+        mrr_growth_adj: document.getElementById('scenario_mrr_growth').value,
+        gross_margin_adj: document.getElementById('scenario_margin').value
+    };
+    localStorage.setItem('vitals_scenario', JSON.stringify(scenario));
+    alert('Scenario saved to localStorage');
+}
+
+function loadScenario() {
+    const saved = localStorage.getItem('vitals_scenario');
+    if (saved) {
+        const scenario = JSON.parse(saved);
+        document.getElementById('scenario_churn').value = scenario.churn_rate_adj || 0;
+        document.getElementById('scenario_cac').value = scenario.cac_adj || 0;
+        document.getElementById('scenario_mrr_growth').value = scenario.mrr_growth_adj || 0;
+        document.getElementById('scenario_margin').value = scenario.gross_margin_adj || 0;
+        calculateScenario();
+    } else {
+        alert('No saved scenario found');
+    }
+}
+
+// ============================================
+// TAB SWITCHING
+// ============================================
+
+function switchTab(tabName) {
+    // Hide all zones
+    const zones = ['csv-zone', 'calcForm', 'scenario-zone'];
+    zones.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+
+    // Show selected
+    let selectedId;
+    if (tabName === 'csv') selectedId = 'csv-zone';
+    else if (tabName === 'manual') selectedId = 'calcForm';
+    else if (tabName === 'scenario') selectedId = 'scenario-zone';
+    
+    const selected = document.getElementById(selectedId);
+    if (selected) {
+        selected.style.display = tabName === 'csv' ? 'flex' : 'block';
+    }
+
+    // Update tab button styles
+    const tabs = ['tab-manual', 'tab-csv', 'tab-sample', 'tab-scenario'];
+    tabs.forEach(id => {
+        const btn = document.getElementById(id);
+        if (!btn) return;
+        btn.classList.remove('text-primary', 'font-bold', 'border-b-2', 'border-primary');
+        btn.classList.add('text-secondary', 'font-medium');
+    });
+
+    // Highlight active tab
+    const activeTabId = 'tab-' + tabName;
+    const activeBtn = document.getElementById(activeTabId);
+    if (activeBtn) {
+        activeBtn.classList.remove('text-secondary', 'font-medium');
+        activeBtn.classList.add('text-primary', 'font-bold', 'border-b-2', 'border-primary');
+    }
+}
+
+function resetForm() {
+    document.getElementById('calcForm').reset();
+    document.getElementById('results-section').style.display = 'none';
+}
+
+function exportData() {
+    const results = {
+        ltv: document.getElementById('val-ltv')?.textContent,
+        cac: document.getElementById('val-cac')?.textContent,
+        ltv_cac: document.getElementById('val-ltv-cac')?.textContent,
+        payback: document.getElementById('val-payback')?.textContent,
+        margin: document.getElementById('val-margin')?.textContent,
+        churn: document.getElementById('val-churn')?.textContent,
+        health: document.getElementById('val-health')?.textContent
+    };
+    const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'vitals-analysis.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// ============================================
+// INIT
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('vitals.io dashboard loaded');
+    initChart();
+    switchTab('manual');
+});
+</script>
+</body></html>
