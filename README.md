@@ -54,7 +54,7 @@ Upload your financial CSV — sourced from Stripe, QuickBooks, Zoho Books, or cu
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/your-org/vitals.io.git
+git clone https://github.com/rachts/vitals.io.git
 cd vitals.io
 
 # 2. Create and activate virtual environment
