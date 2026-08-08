@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-base text-text-primary font-body antialiased selection:bg-accent-primary selection:text-base;
+    background-color: theme('colors.base');
+    /* Subtle scan-line overlay */
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(255, 255, 255, 0.03) 1px,
+      rgba(255, 255, 255, 0.03) 2px
+    );
+  }
+}
+
+.health-glow {
+  animation: breathe 3s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+@keyframes breathe {
+  0%, 100% { box-shadow: 0 0 40px 10px rgba(0, 229, 255, 0.15); }
+  50% { box-shadow: 0 0 80px 25px rgba(0, 229, 255, 0.35); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .health-glow {
+    animation: none;
+  }
+}
