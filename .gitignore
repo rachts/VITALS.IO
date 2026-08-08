@@ -1,6 +1,4 @@
-# ─────────────────────────────────────────
 # Python
-# ─────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
@@ -22,66 +20,48 @@ wheels/
 .installed.cfg
 *.egg
 
-# ─────────────────────────────────────────
 # Virtual environments
-# ─────────────────────────────────────────
 .venv/
 venv/
 ENV/
 env/
 
-# ─────────────────────────────────────────
-# Pytest / Coverage
-# ─────────────────────────────────────────
+# Pytest
 .pytest_cache/
 .coverage
 htmlcov/
 
-# ─────────────────────────────────────────
-# IDEs & Editors
-# ─────────────────────────────────────────
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# ─────────────────────────────────────────
 # OS
-# ─────────────────────────────────────────
 .DS_Store
 Thumbs.db
 
-# ─────────────────────────────────────────
-# Environment & Secrets
-# ─────────────────────────────────────────
+# Logs
+*.log
+server.log
+
+# Environment
 .env
 .env.*
 .env.local
 
-# ─────────────────────────────────────────
-# Logs
-# ─────────────────────────────────────────
-*.log
-server.log
-
-# ─────────────────────────────────────────
-# Data files — keep only sample datasets
-# ─────────────────────────────────────────
+# Data files
 data/
 !data/healthy_startup.csv
 !data/struggling_startup.csv
 !data/exploding_startup.csv
 
-# ─────────────────────────────────────────
-# PDFs & Design Exports
-# ─────────────────────────────────────────
+# PDFs & design exports
 *.pdf
 Vitals_Institutional_Redesign/
 
-# ─────────────────────────────────────────
-# Temporary / Utility Scripts
-# ─────────────────────────────────────────
+# Temporary scripts
 patch_*.py
 fix_*.py
 update_script*.py
@@ -91,31 +71,20 @@ test_upload.py
 download_screens.py
 extract_design.py
 
-# ─────────────────────────────────────────
-# Test Artifacts
-# ─────────────────────────────────────────
+# Test artifacts
 test_*.html
 test_pdf.html
 
-# ─────────────────────────────────────────
-# Frontend — Node & Build Output
-# ─────────────────────────────────────────
+# Frontend build output
 node_modules/
 frontend/node_modules/
 frontend/dist/
 
-# Optional: ignore package-lock for cleaner repo
-# frontend/package-lock.json
-
-# ─────────────────────────────────────────
-# Default Scaffold Assets (unused)
-# ─────────────────────────────────────────
+# Default scaffold assets
 frontend/src/assets/react.svg
 frontend/src/assets/vite.svg
 
-# ─────────────────────────────────────────
-# Images — ignore screenshots, allow app assets
-# ─────────────────────────────────────────
+# Images (screenshots only; allow app assets)
 **/*.png
 **/*.jpg
 **/*.jpeg
@@ -124,14 +93,9 @@ frontend/src/assets/vite.svg
 !frontend/public/**/*.png
 !frontend/public/**/*.jpg
 
-# ─────────────────────────────────────────
-# AI / Prompt artifacts
-# ─────────────────────────────────────────
+# AI artifacts
 *.prompt.txt
 
-# ─────────────────────────────────────────
-# Duplicate root HTML pages
-# (your actual pages live in templates/)
-# ─────────────────────────────────────────
+# Duplicate root HTMLs
 /features.html
 /solutions.html
