@@ -1,396 +1,401 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>vitals.io - Unit Economics Intelligence</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-primary-fixed": "#261900",
-                        "on-secondary": "#32302d",
-                        "primary-fixed-dim": "#e4c285",
-                        "surface-container-lowest": "#0f0e0c",
-                        "surface-variant": "#363531",
-                        "primary-container": "#c9a96e",
-                        "primary": "#e6c487",
-                        "on-primary": "#412d00",
-                        "tertiary-container": "#7bbc8d",
-                        "on-surface": "#e6e2dd",
-                        "error": "#ffb4ab",
-                        "on-secondary-fixed-variant": "#494643",
-                        "on-primary-fixed-variant": "#5a4312",
-                        "on-tertiary-container": "#014c28",
-                        "surface": "#141311",
-                        "on-tertiary": "#00391c",
-                        "surface-bright": "#3b3936",
-                        "on-tertiary-fixed": "#00210e",
-                        "primary-fixed": "#ffdea4",
-                        "error-container": "#93000a",
-                        "on-surface-variant": "#d0c5b5",
-                        "surface-container": "#211f1d",
-                        "outline": "#998f81",
-                        "on-background": "#e6e2dd",
-                        "on-tertiary-fixed-variant": "#0b522d",
-                        "secondary-container": "#4c4945",
-                        "surface-container-low": "#1d1b19",
-                        "surface-dim": "#141311",
-                        "inverse-primary": "#745a27",
-                        "inverse-surface": "#e6e2dd",
-                        "outline-variant": "#4d463a",
-                        "secondary": "#cbc5c0",
-                        "on-secondary-container": "#bdb7b3",
-                        "surface-tint": "#e4c285",
-                        "background": "#141311",
-                        "tertiary-fixed-dim": "#93d5a5",
-                        "secondary-fixed-dim": "#cbc5c0",
-                        "on-secondary-fixed": "#1d1b18",
-                        "inverse-on-surface": "#32302d",
-                        "surface-container-highest": "#363531",
-                        "on-error-container": "#ffdad6",
-                        "surface-container-high": "#2b2a27",
-                        "tertiary": "#95d8a7",
-                        "on-error": "#690005",
-                        "tertiary-fixed": "#aef2bf",
-                        "secondary-fixed": "#e7e1dc",
-                        "on-primary-container": "#543d0c"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "spacing": {
-                        "card-padding": "32px",
-                        "unit": "4px",
-                        "stack-md": "16px",
-                        "stack-sm": "8px",
-                        "stack-lg": "32px",
-                        "margin-page": "40px",
-                        "gutter": "24px"
-                    },
-                    "fontFamily": {
-                        "display-lg": ["DM Serif Display"],
-                        "data-mono": ["JetBrains Mono"],
-                        "heading-md": ["Space Grotesk"],
-                        "display-lg-mobile": ["DM Serif Display"],
-                        "heading-sm": ["Space Grotesk"],
-                        "data-mono-bold": ["JetBrains Mono"],
-                        "body-md": ["Inter"],
-                        "label-caps": ["Space Grotesk"]
-                    },
-                    "fontSize": {
-                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400" }],
-                        "data-mono": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
-                        "heading-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
-                        "display-lg-mobile": ["40px", { "lineHeight": "1.2", "fontWeight": "400" }],
-                        "heading-sm": ["18px", { "lineHeight": "24px", "fontWeight": "500" }],
-                        "data-mono-bold": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
-                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }]
-                    }
-                }
-            }
-        }
-    </script>
-<style>
-    body { background-color: #141311; color: #e6e2dd; }
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    .nav-link { position: relative; }
-    .nav-link::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 0; height: 2px; background-color: #e6c487; transition: width 0.2s ease; }
-    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
-    .card-base { background-color: #1C1A17; border: 1px solid #4d463a; border-radius: 0.125rem; padding: 32px; }
-    .metric-card { background-color: #1C1A17; border: 1px solid #4d463a; border-radius: 0.125rem; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
-    .btn-primary { background-color: #e6c487; color: #412d00; font-family: 'Space Grotesk', sans-serif; font-weight: 700; padding: 8px 16px; border-radius: 0.125rem; display: inline-block; text-decoration: none; }
-    .btn-primary:hover { opacity: 0.9; }
-    .btn-secondary { background-color: transparent; border: 1px solid #4d463a; color: #e6e2dd; font-family: 'Inter', sans-serif; padding: 8px 16px; border-radius: 0.125rem; display: inline-block; text-decoration: none; }
-    .btn-secondary:hover { background-color: #2b2a27; }
-    .input-base { background-color: #1d1b19; border: 1px solid #4d463a; border-radius: 0.125rem; color: #e6e2dd; padding: 8px; width: 100%; font-family: 'JetBrains Mono', monospace; }
-    .input-base:focus { border-color: #e6c487; outline: none; }
-    .label-base { font-family: 'Space Grotesk', sans-serif; font-size: 12px; line-height: 16px; letter-spacing: 0.05em; font-weight: 700; color: #d0c5b5; display: block; margin-bottom: 4px; text-transform: uppercase; }
-</style>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>VITALS.IO — Financial Health Monitor for Startups</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@500;600&family=Manrope:wght@400;500;600&family=Courier+Prime&display=swap" rel="stylesheet" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%2300E5FF'%3EV%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
 </head>
-<body class="font-body-md text-body-md min-h-screen flex flex-col">
-<!-- TopNavBar -->
-<nav class="fixed top-0 w-full h-[64px] bg-surface border-b border-outline-variant z-50 flex justify-between items-center px-margin-page mx-auto">
-  <div class="flex items-center gap-gutter">
-    <a class="font-heading-md text-heading-md font-bold text-primary flex items-center gap-2" href="/">
-      <span class="material-symbols-outlined">insights</span>
-      vitals.io
-    </a>
-    <div class="hidden md:flex gap-stack-lg items-center ml-stack-lg border-l border-outline-variant pl-stack-lg">
-      <a class="nav-link active font-heading-sm text-heading-sm text-primary font-bold transition-colors duration-200 py-4" href="/">Home</a>
-      <a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/product">Product</a>
-      <a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/solutions">Solutions</a>
-      <a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/economics">Economics</a>
-      <a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/api">API</a>
-      <a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/contact">Contact</a>
-    </div>
-  </div>
-  <div class="flex items-center gap-stack-md">
-    <a href="/economics" class="btn-primary">Get Started</a>
-  </div>
-</nav>
-
-<main class="flex-grow pt-[88px]">
-
-<!-- HERO -->
-<section class="pt-[160px] pb-[120px] px-margin-page">
-  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-gutter items-center">
-    <div>
-      <p class="label-base text-on-surface-variant mb-stack-sm">UNIT ECONOMICS INTELLIGENCE</p>
-      <h1 class="font-display-lg text-display-lg text-on-background">Know If You Make Money on Every Customer</h1>
-      <p class="text-on-surface-variant text-lg max-w-xl mt-stack-md">Most founders track total revenue and total burn. Few calculate whether they actually profit per customer. vitals.io accepts any startup's CSV, auto-detects financial columns, and delivers your LTV:CAC, Payback Period, and Health Score — in 3 seconds.</p>
-      <div class="flex gap-stack-md mt-stack-lg">
-        <a href="/economics" class="btn-primary">Analyze Your Startup</a>
-        <a href="#how-it-works" class="btn-secondary">See How It Works</a>
+<body>
+  <div class="scanlines"></div>
+  <div class="ambient-glow"></div>
+  <!-- Shared Navigation -->
+  <nav class="nav">
+    <div class="container flex justify-between items-center" style="width:100%;">
+      <div class="flex items-center">
+        <a href="/" class="nav-logo">
+          <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 4px;">insights</span>
+          VITALS.IO
+        </a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/product">Product</a></li>
+          <li><a href="/solutions">Solutions</a></li>
+          <li><a href="/economics">Economics</a></li>
+          <li><a href="/api">API</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/login" style="color: var(--accent-primary);">Login</a></li>
+        </ul>
       </div>
-      <p class="text-on-surface-variant text-sm mt-stack-lg">Works with data from Stripe, QuickBooks, Zoho Books, Google Ads, HubSpot, Excel</p>
+      <div class="flex items-center gap-3">
+        <a href="/economics" class="btn btn-primary" style="display: var(--desktop-btn-display, flex);">Get Started</a>
+        <button class="mobile-menu-btn" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
     </div>
-    <div class="relative h-[400px] hidden lg:block">
-      <!-- Back card -->
-      <div class="absolute bg-surface-container-low border border-outline-variant rounded w-[340px] h-[220px] rotate-[3deg] opacity-40 top-4 right-4"></div>
-      <!-- Front card -->
-      <div class="absolute bg-surface border border-outline-variant rounded p-6 w-[340px] rotate-[-2deg] top-0 right-8">
-        <p class="label-base">Health Score</p>
-        <p class="font-display-lg-mobile text-display-lg-mobile text-tertiary">9.0</p>
-        <div class="h-2 bg-outline-variant rounded overflow-hidden mt-2"><div class="w-[90%] h-full bg-tertiary"></div></div>
-        <div class="flex justify-between mt-4 font-data-mono text-data-mono text-on-surface-variant">
-          <span>LTV ₹18L</span><span>CAC ₹3.5K</span><span>Margin 82%</span>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+      <a href="/">Home</a>
+      <a href="/product">Product</a>
+      <a href="/solutions">Solutions</a>
+      <a href="/economics">Economics</a>
+      <a href="/api">API</a>
+      <a href="/contact">Contact</a>
+      <a href="/login" style="color: var(--accent-primary);">Login</a>
+      <a href="/economics" class="btn btn-primary mt-2">Get Started</a>
+    </div>
+  </nav>
+
+<main style="flex: 1;">
+    <!-- HERO -->
+    <section class="py-6">
+      <div class="container grid-cols-2 items-center">
+        <div>
+          <p style="font-family: var(--font-mono); color: var(--text-secondary); font-size: 12px; margin-bottom: 8px; letter-spacing: 0.05em;">UNIT ECONOMICS INTELLIGENCE</p>
+          <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px;">Trusted by 100+ startups • Built for HackLabify</p>
+          <h1 class="text-gradient fade-in-up" style="font-size: 56px; margin-bottom: 24px;">Know If You Make Money on Every Customer</h1>
+          <p class="text-secondary mb-4" style="font-size: 18px; max-width: 540px;">Most founders track total revenue and total burn. Few calculate whether they actually profit per customer. vitals.io accepts any startup's CSV, auto-detects financial columns, and delivers your LTV:CAC, Payback Period, and Health Score — in 3 seconds.</p>
+          <div class="flex gap-3 mb-4 mt-4">
+            <a href="/economics" class="btn btn-primary">Analyze Your Startup <span class="material-symbols-outlined arrow-icon" style="font-size: 18px;">arrow_forward</span></a>
+            <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
+          </div>
+          <p style="font-size: 14px; color: var(--text-muted);">Works with data from Stripe, QuickBooks, Zoho Books, Google Ads, HubSpot, Excel</p>
+        </div>
+        <div style="position: relative; height: 400px; display: flex; justify-content: flex-end;">
+          <!-- Front card -->
+          <div class="card" style="position: absolute; right: 20px; top: 20px; width: 340px; transform: rotate(-2deg); z-index: 2;">
+            <p style="font-family: var(--font-mono); color: var(--text-secondary); font-size: 12px; margin-bottom: 8px;">Health Score</p>
+            <p style="font-size: 48px; color: var(--accent-secondary); margin-bottom: 8px; font-family: var(--font-display);">9.0</p>
+            <div style="height: 8px; background: var(--bg-elevated); border-radius: 4px; overflow: hidden; margin-bottom: 16px;">
+              <div style="width: 90%; height: 100%; background: var(--accent-secondary);"></div>
+            </div>
+            <div class="flex justify-between" style="font-family: var(--font-mono); font-size: 14px; color: var(--text-secondary);">
+              <span>LTV $18K</span>
+              <span>CAC $3.5K</span>
+              <span>Margin 82%</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- THE REALITY -->
-<section id="the-problem" class="bg-surface-container-low py-[120px] px-margin-page">
-  <div class="max-w-5xl mx-auto">
-    <p class="label-base text-center">THE REALITY</p>
-    <h2 class="font-heading-md text-heading-md text-on-background text-center mt-stack-sm">Startups Die When CAC Exceeds LTV</h2>
-    <p class="text-on-surface-variant text-center max-w-2xl mx-auto mt-stack-md">Revenue growth is seductive. A founder sees ₹5L MRR, spends ₹2L on ads, gets 100 customers. Feels good. Doesn't realize actual CAC is ₹3,500 after sales salaries. Doesn't see LTV dropped 37% because churn rose from 2% to 5%. Six months later: bankrupt. vitals.io prevents this.</p>
-    
-    <div class="max-w-3xl mx-auto mt-stack-lg bg-surface border border-outline-variant rounded overflow-hidden">
-      <div class="bg-surface-container-high grid grid-cols-2 p-stack-md">
-        <span class="font-label-caps text-label-caps text-on-surface-variant">Without vitals.io</span>
-        <span class="font-label-caps text-label-caps text-tertiary">With vitals.io</span>
+    <!-- THE REALITY -->
+    <section id="the-problem" class="py-6" style="background: var(--bg-surface);">
+      <div class="container text-center">
+        <p style="font-family: var(--font-mono); color: var(--text-secondary); font-size: 12px; margin-bottom: 8px; letter-spacing: 0.05em;">THE REALITY</p>
+        <h2 style="font-size: 36px; margin-bottom: 16px;">Startups Die When CAC Exceeds LTV</h2>
+        <p style="color: var(--text-secondary); max-width: 700px; margin: 0 auto 48px;">Revenue growth is seductive. A founder sees $50K MRR, spends $20K on ads, gets 100 customers. Feels good. Doesn't realize actual CAC is $3,500 after sales salaries. Doesn't see LTV dropped 37% because churn rose from 2% to 5%. Six months later: bankrupt. vitals.io prevents this.</p>
+        
+        <div class="card" style="max-width: 800px; margin: 0 auto; padding: 0; overflow: hidden; text-align: left;">
+          <div class="grid-cols-2" style="background: var(--bg-elevated); padding: 16px 24px; border-bottom: 1px solid var(--border-color);">
+            <span style="font-family: var(--font-mono); color: var(--text-muted); font-size: 12px;">Without vitals.io</span>
+            <span style="font-family: var(--font-mono); color: var(--accent-secondary); font-size: 12px;">With vitals.io</span>
+          </div>
+          <div class="grid-cols-2" style="padding: 16px 24px; border-bottom: 1px solid var(--border-color);">
+            <span style="color: var(--text-secondary);">Revenue is growing. We're fine.</span>
+            <span style="color: var(--accent-secondary);">LTV:CAC is 2.3:1. Red flag.</span>
+          </div>
+          <div class="grid-cols-2" style="padding: 16px 24px; border-bottom: 1px solid var(--border-color);">
+            <span style="color: var(--text-secondary);">Churn seems fine.</span>
+            <span style="color: var(--accent-secondary);">Churn hit 5%. LTV dropped 37%.</span>
+          </div>
+          <div class="grid-cols-2" style="padding: 16px 24px; border-bottom: 1px solid var(--border-color);">
+            <span style="color: var(--text-secondary);">We spend what we need to grow.</span>
+            <span style="color: var(--accent-secondary);">Payback is 14 months. Cut spend.</span>
+          </div>
+          <div class="grid-cols-2" style="padding: 16px 24px;">
+            <span style="color: var(--text-secondary);">Investors want unit economics?</span>
+            <span style="color: var(--accent-secondary);">Here's the report. Ready in 3 seconds.</span>
+          </div>
+        </div>
       </div>
-      <div class="grid grid-cols-2 p-stack-md border-t border-outline-variant">
-        <span class="text-on-surface-variant">Revenue is growing. We're fine.</span>
-        <span class="text-tertiary font-medium">LTV:CAC is 2.3:1. Red flag.</span>
-      </div>
-      <div class="grid grid-cols-2 p-stack-md border-t border-outline-variant">
-        <span class="text-on-surface-variant">Churn seems fine.</span>
-        <span class="text-tertiary font-medium">Churn hit 5%. LTV dropped 37%.</span>
-      </div>
-      <div class="grid grid-cols-2 p-stack-md border-t border-outline-variant">
-        <span class="text-on-surface-variant">We spend what we need to grow.</span>
-        <span class="text-tertiary font-medium">Payback is 14 months. Cut spend.</span>
-      </div>
-      <div class="grid grid-cols-2 p-stack-md border-t border-outline-variant">
-        <span class="text-on-surface-variant">Investors want unit economics?</span>
-        <span class="text-tertiary font-medium">Here's the report. Ready in 3 seconds.</span>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- HOW IT WORKS -->
-<section id="how-it-works" class="bg-background py-[120px] px-margin-page">
-  <div class="max-w-5xl mx-auto">
-    <p class="label-base text-center">SIMPLE PROCESS</p>
-    <h2 class="font-heading-md text-heading-md text-on-background text-center mt-stack-sm">From Spreadsheet to Board-Ready Metrics</h2>
-    
-    <div class="relative mt-stack-lg">
-      <!-- Connector line -->
-      <div class="hidden md:block absolute top-[80px] left-0 right-0 h-[1px] bg-outline-variant z-0">
-        <div class="w-2 h-2 bg-primary rounded-full absolute top-[-3px]" style="left:16%"></div>
-        <div class="w-2 h-2 bg-primary rounded-full absolute top-[-3px]" style="left:50%"></div>
-        <div class="w-2 h-2 bg-primary rounded-full absolute top-[-3px]" style="left:84%"></div>
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="py-6">
+      <div class="container text-center">
+        <p style="font-family: var(--font-mono); color: var(--text-secondary); font-size: 12px; margin-bottom: 8px; letter-spacing: 0.05em;">SIMPLE PROCESS</p>
+        <h2 style="font-size: 36px; margin-bottom: 48px;">From Spreadsheet to Board-Ready Metrics</h2>
+        
+        <div class="grid-cols-3" style="text-align: left;">
+          <div>
+            <span style="font-family: var(--font-display); font-size: 64px; color: var(--border-color); line-height: 1;">01</span>
+            <h3 style="font-size: 20px; margin: 16px 0 8px;">Upload Your Data</h3>
+            <p style="color: var(--text-secondary);">Drop your Stripe export, QuickBooks report, or custom CSV. Our engine accepts messy headers — mrr, monthly_recurring_revenue, revenue — we map them automatically.</p>
+          </div>
+          <div>
+            <span style="font-family: var(--font-display); font-size: 64px; color: var(--border-color); line-height: 1;">02</span>
+            <h3 style="font-size: 20px; margin: 16px 0 8px;">Auto-Detect & Calculate</h3>
+            <p style="color: var(--text-secondary);">Six deterministic formulas run instantly. No AI. No black box. No hallucinations. Just math: LTV, CAC, Payback, Gross Margin, Churn, and your Health Score.</p>
+          </div>
+          <div>
+            <span style="font-family: var(--font-display); font-size: 64px; color: var(--border-color); line-height: 1;">03</span>
+            <h3 style="font-size: 20px; margin: 16px 0 8px;">Make the Call</h3>
+            <p style="color: var(--text-secondary);">Health score, benchmark comparisons against SaaS medians, and rule-based recommendations. Export for your next investor meeting.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="py-6" style="background: var(--bg-surface);">
+      <div class="container">
+        <div class="text-center mb-5">
+          <p style="font-family: var(--font-mono); color: var(--text-secondary); font-size: 12px; margin-bottom: 8px; letter-spacing: 0.05em;">BUILT TO SIMPLIFY</p>
+          <h2 style="font-size: 36px;">A Complete Unit Economics Platform</h2>
+        </div>
+        
+        <div class="grid-cols-3">
+          <div class="card" style="border-top: 2px solid var(--accent-primary);">
+            <span class="material-symbols-outlined mb-2" style="color: var(--accent-primary); font-size: 28px;">upload</span>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">CSV Auto-Detection</h3>
+            <p style="color: var(--text-secondary); margin: 0;">Drop any spreadsheet. We detect MRR, CAC, churn, and COGS columns automatically.</p>
+          </div>
+          <div class="card" style="border-top: 2px solid var(--accent-primary);">
+            <span class="material-symbols-outlined mb-2" style="color: var(--accent-primary); font-size: 28px;">grid_view</span>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Six Core Metrics</h3>
+            <p style="color: var(--text-secondary); margin: 0;">LTV, CAC, LTV:CAC Ratio, Payback Period, Gross Margin, and Churn Rate.</p>
+          </div>
+          <div class="card" style="border-top: 2px solid var(--accent-primary);">
+            <span class="material-symbols-outlined mb-2" style="color: var(--accent-primary); font-size: 28px;">monitoring</span>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Startup Health Score</h3>
+            <p style="color: var(--text-secondary); margin: 0;">A single 0–10 score with color-coded status.</p>
+          </div>
+          <div class="card" style="border-top: 2px solid var(--accent-primary);">
+            <span class="material-symbols-outlined mb-2" style="color: var(--accent-primary); font-size: 28px;">bar_chart</span>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Benchmark Comparison</h3>
+            <p style="color: var(--text-secondary); margin: 0;">Compare every metric against SaaS industry medians.</p>
+          </div>
+          <div class="card" style="border-top: 2px solid var(--accent-primary);">
+            <span class="material-symbols-outlined mb-2" style="color: var(--accent-primary); font-size: 28px;">tune</span>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Scenario Simulator</h3>
+            <p style="color: var(--text-secondary); margin: 0;">What if churn drops 20%? Model scenarios live.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUSINESS BOOSTERS -->
+    <section class="py-6">
+      <div class="container">
+        <div class="text-center mb-5">
+          <p style="font-family: var(--font-mono); color: var(--text-secondary); font-size: 12px; margin-bottom: 8px; letter-spacing: 0.05em;">BUSINESS BOOSTERS</p>
+          <h2 style="font-size: 36px; margin-bottom: 16px;">The Smarter Choice for Startup Finance</h2>
+          <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto;">vitals.io equips founders with investor-grade financial intelligence and sophisticated tools that simplify analysis, improve decision-making, and build lasting investor confidence.</p>
+        </div>
+        
+        <div class="grid-cols-3">
+          <div class="card">
+            <span class="material-symbols-outlined mb-2" style="color: var(--text-muted); font-size: 28px;">bolt</span>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Instant Analysis</h3>
+            <p style="color: var(--text-secondary); margin: 0;">Upload a CSV. Get answers in 3 seconds.</p>
+          </div>
+          <div class="card">
+            <span class="material-symbols-outlined mb-2" style="color: var(--text-muted); font-size: 28px;">description</span>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Investor-Ready Reports</h3>
+            <p style="color: var(--text-secondary); margin: 0;">Export metrics and trend charts that VCs actually want.</p>
+          </div>
+          <div class="card">
+            <span class="material-symbols-outlined mb-2" style="color: var(--accent-danger); font-size: 28px;">warning</span>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Early Warning System</h3>
+            <p style="color: var(--text-secondary); margin: 0;">Red flags on LTV:CAC &lt; 1, payback &gt; 18 months, or churn &gt; 5%.</p>
+          </div>
+          <div class="card">
+            <span class="material-symbols-outlined mb-2" style="color: var(--text-muted); font-size: 28px;">groups</span>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Cohort Tracking</h3>
+            <p style="color: var(--text-secondary); margin: 0;">Enterprise vs. freemium LTV in one view.</p>
+          </div>
+          <div class="card">
+            <span class="material-symbols-outlined mb-2" style="color: var(--text-muted); font-size: 28px;">code</span>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">API-First</h3>
+            <p style="color: var(--text-secondary); margin: 0;">POST a CSV, get JSON back. Simple.</p>
+          </div>
+          <div class="card">
+            <span class="material-symbols-outlined mb-2" style="color: var(--accent-secondary); font-size: 28px;">check_circle</span>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Zero Setup</h3>
+            <p style="color: var(--text-secondary); margin: 0;">No integrations. No OAuth. Just upload and go.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUTIONS -->
+    <section class="py-6" style="background: var(--bg-surface);">
+      <div class="container">
+        <div class="text-center mb-5">
+          <p style="font-family: var(--font-mono); color: var(--text-secondary); font-size: 12px; margin-bottom: 8px; letter-spacing: 0.05em;">SOLUTIONS</p>
+          <h2 style="font-size: 36px; margin-bottom: 16px;">Built for Every Business Model</h2>
+        </div>
+        
+        <div class="grid-cols-2" style="grid-template-columns: repeat(4, 1fr);">
+          <div class="card" style="border-left: 4px solid var(--accent-primary);">
+            <h3 style="font-size: 18px; margin-bottom: 8px;">SaaS Startups</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">MRR, churn, and CAC are your vital signs.</p>
+            <p style="color: var(--accent-primary); font-family: var(--font-mono); font-weight: bold; margin: 0;">LTV:CAC 4.2x</p>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--accent-secondary);">
+            <h3 style="font-size: 18px; margin-bottom: 8px;">D2C & E-Commerce</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">Customer acquisition cost meets repeat purchase rate.</p>
+            <p style="color: var(--accent-secondary); font-family: var(--font-mono); font-weight: bold; margin: 0;">Payback 3.1 mo</p>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--accent-primary);">
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Marketplaces</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">Two-sided unit economics.</p>
+            <p style="color: var(--accent-primary); font-family: var(--font-mono); font-weight: bold; margin: 0;">Gross Margin 72%</p>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--accent-danger);">
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Agencies & Services</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">Project-based margins and client lifetime value.</p>
+            <p style="color: var(--accent-danger); font-family: var(--font-mono); font-weight: bold; margin: 0;">Churn 1.8%</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-6 text-center" style="border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+      <div class="container">
+        <h2 style="font-size: 48px; margin-bottom: 16px;">Stop Guessing. Start Knowing.</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 32px;">Your investors are already calculating this. Shouldn't you be too?</p>
+        <a href="/economics" class="btn btn-primary">Analyze Your Startup <span class="material-symbols-outlined arrow-icon" style="font-size: 18px;">arrow_forward</span> for Free</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Shared Footer -->
+  <footer class="site-footer">
+    <div class="container flex justify-between" style="align-items: flex-start;">
+      <div>
+        <div class="footer-brand">VITALS.IO</div>
+        <div class="footer-tagline">The financial health monitor for startups.</div>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
+      <div style="display: flex; gap: 48px; flex-wrap: wrap;">
         <div>
-          <span class="font-heading-md text-[72px] text-on-surface-variant opacity-40 leading-none">01</span>
-          <h3 class="font-heading-sm text-heading-sm text-on-background mt-stack-sm">Upload Your Data</h3>
-          <p class="text-on-surface-variant mt-stack-sm">Drop your Stripe export, QuickBooks report, or custom CSV. Our engine accepts messy headers — mrr, monthly_recurring_revenue, revenue — we map them automatically.</p>
+          <h4 style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">PRODUCT</h4>
+          <div class="flex flex-col gap-2">
+            <a href="/product" style="color: var(--text-secondary); font-size: 14px;">Features</a>
+            <a href="/economics" style="color: var(--text-secondary); font-size: 14px;">Economics</a>
+            <a href="/api" style="color: var(--text-secondary); font-size: 14px;">API</a>
+          </div>
         </div>
         <div>
-          <span class="font-heading-md text-[72px] text-on-surface-variant opacity-40 leading-none">02</span>
-          <h3 class="font-heading-sm text-heading-sm text-on-background mt-stack-sm">Auto-Detect &amp; Calculate</h3>
-          <p class="text-on-surface-variant mt-stack-sm">Six deterministic formulas run instantly. No AI. No black box. No hallucinations. Just math: LTV, CAC, Payback, Gross Margin, Churn, and your Health Score.</p>
+          <h4 style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">RESOURCES</h4>
+          <div class="flex flex-col gap-2">
+            <a href="/solutions" style="color: var(--text-secondary); font-size: 14px;">Solutions</a>
+            <a href="/contact" style="color: var(--text-secondary); font-size: 14px;">Contact</a>
+          </div>
         </div>
         <div>
-          <span class="font-heading-md text-[72px] text-on-surface-variant opacity-40 leading-none">03</span>
-          <h3 class="font-heading-sm text-heading-sm text-on-background mt-stack-sm">Make the Call</h3>
-          <p class="text-on-surface-variant mt-stack-sm">Health score, benchmark comparisons against SaaS medians, and rule-based recommendations. Export for your next investor meeting.</p>
+          <h4 style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">COMPANY</h4>
+          <div class="flex flex-col gap-2">
+            <a href="/" style="color: var(--text-secondary); font-size: 14px;">About</a>
+            <a href="/login" style="color: var(--text-secondary); font-size: 14px;">Login</a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+    <div class="container mt-4" style="padding-top: 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; flex-wrap: wrap;">
+      <div class="footer-meta">© 2026 vitals.io. Built for HackLabify.</div>
+      <div class="footer-meta">All calculations are deterministic. No AI hallucinations.</div>
+    </div>
+  </footer>
 
-<!-- FEATURES -->
-<section class="bg-surface-container-low py-[120px] px-margin-page">
-  <div class="max-w-6xl mx-auto">
-    <p class="label-base text-center">BUILT TO SIMPLIFY</p>
-    <h2 class="font-heading-md text-heading-md text-on-background text-center mt-stack-sm">A Complete Unit Economics Platform</h2>
+  <!-- Global Components -->
+  <div id="toast-container"></div>
+  <div id="global-loader" class="loader-overlay" style="display:none;">
+    <svg class="loader-spinner" width="40" height="40" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="var(--border-color)" stroke-width="3"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent-primary)" stroke-width="3"
+        stroke-dasharray="113" stroke-dashoffset="80" stroke-linecap="round"
+        style="transform-origin:center; animation: spin 1s linear infinite;"/>
+    </svg>
+    <p id="loader-text" style="color: var(--accent-primary); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; margin-top: 12px;">LOADING...</p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Active Nav State
+      const currentPath = window.location.pathname;
+      document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      // 2. Mobile Menu Logic
+      const menuBtn = document.querySelector('.mobile-menu-btn');
+      const mobileMenu = document.querySelector('.mobile-menu');
+      
+      if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          mobileMenu.classList.toggle('open');
+        });
+        
+        document.addEventListener('click', (e) => {
+          if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+            mobileMenu.classList.remove('open');
+          }
+        });
+        
+        mobileMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+        });
+      }
+    });
+
+    // 3. Global Toast System
+    window.showToast = function(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      let icon = 'info';
+      if(type === 'success') icon = 'check_circle';
+      if(type === 'error') icon = 'error';
+      if(type === 'warning') icon = 'warning';
+      
+      toast.innerHTML = `<span class="material-symbols-outlined">${icon}</span> <span>${message}</span>`;
+      container.appendChild(toast);
+      
+      // Trigger animation
+      setTimeout(() => toast.classList.add('show'), 10);
+      
+      // Remove after 3s
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    };
+
+    // 4. Global Loader System
+    window.showLoader = function(text = "LOADING...") {
+      const loader = document.getElementById('global-loader');
+      const loaderText = document.getElementById('loader-text');
+      if (loader) {
+        if (loaderText) loaderText.textContent = text;
+        loader.style.display = 'flex';
+      }
+    };
     
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mt-stack-lg">
-      <div class="card-base" style="border-top: 2px solid #e6c487;">
-        <span class="material-symbols-outlined text-primary text-[28px] mb-stack-md">upload</span>
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">CSV Auto-Detection</h3>
-        <p class="text-on-surface-variant">Drop any spreadsheet. We detect MRR, CAC, churn, and COGS columns automatically.</p>
-      </div>
-      <div class="card-base" style="border-top: 2px solid #e6c487;">
-        <span class="material-symbols-outlined text-primary text-[28px] mb-stack-md">grid_view</span>
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">Six Core Metrics</h3>
-        <p class="text-on-surface-variant">LTV, CAC, LTV:CAC Ratio, Payback Period, Gross Margin, and Churn Rate.</p>
-      </div>
-      <div class="card-base" style="border-top: 2px solid #e6c487;">
-        <span class="material-symbols-outlined text-primary text-[28px] mb-stack-md">monitoring</span>
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">Startup Health Score</h3>
-        <p class="text-on-surface-variant">A single 0–10 score with color-coded status.</p>
-      </div>
-      <div class="card-base" style="border-top: 2px solid #e6c487;">
-        <span class="material-symbols-outlined text-primary text-[28px] mb-stack-md">bar_chart</span>
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">Benchmark Comparison</h3>
-        <p class="text-on-surface-variant">Compare every metric against SaaS industry medians.</p>
-      </div>
-      <div class="card-base" style="border-top: 2px solid #e6c487;">
-        <span class="material-symbols-outlined text-primary text-[28px] mb-stack-md">tune</span>
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">Scenario Simulator</h3>
-        <p class="text-on-surface-variant">What if churn drops 20%? Model scenarios live.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- BUSINESS BOOSTERS -->
-<section class="bg-background py-[120px] px-margin-page">
-  <div class="max-w-6xl mx-auto">
-    <p class="label-base text-center">BUSINESS BOOSTERS</p>
-    <h2 class="font-heading-md text-heading-md text-on-background text-center mt-stack-sm">The Smarter Choice for Startup Finance</h2>
-    <p class="text-on-surface-variant text-center max-w-2xl mx-auto mt-stack-md">vitals.io equips founders with investor-grade financial intelligence and sophisticated tools that simplify analysis, improve decision-making, and build lasting investor confidence.</p>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mt-stack-lg">
-      <div class="card-base">
-        <span class="material-symbols-outlined text-on-surface-variant text-[28px] mb-stack-md">bolt</span>
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">Instant Analysis</h3>
-        <p class="text-on-surface-variant">Upload a CSV. Get answers in 3 seconds.</p>
-      </div>
-      <div class="card-base">
-        <span class="material-symbols-outlined text-on-surface-variant text-[28px] mb-stack-md">description</span>
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">Investor-Ready Reports</h3>
-        <p class="text-on-surface-variant">Export metrics and trend charts that VCs actually want.</p>
-      </div>
-      <div class="card-base">
-        <span class="material-symbols-outlined text-error text-[28px] mb-stack-md">warning</span>
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">Early Warning System</h3>
-        <p class="text-on-surface-variant">Red flags on LTV:CAC &lt; 1, payback &gt; 18 months, or churn &gt; 5%.</p>
-      </div>
-      <div class="card-base">
-        <span class="material-symbols-outlined text-on-surface-variant text-[28px] mb-stack-md">groups</span>
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">Cohort Tracking</h3>
-        <p class="text-on-surface-variant">Enterprise vs. freemium LTV in one view.</p>
-      </div>
-      <div class="card-base">
-        <span class="material-symbols-outlined text-on-surface-variant text-[28px] mb-stack-md">code</span>
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">API-First</h3>
-        <p class="text-on-surface-variant">POST a CSV, get JSON back. Simple.</p>
-      </div>
-      <div class="card-base">
-        <span class="material-symbols-outlined text-tertiary text-[28px] mb-stack-md">check_circle</span>
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">Zero Setup</h3>
-        <p class="text-on-surface-variant">No integrations. No OAuth. Just upload and go.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SOLUTIONS -->
-<section class="bg-surface-container-low py-[120px] px-margin-page">
-  <div class="max-w-6xl mx-auto">
-    <p class="label-base text-center">SOLUTIONS</p>
-    <h2 class="font-heading-md text-heading-md text-on-background text-center mt-stack-sm">Built for Every Business Model</h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mt-stack-lg">
-      <div class="card-base" style="border-left: 4px solid #e6c487;">
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">SaaS Startups</h3>
-        <p class="text-on-surface-variant text-sm mb-stack-md">MRR, churn, and CAC are your vital signs.</p>
-        <p class="text-tertiary font-data-mono text-data-mono font-bold">LTV:CAC 4.2x</p>
-      </div>
-      <div class="card-base" style="border-left: 4px solid #95d8a7;">
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">D2C &amp; E-Commerce</h3>
-        <p class="text-on-surface-variant text-sm mb-stack-md">Customer acquisition cost meets repeat purchase rate.</p>
-        <p class="text-tertiary font-data-mono text-data-mono font-bold">Payback 3.1 mo</p>
-      </div>
-      <div class="card-base" style="border-left: 4px solid #e6c487;">
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">Marketplaces</h3>
-        <p class="text-on-surface-variant text-sm mb-stack-md">Two-sided unit economics.</p>
-        <p class="text-tertiary font-data-mono text-data-mono font-bold">Gross Margin 72%</p>
-      </div>
-      <div class="card-base" style="border-left: 4px solid #ffb4ab;">
-        <h3 class="font-heading-sm text-heading-sm text-on-background mb-stack-sm">Agencies &amp; Services</h3>
-        <p class="text-on-surface-variant text-sm mb-stack-md">Project-based margins and client lifetime value.</p>
-        <p class="text-tertiary font-data-mono text-data-mono font-bold">Churn 1.8%</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="bg-surface-container-low border-t border-b border-outline-variant py-[100px] px-margin-page text-center">
-  <div class="max-w-2xl mx-auto">
-    <h2 class="font-display-lg-mobile text-display-lg-mobile text-on-background">Stop Guessing. Start Knowing.</h2>
-    <p class="text-on-surface-variant mt-stack-md">Your investors are already calculating this. Shouldn't you be too?</p>
-    <a href="/economics" class="btn-primary mt-stack-lg inline-block">Analyze Your Startup for Free</a>
-  </div>
-</section>
-
-</main>
-
-<!-- Footer -->
-<footer class="w-full bg-surface-container-lowest border-t border-outline-variant px-margin-page py-stack-lg mt-auto">
-  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-gutter">
-    <div>
-      <span class="font-heading-sm text-heading-sm font-bold text-primary block mb-2">vitals.io</span>
-      <p class="font-body-md text-body-md text-on-surface-variant">The financial health monitor for startups.</p>
-    </div>
-    <div>
-      <h4 class="font-label-caps text-label-caps text-on-surface mb-stack-sm">Product</h4>
-      <div class="flex flex-col gap-2">
-        <a href="/product" class="text-on-surface-variant hover:text-primary transition-colors">Features</a>
-        <a href="/economics" class="text-on-surface-variant hover:text-primary transition-colors">Economics</a>
-        <a href="/api" class="text-on-surface-variant hover:text-primary transition-colors">API</a>
-      </div>
-    </div>
-    <div>
-      <h4 class="font-label-caps text-label-caps text-on-surface mb-stack-sm">Resources</h4>
-      <div class="flex flex-col gap-2">
-        <a href="/solutions" class="text-on-surface-variant hover:text-primary transition-colors">Solutions</a>
-        <a href="/contact" class="text-on-surface-variant hover:text-primary transition-colors">Contact</a>
-      </div>
-    </div>
-    <div>
-      <h4 class="font-label-caps text-label-caps text-on-surface mb-stack-sm">Company</h4>
-      <div class="flex flex-col gap-2">
-        <a href="/" class="text-on-surface-variant hover:text-primary transition-colors">About</a>
-        <a href="/contact" class="text-on-surface-variant hover:text-primary transition-colors">Contact</a>
-      </div>
-    </div>
-  </div>
-  <div class="max-w-7xl mx-auto mt-stack-lg pt-stack-md border-t border-outline-variant flex justify-between items-center">
-    <p class="text-on-surface-variant text-sm">© 2026 vitals.io. Built for HackLabify.</p>
-    <p class="text-on-surface-variant text-sm">All calculations are deterministic. No AI hallucinations.</p>
-  </div>
-</footer>
+    window.hideLoader = function() {
+      const loader = document.getElementById('global-loader');
+      if (loader) loader.style.display = 'none';
+    };
+  </script>
 </body>
 </html>

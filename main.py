@@ -38,6 +38,10 @@ async def api_docs(request: Request):
 async def contact(request: Request):
     return templates.TemplateResponse(request=request, name="contact.html")
 
+@app.get("/login", response_class=HTMLResponse)
+async def login(request: Request):
+    return templates.TemplateResponse(request=request, name="login.html")
+
 class AnalyzeRequest(BaseModel):
     mrr: float
     total_customers: int

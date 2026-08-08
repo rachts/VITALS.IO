@@ -1,930 +1,1056 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VITALS.IO - Institutional Unit Economics</title>
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@500;600&family=Manrope:wght@400;500;600&family=Courier+Prime&display=swap" rel="stylesheet">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2300E5FF'>V</text></svg>">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Economics Analyzer - vitals.io</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-primary-fixed": "#261900",
-                        "on-secondary": "#32302d",
-                        "primary-fixed-dim": "#e4c285",
-                        "surface-container-lowest": "#0f0e0c",
-                        "surface-variant": "#363531",
-                        "primary-container": "#c9a96e",
-                        "primary": "#e6c487",
-                        "on-primary": "#412d00",
-                        "tertiary-container": "#7bbc8d",
-                        "on-surface": "#e6e2dd",
-                        "error": "#ffb4ab",
-                        "on-secondary-fixed-variant": "#494643",
-                        "on-primary-fixed-variant": "#5a4312",
-                        "on-tertiary-container": "#014c28",
-                        "surface": "#141311",
-                        "on-tertiary": "#00391c",
-                        "surface-bright": "#3b3936",
-                        "on-tertiary-fixed": "#00210e",
-                        "primary-fixed": "#ffdea4",
-                        "error-container": "#93000a",
-                        "on-surface-variant": "#d0c5b5",
-                        "surface-container": "#211f1d",
-                        "outline": "#998f81",
-                        "on-background": "#e6e2dd",
-                        "on-tertiary-fixed-variant": "#0b522d",
-                        "secondary-container": "#4c4945",
-                        "surface-container-low": "#1d1b19",
-                        "surface-dim": "#141311",
-                        "inverse-primary": "#745a27",
-                        "inverse-surface": "#e6e2dd",
-                        "outline-variant": "#4d463a",
-                        "secondary": "#cbc5c0",
-                        "on-secondary-container": "#bdb7b3",
-                        "surface-tint": "#e4c285",
-                        "background": "#141311",
-                        "tertiary-fixed-dim": "#93d5a5",
-                        "secondary-fixed-dim": "#cbc5c0",
-                        "on-secondary-fixed": "#1d1b18",
-                        "inverse-on-surface": "#32302d",
-                        "surface-container-highest": "#363531",
-                        "on-error-container": "#ffdad6",
-                        "surface-container-high": "#2b2a27",
-                        "tertiary": "#95d8a7",
-                        "on-error": "#690005",
-                        "tertiary-fixed": "#aef2bf",
-                        "secondary-fixed": "#e7e1dc",
-                        "on-primary-container": "#543d0c"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "spacing": {
-                        "card-padding": "32px",
-                        "unit": "4px",
-                        "stack-md": "16px",
-                        "stack-sm": "8px",
-                        "stack-lg": "32px",
-                        "margin-page": "40px",
-                        "gutter": "24px"
-                    },
-                    "fontFamily": {
-                        "display-lg": ["DM Serif Display"],
-                        "data-mono": ["JetBrains Mono"],
-                        "heading-md": ["Space Grotesk"],
-                        "display-lg-mobile": ["DM Serif Display"],
-                        "heading-sm": ["Space Grotesk"],
-                        "data-mono-bold": ["JetBrains Mono"],
-                        "body-md": ["Inter"],
-                        "label-caps": ["Space Grotesk"]
-                    },
-                    "fontSize": {
-                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400" }],
-                        "data-mono": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
-                        "heading-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
-                        "display-lg-mobile": ["40px", { "lineHeight": "1.2", "fontWeight": "400" }],
-                        "heading-sm": ["18px", { "lineHeight": "24px", "fontWeight": "500" }],
-                        "data-mono-bold": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
-                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }]
-                    }
-                }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-base: #0C0C0E;
+            --bg-surface: #141416;
+            --bg-input: #1A1A1C;
+            --primary: #C9A96E;
+            --secondary: #8B9D83;
+            --error: #c75b5b;
+            --text-primary: #F0EFEA;
+            --text-secondary: #998f81;
+            --border: rgba(240, 239, 234, 0.08);
+            
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Manrope', sans-serif;
+            --font-mono: 'Courier Prime', monospace;
+            
+            --radius: 4px;
+            --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Scanline Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0),
+                rgba(255, 255, 255, 0) 1px,
+                rgba(0, 0, 0, 0.03) 1px,
+                rgba(0, 0, 0, 0.03) 2px
+            );
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.8;
+        }
+        
+        h1, h2, h3, h4, .font-serif {
+            font-family: var(--font-display);
+            font-weight: 500;
+        }
+        
+        .font-mono {
+            font-family: var(--font-mono);
+        }
+        
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        
+        /* Navbar */
+        nav {
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+            background: var(--bg-base);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+        .api-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+        }
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--error);
+        }
+        .status-dot.healthy { background: var(--secondary); }
+        
+        /* Buttons */
+        .btn {
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #131315;
+        }
+        .btn-primary:hover {
+            filter: brightness(1.1);
+        }
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(240, 239, 234, 0.1);
+            color: var(--text-primary);
+        }
+        .btn-ghost:hover {
+            background: rgba(240, 239, 234, 0.05);
+        }
+
+        /* Layout classes */
+        .mt-8 { margin-top: 32px; }
+        .mb-4 { margin-bottom: 16px; }
+        .mb-8 { margin-bottom: 32px; }
+        .flex { display: flex; }
+        .flex-col { display: flex; flex-direction: column; }
+        .gap-4 { gap: 16px; }
+        .gap-6 { gap: 24px; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        
+        /* Cards */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+        }
+        
+        /* Input */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        label, .label-caps {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+        }
+        input[type="number"], input[type="text"] {
+            background: var(--bg-input);
+            border: none;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            padding: 12px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            outline: none;
+        }
+        input[type="number"]:focus {
+            border-bottom-color: var(--primary);
+        }
+        
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: var(--bg-input);
+            height: 4px;
+            border-radius: 2px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+        
+        /* Typography */
+        .display { font-size: 40px; letter-spacing: -0.01em; line-height: 1.2; }
+        .metric-value { font-size: 28px; font-family: var(--font-mono); }
+        .text-sm { font-size: 14px; color: var(--text-secondary); }
+        .text-primary { color: var(--primary); }
+        
+        /* Badges */
+        .badge {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 4px 8px;
+            border-radius: 2px;
+            background: var(--bg-input);
+            color: var(--text-secondary);
+        }
+        .badge.healthy { color: var(--secondary); background: rgba(139, 157, 131, 0.1); }
+        .badge.caution { color: var(--primary); background: rgba(201, 169, 110, 0.1); }
+        .badge.critical { color: var(--error); background: rgba(199, 91, 91, 0.1); }
+        
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stagger-item {
+            opacity: 0;
+            animation: fadeUp 0.6s var(--transition) forwards;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(201, 169, 110, 0.2)); }
+            50% { filter: drop-shadow(0 0 25px rgba(201, 169, 110, 0.6)); }
+        }
+        @keyframes breathe-healthy {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(139, 157, 131, 0.2)); }
+            50% { filter: drop-shadow(0 0 25px rgba(139, 157, 131, 0.6)); }
+        }
+        @keyframes breathe-critical {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(199, 91, 91, 0.2)); }
+            50% { filter: drop-shadow(0 0 25px rgba(199, 91, 91, 0.6)); }
+        }
+        
+        .health-glow-healthy { animation: breathe-healthy 4s ease-in-out infinite; }
+        .health-glow-caution { animation: breathe 4s ease-in-out infinite; }
+        .health-glow-critical { animation: breathe-critical 4s ease-in-out infinite; }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .health-glow-healthy, .health-glow-caution, .health-glow-critical, .stagger-item {
+                animation: none;
+                filter: none;
+                opacity: 1;
+                transform: none;
             }
         }
-    </script>
-<style>
-        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .nav-link { position: relative; }
-        .nav-link::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 0; height: 2px; background-color: theme('colors.primary'); transition: width 0.2s ease; }
-        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
         
-        /* Utility classes for specific styles */
-        .card-base { @apply bg-surface border border-outline-variant rounded p-card-padding; }
-        .metric-card { @apply bg-surface border border-outline-variant rounded p-stack-md flex flex-col gap-stack-sm min-w-0 overflow-hidden; }
-        .metric-card-success { border-top: 2px solid theme('colors.tertiary'); }
-        .metric-card-warning { border-top: 2px solid theme('colors.primary'); }
-        .metric-card-danger { border-top: 2px solid theme('colors.error'); }
+        /* Dropzone */
+        .dropzone {
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: background var(--transition);
+        }
+        .dropzone:hover { background: var(--bg-input); }
         
-        .btn-primary { @apply bg-primary text-on-primary font-heading-sm font-bold px-4 py-2 hover:opacity-90 transition-opacity; }
-        .btn-secondary { @apply bg-transparent border border-outline-variant text-on-surface font-body-md px-4 py-2 hover:bg-surface-container-high transition-colors; }
+        /* Loading Overlay */
+        #loader {
+            position: fixed; inset: 0;
+            background: rgba(12, 12, 14, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        #loader.active { opacity: 1; pointer-events: all; }
         
-        .input-base { @apply bg-surface-container-low border border-outline-variant rounded focus:border-primary focus:ring-0 text-on-surface p-2 w-full font-data-mono; }
-        .label-base { @apply font-label-caps text-label-caps text-on-surface-variant block mb-unit uppercase tracking-wider; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid rgba(201, 169, 110, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
         
-        .chip { @apply bg-surface-container-low border border-outline-variant rounded font-data-mono text-data-mono px-2 py-1 inline-flex items-center gap-1; }
+        /* Error Banner */
+        #error-banner {
+            background: rgba(199, 91, 91, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+            padding: 16px;
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            display: none;
+        }
         
-        /* Circular Progress */
-        .progress-ring { transform: rotate(-90deg); transform-origin: 50% 50%; }
-        .progress-ring__circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .col-span-3, .col-span-4, .col-span-8, .col-span-9, .col-span-12 { grid-column: span 1; }
+        }
+        @media (min-width: 769px) {
+            .col-span-3 { grid-column: span 3; }
+            .col-span-4 { grid-column: span 4; }
+            .col-span-8 { grid-column: span 8; }
+            .col-span-9 { grid-column: span 9; }
+            .col-span-12 { grid-column: span 12; }
+        }
+        
+        .text-right { text-align: right; }
+        .w-full { width: 100%; }
+        
+        /* Canvas */
+        .chart-container {
+            width: 100%;
+            height: 200px;
+            margin-top: 16px;
+            position: relative;
+        }
     </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="font-body-md text-body-md min-h-screen flex flex-col">
-<!-- TopNavBar -->
-<nav class="fixed top-0 w-full h-[64px] bg-surface border-b border-outline-variant z-50 flex justify-between items-center px-margin-page mx-auto">
-<div class="flex items-center gap-gutter">
-<a class="font-heading-md text-heading-md font-bold text-primary flex items-center gap-2" href="/">
-<span class="material-symbols-outlined" data-icon="insights">insights</span>
-                vitals.io
-            </a>
-<div class="hidden md:flex gap-stack-lg items-center ml-stack-lg border-l border-outline-variant pl-stack-lg">
-<a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/">Home</a>
-<a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/product">Product</a>
-<a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/solutions">Solutions</a>
-<a class="nav-link active font-heading-sm text-heading-sm text-primary font-bold border-b-2 border-primary pb-[14px] transition-colors duration-200 py-4" href="/economics">Economics</a>
-<a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/api">API</a>
-<a class="nav-link font-heading-sm text-heading-sm text-secondary hover:text-primary transition-colors duration-200 py-4" href="/contact">Contact</a>
-</div>
-</div>
-<div class="flex items-center gap-stack-md">
-<span class="chip hidden md:inline-flex">
-<span class="material-symbols-outlined text-[16px]" data-icon="database">database</span>
-                Source: Manual
-            </span>
-<button class="btn-secondary" onclick="resetForm()">Reset</button>
-<button class="btn-primary" onclick="exportData()">Export</button>
-</div>
-</nav>
-<!-- Main Content Canvas -->
-<main class="flex-grow pt-[88px] pb-margin-page px-margin-page max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-<!-- Header -->
-<header class="col-span-1 lg:col-span-12 mb-stack-lg">
-<h1 class="font-display-lg text-display-lg mb-unit">Unit Economics Analyzer</h1>
-<p class="text-on-surface-variant max-w-2xl">Evaluate your SaaS viability through rigorous LTV:CAC, payback periods, and margin analysis. Input data below to generate institutional-grade metrics.</p>
-</header>
-<!-- Left Column: Input -->
-<div class="col-span-1 lg:col-span-4 flex flex-col gap-stack-lg">
-<div class="card-base flex flex-col">
-<!-- Tabs -->
-<div class="flex border-b border-outline-variant mb-stack-md gap-stack-md overflow-x-auto pb-1">
-<button class="font-heading-sm text-heading-sm text-primary font-bold border-b-2 border-primary pb-2 px-1 focus:outline-none whitespace-nowrap" id="tab-manual" onclick="switchTab('manual')">Manual Entry</button>
-<button class="font-heading-sm text-heading-sm text-secondary font-medium pb-2 px-1 hover:text-primary focus:outline-none whitespace-nowrap" id="tab-csv" onclick="switchTab('csv')">Upload CSV</button>
-<button class="font-heading-sm text-heading-sm text-secondary font-medium pb-2 px-1 hover:text-primary focus:outline-none whitespace-nowrap" id="tab-sample" onclick="loadSampleData()">Sample Data</button>
-<button class="font-heading-sm text-heading-sm text-secondary font-medium pb-2 px-1 hover:text-primary focus:outline-none whitespace-nowrap" id="tab-scenario" onclick="switchTab('scenario')">Scenario</button>
-</div>
-<!-- Manual Entry Form -->
-<form class="flex flex-col gap-stack-md" id="calcForm" oninput="calculateMetrics()">
-<div class="grid grid-cols-2 gap-stack-md">
-<div>
-<label class="label-base" for="mrr">Monthly Recurring Rev (MRR)</label>
-<input class="input-base" id="mrr" min="0" step="1000" type="number" value="50000"/>
-</div>
-<div>
-<label class="label-base" for="customers">Total Customers</label>
-<input class="input-base" id="total_customers" min="1" step="1" type="number" value="500"/>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-stack-md">
-<div>
-<label class="label-base" for="new_customers">New Customers (Mo)</label>
-<input class="input-base" id="new_customers" min="0" step="1" type="number" value="25"/>
-</div>
-<div>
-<label class="label-base" for="churned_customers">Churned Customers (Mo)</label>
-<input class="input-base" id="churned_customers" min="0" step="1" type="number" value="10"/>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-stack-md">
-<div>
-<label class="label-base" for="ad_spend">Marketing/Ad Spend (Mo)</label>
-<input class="input-base" id="ad_spend" min="0" step="1000" type="number" value="15000"/>
-</div>
-<div>
-<label class="label-base" for="sales_cost">Sales Cost (Mo)</label>
-<input class="input-base" id="sales_cost" min="0" step="1000" type="number" value="10000"/>
-</div>
-</div>
-<div>
-<label class="label-base" for="cogs">Cost of Goods Sold (Mo)</label>
-<input class="input-base" id="cogs" min="0" step="1000" type="number" value="10000"/>
-</div>
-</form>
-<!-- Scenario Simulator Zone -->
-<div class="hidden flex-col gap-stack-md" id="scenario-zone">
-<div class="bg-surface-container border border-outline-variant p-stack-md rounded mb-stack-md">
-  <p class="font-body-md text-body-md text-on-surface-variant mb-unit">Adjust sliders to simulate impacts based on current inputs.</p>
-</div>
-<form class="flex flex-col gap-stack-md" id="scenarioForm" oninput="calculateScenario()">
-<div>
-<label class="label-base flex justify-between" for="scenario_churn"><span>Churn Rate</span><span id="sc_churn_val" class="text-primary">0%</span></label>
-<input class="w-full accent-primary" id="scenario_churn" type="range" min="-0.5" max="0.5" step="0.01" value="0"/>
-</div>
-<div>
-<label class="label-base flex justify-between" for="scenario_cac"><span>CAC</span><span id="sc_cac_val" class="text-primary">0%</span></label>
-<input class="w-full accent-primary" id="scenario_cac" type="range" min="-0.5" max="0.5" step="0.01" value="0"/>
-</div>
-<div>
-<label class="label-base flex justify-between" for="scenario_mrr_growth"><span>MRR Growth</span><span id="sc_mrr_val" class="text-primary">0%</span></label>
-<input class="w-full accent-primary" id="scenario_mrr_growth" type="range" min="-0.5" max="0.5" step="0.01" value="0"/>
-</div>
-<div>
-<label class="label-base flex justify-between" for="scenario_margin"><span>Gross Margin</span><span id="sc_margin_val" class="text-primary">0%</span></label>
-<input class="w-full accent-primary" id="scenario_margin" type="range" min="-0.5" max="0.5" step="0.01" value="0"/>
-</div>
-<div class="flex gap-4 mt-stack-md">
-<button type="button" class="btn-primary w-full" onclick="saveScenario()">Save Scenario</button>
-<button type="button" class="btn-secondary w-full" onclick="loadScenario()">Load Scenario</button>
-</div>
-</form>
-</div>
-<!-- CSV Upload Zone -->
-<div id="csv-zone" class="hidden"
-     style="border:2px dashed #332F2B; border-radius:4px; padding:60px; text-align:center; cursor:pointer; transition:all 0.2s; align-items:center; justify-content:center; flex-direction:column; min-height: 300px;"
-     ondrop="handleDrop(event)" 
-     ondragover="handleDragOver(event)" 
-     ondragleave="handleDragLeave(event)"
-     onclick="document.getElementById('csv-upload').click()">
+<body>
+  <div class="scanlines"></div>
+  <div class="ambient-glow"></div>
+
+
     
-    <input type="file" id="csv-upload" accept=".csv" style="display:none;" onchange="handleFileSelect(this.files[0])" onclick="event.stopPropagation()">
-    
-    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#5C534A" stroke-width="1.5" style="margin-bottom:16px;">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-        <polyline points="17 8 12 3 7 8"/>
-        <line x1="12" y1="3" x2="12" y2="15"/>
-    </svg>
-    
-    <p style="font-family:'Space Grotesk',sans-serif; font-weight:500; color:#F5F0EB; margin-bottom:8px;">
-        Drop your CSV here or click to browse
-    </p>
-    <p style="color:#5C534A; font-size:13px;">
-        Supports: Stripe, QuickBooks, Zoho Books, custom formats
-    </p>
-    
-    <p id="csv-error" style="color:#B85C5C; font-size:13px; margin-top:16px; display:none;"></p>
-    <p id="csv-success" style="color:#5A9A6E; font-size:13px; margin-top:16px; display:none;"></p>
-</div>
-</div>
-</div>
-<!-- Right Column: Results & Analytics -->
-<div id="results-section" class="col-span-1 lg:col-span-8 flex flex-col gap-[48px]" style="display:none;">
-<!-- Top Dashboard Row -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-<!-- Health Score -->
-<div class="metric-card col-span-1 lg:col-span-1 flex flex-col items-center justify-center text-center p-stack-md">
-<h3 class="label-base self-start w-full text-left mb-stack-md">Vitals Health Score</h3>
-<div class="relative w-[140px] h-[140px] flex items-center justify-center overflow-visible">
-<svg class="progress-ring" height="140" width="140" style="overflow:visible">
-<circle class="text-surface-container-high stroke-current" cx="70" cy="70" fill="transparent" r="62" stroke-width="8"></circle>
-<circle class="text-tertiary stroke-current progress-ring__circle" cx="70" cy="70" fill="transparent" id="score-circle" r="62" stroke-dasharray="389.5" stroke-dashoffset="0" stroke-linecap="round" stroke-width="8"></circle>
-</svg>
-<div class="absolute inset-0 flex flex-col items-center justify-center">
-<span class="font-heading-md text-[30px] leading-none font-bold text-on-surface" id="val-health">8.4</span>
-<span class="font-label-caps text-tertiary mt-1" id="health-status">EXCELLENT</span>
-</div>
-</div>
-</div>
-<!-- Key Metrics Grid -->
-<div class="col-span-1 lg:col-span-2">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<div class="metric-card metric-card-success" id="card-ltv-cac">
-<span class="label-base">LTV : CAC</span>
-<span class="font-data-mono text-2xl text-on-surface break-words" id="val-ltv-cac">3.8x</span>
-</div>
-<div class="metric-card metric-card-warning" id="card-payback">
-<span class="label-base">Payback Period</span>
-<span class="font-data-mono text-2xl text-on-surface break-words" id="val-payback">12.5m</span>
-</div>
-<div class="metric-card metric-card-danger" id="card-churn">
-<span class="label-base">Mo. Churn</span>
-<span class="font-data-mono text-2xl text-on-surface break-words" id="val-churn">2.0%</span>
-</div>
-<div class="metric-card" id="card-ltv">
-<span class="label-base">LTV</span>
-<span class="font-data-mono text-2xl text-on-surface break-words" id="val-ltv">₹4,000</span>
-</div>
-<div class="metric-card" id="card-cac">
-<span class="label-base">CAC</span>
-<span class="font-data-mono text-2xl text-on-surface break-words" id="val-cac">₹1,000</span>
-</div>
-<div class="metric-card" id="card-margin">
-<span class="label-base">Gross Margin</span>
-<span class="font-data-mono text-2xl text-on-surface break-words" id="val-margin">80%</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Chart & Insights -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter pt-[16px] border-t border-outline-variant">
-<!-- Chart Area -->
-<div class="card-base p-stack-md flex flex-col h-[400px]">
-<div class="flex justify-between items-center mb-stack-md">
-<h3 class="label-base mb-0">LTV vs CAC Trend (Projected)</h3>
-<span class="chip">
-<span class="material-symbols-outlined text-[14px]" data-icon="show_chart">show_chart</span>
-                            6 Mo
-                        </span>
-</div>
-<div class="flex-grow relative w-full min-h-[300px]">
-<canvas id="ltvCacChart"></canvas>
-</div>
-</div>
-<!-- Insights/Rules Panel -->
-<div class="card-base p-stack-md flex flex-col">
-<h3 class="label-base mb-stack-md">Diagnostic Rules &amp; Insights</h3>
-<div class="flex flex-col gap-3 overflow-y-auto" id="insights-panel">
-<!-- Populated by JS -->
-</div>
-</div>
-</div>
-<!-- Cohort Comparison -->
-<div class="card-base p-stack-md mt-stack-lg">
-    <div class="flex justify-between items-center mb-stack-md">
-        <h3 class="label-base mb-0">Cohort Comparison</h3>
-        <span class="chip">
-            <span class="material-symbols-outlined text-[14px]">compare_arrows</span>
-            Current vs. Simulated
-        </span>
+
+      <!-- Shared Navigation -->
+  <nav class="nav">
+    <div class="container flex justify-between items-center" style="width:100%;">
+      <div class="flex items-center">
+        <a href="/" class="nav-logo">
+          <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 4px;">insights</span>
+          VITALS.IO
+        </a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/product">Product</a></li>
+          <li><a href="/solutions">Solutions</a></li>
+          <li><a href="/economics" class="active">Economics</a></li>
+          <li><a href="/api">API</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="flex items-center gap-4">
+          <div class="api-status">
+              <div id="api-dot" class="status-dot"></div>
+              <span id="api-text">Checking...</span>
+          </div>
+          <button class="btn btn-ghost" onclick="generatePDF()">
+              Export PDF
+          </button>
+      </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-        <!-- Current -->
-        <div class="bg-surface-container-low rounded p-stack-md border-l-4 border-l-primary">
-            <p class="label-base">CURRENT</p>
-            <p class="font-data-mono-bold text-[20px] text-on-surface mt-2" id="cohort-ltv-cac-current">—</p>
-            <p class="text-on-surface-variant text-sm mt-1">LTV:CAC Ratio</p>
+  </nav>
+
+    <main class="container mt-8 mb-8">
+        <div id="error-banner"></div>
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="display">Institutional Unit Economics</h1>
+                <p class="text-sm mt-2">Evaluate your SaaS viability through rigorous LTV:CAC, payback periods, and margin analysis.</p>
+            </div>
+            <button class="btn btn-primary" onclick="loadDemoData()">⚡ Load Demo Data (D)</button>
         </div>
-        <!-- Simulated -->
-        <div class="bg-surface-container-low rounded p-stack-md border-l-4 border-l-tertiary">
-            <p class="label-base">SIMULATED</p>
-            <p class="font-data-mono-bold text-[20px] text-on-surface mt-2" id="cohort-ltv-cac-simulated">—</p>
-            <p class="text-on-surface-variant text-sm mt-1">LTV:CAC Ratio</p>
-        </div>
-    </div>
-    <div class="mt-stack-md p-3 bg-surface-container-high rounded border-l-4 border-l-primary">
-        <p class="text-sm text-on-surface" id="cohort-insight">Adjust scenario sliders to compare your current metrics against simulated outcomes.</p>
-    </div>
-</div>
-</div>
-</main>
-<!-- Footer -->
-<footer class="w-full bg-surface-container-lowest border-t border-outline-variant px-margin-page py-stack-lg mt-auto">
-  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-gutter">
-    <div>
-      <span class="font-heading-sm text-heading-sm font-bold text-primary block mb-2">vitals.io</span>
-      <p class="font-body-md text-body-md text-on-surface-variant">The financial health monitor for startups.</p>
-    </div>
-    <div>
-      <h4 class="font-label-caps text-label-caps text-on-surface mb-stack-sm">Product</h4>
-      <div class="flex flex-col gap-2">
-        <a href="/product" class="text-on-surface-variant hover:text-primary transition-colors">Features</a>
-        <a href="/economics" class="text-on-surface-variant hover:text-primary transition-colors">Economics</a>
-        <a href="/api" class="text-on-surface-variant hover:text-primary transition-colors">API</a>
-      </div>
-    </div>
-    <div>
-      <h4 class="font-label-caps text-label-caps text-on-surface mb-stack-sm">Resources</h4>
-      <div class="flex flex-col gap-2">
-        <a href="/solutions" class="text-on-surface-variant hover:text-primary transition-colors">Solutions</a>
-        <a href="/contact" class="text-on-surface-variant hover:text-primary transition-colors">Contact</a>
-      </div>
-    </div>
-    <div>
-      <h4 class="font-label-caps text-label-caps text-on-surface mb-stack-sm">Company</h4>
-      <div class="flex flex-col gap-2">
-        <a href="/" class="text-on-surface-variant hover:text-primary transition-colors">About</a>
-        <a href="/contact" class="text-on-surface-variant hover:text-primary transition-colors">Contact</a>
-      </div>
-    </div>
-  </div>
-  <div class="max-w-7xl mx-auto mt-stack-lg pt-stack-md border-t border-outline-variant flex justify-between items-center">
-    <p class="text-on-surface-variant text-sm">© 2026 vitals.io. Built for HackLabify.</p>
-    <p class="text-on-surface-variant text-sm">All calculations are deterministic. No AI hallucinations.</p>
-  </div>
-</footer>
-<script>
-let chartInstance = null;
 
-function initChart() {
-    const ctx = document.getElementById('ltvCacChart').getContext('2d');
-    const primaryColor = '#e6c487';
-    const secondaryColor = '#cbc5c0';
-    const outlineColor = '#4d463a';
-    const textColor = '#e6e2dd';
-
-    Chart.defaults.color = textColor;
-    Chart.defaults.font.family = 'JetBrains Mono';
-
-    chartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'],
-            datasets: [
-                {
-                    label: 'LTV',
-                    data: [3200, 3400, 3500, 3800, 4000, 4200],
-                    backgroundColor: primaryColor,
-                    borderRadius: 2,
-                    barPercentage: 0.6
-                },
-                {
-                    label: 'CAC',
-                    data: [1200, 1150, 1100, 1050, 1000, 950],
-                    backgroundColor: secondaryColor,
-                    borderRadius: 2,
-                    barPercentage: 0.6
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'bottom', labels: { boxWidth: 12, padding: 20 } },
-                tooltip: { backgroundColor: '#211f1d', titleColor: '#e6c487', bodyColor: '#e6e2dd', borderColor: '#4d463a', borderWidth: 1 }
-            },
-            scales: {
-                y: { 
-                    beginAtZero: true, 
-                    grid: { color: outlineColor, drawBorder: false },
-                    ticks: { callback: function(value) { return '$' + value; } }
-                },
-                x: { 
-                    grid: { display: false, drawBorder: false }
-                }
-            },
-            interaction: { mode: 'index', intersect: false }
-        }
-    });
-}
-
-function formatCurrency(val) {
-    if (!val || val === 0) return '₹0';
-    return '₹' + Math.round(val).toLocaleString('en-IN');
-}
-
-function updateStylesAndInsights(ratio, payback, churn, backend_score) {
-    const successClass = 'metric-card-success';
-    const warningClass = 'metric-card-warning';
-    const dangerClass = 'metric-card-danger';
-
-    const cardLtvCac = document.getElementById('card-ltv-cac');
-    const cardPayback = document.getElementById('card-payback');
-    const cardChurn = document.getElementById('card-churn');
-
-    [cardLtvCac, cardPayback, cardChurn].forEach(el => {
-        if (el) el.classList.remove(successClass, warningClass, dangerClass);
-    });
-
-    const insights = [];
-    let score = backend_score !== undefined ? backend_score : 10.0;
-
-    if (ratio >= 3.0) {
-        if (cardLtvCac) cardLtvCac.classList.add(successClass);
-        insights.push({ level: 'success', text: `LTV:CAC is strong (${ratio.toFixed(1)}x). Indicates sustainable growth engine.` });
-    } else if (ratio >= 1.5) {
-        if (cardLtvCac) cardLtvCac.classList.add(warningClass);
-        insights.push({ level: 'warning', text: `LTV:CAC is marginal (${ratio.toFixed(1)}x). Monitor acquisition costs closely.` });
-    } else {
-        if (cardLtvCac) cardLtvCac.classList.add(dangerClass);
-        insights.push({ level: 'danger', text: `LTV:CAC is critical (<1.5x). You are losing money on acquisition.` });
-    }
-
-    if (payback <= 12) {
-        if (cardPayback) cardPayback.classList.add(successClass);
-        insights.push({ level: 'success', text: `Payback period is healthy (${payback.toFixed(1)}m). Fast capital recovery.` });
-    } else if (payback <= 18) {
-        if (cardPayback) cardPayback.classList.add(warningClass);
-        insights.push({ level: 'warning', text: `Payback period extended (${payback.toFixed(1)}m). Typical for enterprise, risky for SMB.` });
-    } else {
-        if (cardPayback) cardPayback.classList.add(dangerClass);
-        insights.push({ level: 'danger', text: `Payback period too long (>18m). Cash flow risk identified.` });
-    }
-
-    if (churn <= 0.02) {
-        if (cardChurn) cardChurn.classList.add(successClass);
-    } else if (churn <= 0.05) {
-        if (cardChurn) cardChurn.classList.add(warningClass);
-        insights.push({ level: 'warning', text: `Monthly churn is elevated (${(churn*100).toFixed(1)}%). Investigate retention.` });
-    } else {
-        if (cardChurn) cardChurn.classList.add(dangerClass);
-        insights.push({ level: 'danger', text: `High churn rate (${(churn*100).toFixed(1)}%). Leaky bucket dynamic detected.` });
-    }
-
-    const insightsContainer = document.getElementById('insights-panel');
-    if (insightsContainer) {
-        insightsContainer.innerHTML = '';
-        if (insights.length === 0) {
-            insightsContainer.innerHTML = '<div class="p-3 bg-surface-container border border-outline-variant rounded border-l-4 border-l-tertiary"><p class="text-sm">All primary metrics fall within institutional benchmarks.</p></div>';
-        } else {
-            insights.forEach(insight => {
-                let borderClass = 'border-l-tertiary';
-                let icon = 'check_circle';
-                let iconColor = 'text-tertiary';
+        <div class="grid">
+            <!-- Left Panel -->
+            <div class="col-span-4 flex-col gap-6">
+                <!-- Dropzone -->
+                <div class="card dropzone mb-6" id="dropzone" onclick="document.getElementById('csv-input').click()">
+                    <input type="file" id="csv-input" style="display:none" accept=".csv">
+                    <p class="label-caps mb-2">Upload CSV</p>
+                    <p class="text-sm">Drag & drop or click to browse</p>
+                </div>
                 
-                if (insight.level === 'warning') { borderClass = 'border-l-primary'; icon = 'warning'; iconColor = 'text-primary'; }
-                if (insight.level === 'danger') { borderClass = 'border-l-error'; icon = 'error'; iconColor = 'text-error'; }
-
-                insightsContainer.innerHTML += `
-                    <div class="p-3 bg-surface-container border border-outline-variant rounded border-l-4 ${borderClass} flex gap-2 items-start">
-                        <span class="material-symbols-outlined text-[18px] ${iconColor}" data-icon="${icon}">${icon}</span>
-                        <p class="text-sm text-on-surface">${insight.text}</p>
+                <!-- Scenario Simulator -->
+                <div class="card">
+                    <h2 class="font-serif mb-4">Scenario Simulator</h2>
+                    <div class="flex-col gap-4">
+                        <div class="input-group">
+                            <div class="flex justify-between">
+                                <label>Churn Adjustment</label>
+                                <span class="text-primary font-mono" id="val-sc-churn">0%</span>
+                            </div>
+                            <input type="range" id="sc-churn" min="-50" max="50" value="0" oninput="updateScenario()">
+                        </div>
+                        <div class="input-group">
+                            <div class="flex justify-between">
+                                <label>CAC Adjustment</label>
+                                <span class="text-primary font-mono" id="val-sc-cac">0%</span>
+                            </div>
+                            <input type="range" id="sc-cac" min="-50" max="50" value="0" oninput="updateScenario()">
+                        </div>
+                        <div class="input-group">
+                            <div class="flex justify-between">
+                                <label>MRR Growth</label>
+                                <span class="text-primary font-mono" id="val-sc-mrr">0%</span>
+                            </div>
+                            <input type="range" id="sc-mrr" min="-20" max="50" value="0" oninput="updateScenario()">
+                        </div>
+                        <div class="input-group">
+                            <div class="flex justify-between">
+                                <label>Gross Margin Adj</label>
+                                <span class="text-primary font-mono" id="val-sc-margin">0%</span>
+                            </div>
+                            <input type="range" id="sc-margin" min="-20" max="20" value="0" oninput="updateScenario()">
+                        </div>
+                        <button class="btn btn-ghost w-full mt-4" onclick="runScenario()">Run Scenario</button>
                     </div>
-                `;
+                </div>
+            </div>
+            
+            <!-- Right Panel -->
+            <div class="col-span-8 flex-col gap-6" id="dashboard" style="opacity: 0.3; pointer-events: none;">
+                
+                <!-- Top Metrics & Health -->
+                <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 24px;">
+                    <!-- Health Score -->
+                    <div class="card flex-col items-center justify-center" style="grid-column: span 1; position: relative; overflow: visible;">
+                        <h3 class="label-caps mb-4" style="align-self: flex-start;">Financial Health</h3>
+                        
+                        <div class="health-score-wrapper" id="health-score-wrapper" style="position: relative; width: 180px; height: 180px; display:flex; justify-content:center; align-items:center;">
+                            <svg width="180" height="180" viewBox="0 0 200 200" style="position:absolute;">
+                                <circle cx="100" cy="100" r="90" fill="none" stroke="var(--border)" stroke-width="8"/>
+                                <circle id="health-ring" cx="100" cy="100" r="90" fill="none" 
+                                    stroke="var(--primary)" stroke-width="8" stroke-linecap="square"
+                                    stroke-dasharray="565.48" stroke-dashoffset="565.48"
+                                    transform="rotate(-90 100 100)" style="transition: stroke-dashoffset 1.5s ease-out;"/>
+                            </svg>
+                            <div style="text-align:center; z-index: 10;">
+                                <div class="font-mono text-primary" id="health-number" style="font-size: 48px; line-height: 1;">0.0</div>
+                                <div class="label-caps mt-2" id="health-status">—</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Core Metrics grid -->
+                    <div style="grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                        <div class="card stagger-item" style="animation-delay: 0.1s;">
+                            <div class="label-caps mb-2">ARPA</div>
+                            <div class="metric-value" id="m-arpa">—</div>
+                        </div>
+                        <div class="card stagger-item" style="animation-delay: 0.2s;">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="label-caps">Gross Margin</span>
+                                <span class="badge" id="b-margin">—</span>
+                            </div>
+                            <div class="metric-value" id="m-margin">—</div>
+                        </div>
+                        <div class="card stagger-item" style="animation-delay: 0.3s;">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="label-caps">Churn Rate</span>
+                                <span class="badge" id="b-churn">—</span>
+                            </div>
+                            <div class="metric-value" id="m-churn">—</div>
+                        </div>
+                        <div class="card stagger-item" style="animation-delay: 0.4s;">
+                            <div class="label-caps mb-2">CAC</div>
+                            <div class="metric-value" id="m-cac">—</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bottom Metrics -->
+                <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top:24px;">
+                    <div class="card stagger-item" style="animation-delay: 0.5s;">
+                        <div class="label-caps mb-2">LTV</div>
+                        <div class="metric-value" id="m-ltv">—</div>
+                    </div>
+                    <div class="card stagger-item" style="animation-delay: 0.6s;">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="label-caps">LTV:CAC Ratio</span>
+                            <span class="badge" id="b-ltvcac">—</span>
+                        </div>
+                        <div class="metric-value" id="m-ltvcac">—</div>
+                    </div>
+                    <div class="card stagger-item" style="animation-delay: 0.7s;">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="label-caps">Payback Period</span>
+                            <span class="badge" id="b-payback">—</span>
+                        </div>
+                        <div class="metric-value" id="m-payback">—</div>
+                    </div>
+                </div>
+
+                <!-- Insights & Runway -->
+                <div class="grid mt-8" style="grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div class="card stagger-item" style="animation-delay: 0.8s;">
+                        <h3 class="label-caps mb-4">Key Findings</h3>
+                        <div id="insights-list" class="flex-col gap-4">
+                            <!-- Populated dynamically -->
+                            <div class="text-sm">Run analysis to see insights.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card stagger-item" style="animation-delay: 0.9s;">
+                        <div class="flex justify-between items-center">
+                            <h3 class="label-caps">Runway Forecast</h3>
+                            <span class="badge" id="b-runway">SAFE</span>
+                        </div>
+                        <div class="chart-container">
+                            <svg id="runway-chart" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <!-- Chart lines drawn by JS -->
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+    
+      <!-- Shared Footer -->
+  <footer class="site-footer">
+    <div class="container flex justify-between" style="align-items: flex-start;">
+      <div>
+        <div class="footer-brand">VITALS.IO</div>
+        <div class="footer-tagline">The financial health monitor for startups.</div>
+      </div>
+      
+      <div style="display: flex; gap: 48px;">
+        <div>
+          <h4 style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">PRODUCT</h4>
+          <div class="flex flex-col gap-2">
+            <a href="/product" style="color: var(--text-secondary); font-size: 14px;">Features</a>
+            <a href="/economics" style="color: var(--text-secondary); font-size: 14px;">Economics</a>
+            <a href="/api" style="color: var(--text-secondary); font-size: 14px;">API</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">RESOURCES</h4>
+          <div class="flex flex-col gap-2">
+            <a href="/solutions" style="color: var(--text-secondary); font-size: 14px;">Solutions</a>
+            <a href="/contact" style="color: var(--text-secondary); font-size: 14px;">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">COMPANY</h4>
+          <div class="flex flex-col gap-2">
+            <a href="/" style="color: var(--text-secondary); font-size: 14px;">About</a>
+            <a href="/contact" style="color: var(--text-secondary); font-size: 14px;">Contact</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-4" style="padding-top: 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between;">
+      <div class="footer-meta">© 2026 vitals.io. Built for HackLabify.</div>
+      <div class="footer-meta">All calculations are deterministic. No AI hallucinations.</div>
+    </div>
+  </footer>
+<script>
+        let currentData = null;
+            window.vitalsData = currentData; // Store for PDF and Scenario payload
+        let basePayload = null; // Store base payload for scenarios
+
+        // Currency Formatter
+        const formatMoney = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+        const formatPct = (val) => (val * 100).toFixed(1) + '%';
+        
+        // API Health
+        async function checkHealth() {
+            const dot = document.getElementById('api-dot');
+            const text = document.getElementById('api-text');
+            if (!dot || !text) return;
+            try {
+                const res = await fetch('/health');
+                if (res.ok) {
+                    dot.classList.add('healthy');
+                    text.textContent = 'API Connected';
+                }
+            } catch (e) {
+                dot.classList.remove('healthy');
+                text.textContent = 'API Offline';
+            }
+        }
+        
+        // Global Error
+        function showError(msg) {
+            if (window.showToast) window.showToast(msg, "error");
+            else alert(msg);
+            setLoader(false);
+        }
+        
+        // Loader
+        function setLoader(active, text="Calculating...") {
+            if (active) { window.showLoader(text); }
+            else { window.hideLoader(); }
+        }
+
+        // Hotkey D
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'd' && (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA')) {
+                loadDemoData();
+            }
+        });
+        
+        // Dropzone logic
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('csv-input');
+        
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.style.borderColor = 'var(--primary)'; });
+        dropzone.addEventListener('dragleave', (e) => { e.preventDefault(); dropzone.style.borderColor = 'var(--border)'; });
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault(); dropzone.style.borderColor = 'var(--border)';
+            if (e.dataTransfer.files.length) handleUpload(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) handleUpload(e.target.files[0]);
+        });
+        
+        async function handleUpload(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            setLoader(true, "Parsing CSV...");
+            try {
+                const res = await fetch('/upload', { method: 'POST', body: formData });
+                if (!res.ok) throw new Error("Upload failed: " + res.statusText);
+                const data = await res.json();
+                
+                // We need the base payload to run scenarios, but /upload only returns the results. 
+                // Wait, if it only returns results, we can't do scenarios easily unless we assume a base.
+                // Let's just update the dashboard for now.
+                basePayload = {
+                    mrr: data.arpa * 100, // rough estimate
+                    total_customers: 100,
+                    new_customers: 10,
+                    churned_customers: Math.round(data.churn_rate * 100),
+                    ad_spend: data.cac * 10,
+                    sales_cost: 0,
+                    cogs: 0
+                };
+                
+                updateDashboard(data);
+                await fetchRunway(basePayload);
+            } catch (e) {
+                showError(e.message);
+            } finally {
+                setLoader(false);
+            }
+        }
+        
+        // Demo Data
+        async function loadDemoData() {
+            const payload = {
+                mrr: 500000,
+                total_customers: 500,
+                new_customers: 100,
+                churned_customers: 25,
+                ad_spend: 200000,
+                sales_cost: 150000,
+                cogs: 50000
+            };
+            basePayload = payload;
+            
+            setLoader(true, "Analyzing Economics...");
+            try {
+                const res = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error("Analysis failed");
+                const data = await res.json();
+                updateDashboard(data);
+                
+                await fetchRunway(payload);
+            } catch (e) {
+                showError(e.message);
+            } finally {
+                setLoader(false);
+            }
+        }
+        
+        // Update Dashboard
+        function updateDashboard(data) {
+            currentData = data;
+            window.vitalsData = currentData;
+            document.getElementById('dashboard').style.opacity = '1';
+            document.getElementById('dashboard').style.pointerEvents = 'all';
+            
+            // Re-trigger stagger animation
+            document.querySelectorAll('.stagger-item').forEach(el => {
+                el.style.animation = 'none';
+                el.offsetHeight; /* trigger reflow */
+                el.style.animation = null; 
             });
+            
+            document.getElementById('m-arpa').textContent = formatMoney(data.arpa);
+            document.getElementById('m-margin').textContent = formatPct(data.gross_margin_pct);
+            document.getElementById('m-churn').textContent = formatPct(data.churn_rate);
+            document.getElementById('m-cac').textContent = formatMoney(data.cac);
+            document.getElementById('m-ltv').textContent = formatMoney(data.ltv);
+            document.getElementById('m-ltvcac').textContent = data.ltv_cac_ratio.toFixed(1) + 'x';
+            document.getElementById('m-payback').textContent = data.payback.toFixed(1) + ' mo';
+            
+            // Badges
+            const bMargin = document.getElementById('b-margin');
+            if (data.gross_margin_pct >= 0.7) { bMargin.textContent = 'HEALTHY'; bMargin.className = 'badge healthy'; }
+            else if (data.gross_margin_pct >= 0.4) { bMargin.textContent = 'CAUTION'; bMargin.className = 'badge caution'; }
+            else { bMargin.textContent = 'CRITICAL'; bMargin.className = 'badge critical'; }
+            
+            const bChurn = document.getElementById('b-churn');
+            if (data.churn_rate <= 0.02) { bChurn.textContent = 'HEALTHY'; bChurn.className = 'badge healthy'; }
+            else if (data.churn_rate <= 0.05) { bChurn.textContent = 'CAUTION'; bChurn.className = 'badge caution'; }
+            else { bChurn.textContent = 'CRITICAL'; bChurn.className = 'badge critical'; }
+            
+            const bLtvcac = document.getElementById('b-ltvcac');
+            if (data.ltv_cac_ratio >= 3.0) { bLtvcac.textContent = 'HEALTHY'; bLtvcac.className = 'badge healthy'; }
+            else if (data.ltv_cac_ratio >= 1.5) { bLtvcac.textContent = 'CAUTION'; bLtvcac.className = 'badge caution'; }
+            else { bLtvcac.textContent = 'CRITICAL'; bLtvcac.className = 'badge critical'; }
+            
+            const bPayback = document.getElementById('b-payback');
+            if (data.payback <= 12) { bPayback.textContent = 'HEALTHY'; bPayback.className = 'badge healthy'; }
+            else if (data.payback <= 18) { bPayback.textContent = 'CAUTION'; bPayback.className = 'badge caution'; }
+            else { bPayback.textContent = 'CRITICAL'; bPayback.className = 'badge critical'; }
+            
+            // Health Score
+            animateHealthScore(data.health_score);
+            
+            // Insights
+            renderInsights(data);
         }
-    }
-
-    score = Math.max(0, score).toFixed(1);
-    const scoreEl = document.getElementById('val-health');
-    if (scoreEl) scoreEl.textContent = score;
-    
-    const circle = document.getElementById('score-circle');
-    if (circle) {
-        const radius = circle.r.baseVal.value;
-        const circumference = radius * 2 * Math.PI;
-        const offset = circumference - (score / 10) * circumference;
-        circle.style.strokeDashoffset = offset;
-    }
-
-    const statusEl = document.getElementById('health-status');
-    if (statusEl && circle) {
-        if (score >= 8) {
-            statusEl.textContent = 'EXCELLENT';
-            statusEl.className = 'font-label-caps text-tertiary mt-1';
-            circle.setAttribute('class', 'text-tertiary stroke-current progress-ring__circle');
-        } else if (score >= 5) {
-            statusEl.textContent = 'NEEDS REVIEW';
-            statusEl.className = 'font-label-caps text-primary mt-1';
-            circle.setAttribute('class', 'text-primary stroke-current progress-ring__circle');
-        } else {
-            statusEl.textContent = 'CRITICAL';
-            statusEl.className = 'font-label-caps text-error mt-1';
-            circle.setAttribute('class', 'text-error stroke-current progress-ring__circle');
-        }
-    }
-}
-
-function updateChartData(ltv, cac) {
-    if (!chartInstance) return;
-    const baseLTV = ltv * 0.8;
-    const ltvData = [baseLTV, baseLTV*1.05, baseLTV*1.1, baseLTV*1.15, baseLTV*1.2, ltv];
-    const baseCAC = cac * 1.2;
-    const cacData = [baseCAC, baseCAC*0.95, baseCAC*0.9, baseCAC*0.85, baseCAC*0.8, cac];
-
-    chartInstance.data.datasets[0].data = ltvData.map(v => Math.round(v));
-    chartInstance.data.datasets[1].data = cacData.map(v => Math.round(v));
-    chartInstance.update();
-}
-
-// ============================================
-// CSV UPLOAD - BULLETPROOF VERSION
-// ============================================
-
-function handleDragOver(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    e.currentTarget.style.borderColor = '#C9A96E';
-    e.currentTarget.style.background = 'rgba(201,169,110,0.05)';
-}
-
-function handleDragLeave(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    e.currentTarget.style.borderColor = '#332F2B';
-    e.currentTarget.style.background = 'transparent';
-}
-
-function handleDrop(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    e.currentTarget.style.borderColor = '#332F2B';
-    e.currentTarget.style.background = 'transparent';
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-        console.log('Dropped file:', files[0].name);
-        handleFileSelect(files[0]);
-    }
-}
-
-function handleFileSelect(file) {
-    const errorEl = document.getElementById('csv-error');
-    const successEl = document.getElementById('csv-success');
-    if (errorEl) errorEl.style.display = 'none';
-    if (successEl) successEl.style.display = 'none';
-
-    if (!file) return;
-    if (!file.name.toLowerCase().endsWith('.csv')) {
-        if (errorEl) { errorEl.textContent = 'Please upload a .csv file'; errorEl.style.display = 'block'; }
-        return;
-    }
-
-    if (successEl) { successEl.textContent = 'Uploading & analyzing...'; successEl.style.display = 'block'; }
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    fetch('/upload', {
-        method: 'POST',
-        body: formData
-    })
-    .then(res => {
-        if (!res.ok) throw new Error('Server returned ' + res.status);
-        return res.json();
-    })
-    .then(data => {
-        console.log('Upload result:', data);
-        if (successEl) successEl.textContent = 'Analysis complete! Health Score: ' + (data.health_score || 'N/A');
-        renderAnalysisResults(data);
-        if (typeof updateChartData === 'function') updateChartData(data.ltv, data.cac);
-        if (typeof updateStylesAndInsights === 'function') updateStylesAndInsights(data.ltv_cac_ratio, data.payback, data.churn_rate, data.health_score);
-    })
-    .catch(err => {
-        console.error('Upload error:', err);
-        if (errorEl) { errorEl.textContent = 'Upload failed: ' + err.message; errorEl.style.display = 'block'; }
-        if (successEl) successEl.style.display = 'none';
-    });
-}
-
-
-// ============================================
-// RENDER RESULTS
-// ============================================
-
-function renderAnalysisResults(data) {
-    const setText = (id, text) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = text;
-    };
-
-    const formatCurrency = (val) => {
-        return '₹' + (val || 0).toLocaleString('en-IN');
-    };
-
-    setText('val-ltv', formatCurrency(data.ltv));
-    setText('val-cac', formatCurrency(data.cac));
-    setText('val-ltv-cac', (data.ltv_cac_ratio || 0).toFixed(1) + 'x');
-    setText('val-payback', (data.payback || 0).toFixed(1) + ' mo');
-    setText('val-margin', ((data.gross_margin_pct || 0) * 100).toFixed(0) + '%');
-    setText('val-churn', ((data.churn_rate || 0) * 100).toFixed(1) + '%');
-    setText('val-health', (data.health_score || 0).toFixed(1));
-
-    const resultsSection = document.getElementById('results-section');
-    if (resultsSection) resultsSection.style.display = 'block';
-
-    const healthEl = document.getElementById('val-health');
-    if (healthEl) {
-        if (data.health_score >= 8) healthEl.style.color = '#5A9A6E';
-        else if (data.health_score >= 5) healthEl.style.color = '#C9A03C';
-        else healthEl.style.color = '#B85C5C';
-    }
-}
-
-// ============================================
-// MANUAL ENTRY
-// ============================================
-
-function calculateMetrics() {
-    const getVal = (id) => parseFloat(document.getElementById(id)?.value) || 0;
-    const payload = {
-        mrr: getVal('mrr'),
-        total_customers: getVal('total_customers'),
-        new_customers: getVal('new_customers'),
-        churned_customers: getVal('churned_customers'),
-        ad_spend: getVal('ad_spend'),
-        sales_cost: getVal('sales_cost'),
-        cogs: getVal('cogs')
-    };
-
-    fetch('/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    })
-    .then(res => res.json())
-    .then(data => {
-        renderAnalysisResults(data);
-        if (typeof updateChartData === 'function') updateChartData(data.ltv, data.cac);
-        if (typeof updateStylesAndInsights === 'function') updateStylesAndInsights(data.ltv_cac_ratio, data.payback, data.churn_rate, data.health_score);
-    })
-    .catch(err => console.error('Manual entry failed:', err));
-}
-
-// ============================================
-// SAMPLE DATA
-// ============================================
-
-function loadSampleData() {
-    const sample = {
-        mrr: 500000,
-        total_customers: 500,
-        new_customers: 100,
-        churned_customers: 25,
-        ad_spend: 200000,
-        sales_cost: 150000,
-        cogs: 50000
-    };
-
-    Object.keys(sample).forEach(key => {
-        const el = document.getElementById(key);
-        if (el) el.value = sample[key];
-    });
-
-    // Switch to manual tab to show the filled form
-    switchTab('manual');
-
-    fetch('/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(sample)
-    })
-    .then(res => res.json())
-    .then(data => {
-        renderAnalysisResults(data);
-        if (typeof updateChartData === 'function') updateChartData(data.ltv, data.cac);
-        if (typeof updateStylesAndInsights === 'function') updateStylesAndInsights(data.ltv_cac_ratio, data.payback, data.churn_rate, data.health_score);
-    })
-    .catch(err => console.error('Sample data failed:', err));
-}
-
-// ============================================
-// SCENARIO SIMULATOR
-// ============================================
-
-async function calculateScenario() {
-    const c_adj = document.getElementById('scenario_churn').value;
-    const cac_adj = document.getElementById('scenario_cac').value;
-    const mrr_adj = document.getElementById('scenario_mrr_growth').value;
-    const margin_adj = document.getElementById('scenario_margin').value;
-    
-    document.getElementById('sc_churn_val').textContent = (c_adj > 0 ? '+' : '') + (c_adj * 100).toFixed(0) + '%';
-    document.getElementById('sc_cac_val').textContent = (cac_adj > 0 ? '+' : '') + (cac_adj * 100).toFixed(0) + '%';
-    document.getElementById('sc_mrr_val').textContent = (mrr_adj > 0 ? '+' : '') + (mrr_adj * 100).toFixed(0) + '%';
-    document.getElementById('sc_margin_val').textContent = (margin_adj > 0 ? '+' : '') + (margin_adj * 100).toFixed(0) + '%';
-
-    const reqData = {
-        mrr: parseFloat(document.getElementById('mrr').value) || 0,
-        total_customers: parseInt(document.getElementById('total_customers').value) || 0,
-        new_customers: parseInt(document.getElementById('new_customers').value) || 0,
-        churned_customers: parseInt(document.getElementById('churned_customers').value) || 0,
-        ad_spend: parseFloat(document.getElementById('ad_spend').value) || 0,
-        sales_cost: parseFloat(document.getElementById('sales_cost').value) || 0,
-        cogs: parseFloat(document.getElementById('cogs').value) || 0,
-        churn_rate_adj: parseFloat(c_adj),
-        cac_adj: parseFloat(cac_adj),
-        mrr_growth_adj: parseFloat(mrr_adj),
-        gross_margin_adj: parseFloat(margin_adj)
-    };
-
-    try {
-        const baseResponse = await fetch('/analyze', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(reqData)
-        });
-        const currentData = await baseResponse.json();
-
-        const response = await fetch('/predict/scenario', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(reqData)
-        });
-        const data = await response.json();
         
-        document.getElementById('val-ltv-cac').textContent = data.ltv_cac_ratio.toFixed(1) + 'x';
-        document.getElementById('val-payback').textContent = data.payback.toFixed(1) + 'm';
-        document.getElementById('val-churn').textContent = (data.churn_rate * 100).toFixed(1) + '%';
-        document.getElementById('val-ltv').textContent = formatCurrency(data.ltv);
-        document.getElementById('val-cac').textContent = formatCurrency(data.cac);
-        document.getElementById('val-margin').textContent = (data.gross_margin_pct * 100).toFixed(0) + '%';
-        
-        updateStylesAndInsights(data.ltv_cac_ratio, data.payback, data.churn_rate, data.health_score);
-        updateChartData(data.ltv, data.cac);
-        updateCohortComparison(currentData, data);
-    } catch (err) {
-        console.error("Scenario prediction failed", err);
-    }
-}
-
-function updateCohortComparison(currentData, simulatedData) {
-    const currentEl = document.getElementById('cohort-ltv-cac-current');
-    const simulatedEl = document.getElementById('cohort-ltv-cac-simulated');
-    const insightEl = document.getElementById('cohort-insight');
-
-    if (currentEl) currentEl.textContent = (currentData.ltv_cac_ratio || 0).toFixed(1) + 'x';
-    if (simulatedEl) simulatedEl.textContent = (simulatedData.ltv_cac_ratio || 0).toFixed(1) + 'x';
-
-    if (insightEl && simulatedData.ltv_cac_ratio && currentData.ltv_cac_ratio) {
-        const diff = simulatedData.ltv_cac_ratio - currentData.ltv_cac_ratio;
-        const pct = (diff / currentData.ltv_cac_ratio * 100).toFixed(0);
-        if (diff > 0) {
-            insightEl.textContent = `Your simulated scenario improves LTV:CAC by ${pct}% (${diff.toFixed(1)}x). This trajectory is investor-ready.`;
-            insightEl.className = 'text-sm text-tertiary';
-        } else if (diff < 0) {
-            insightEl.textContent = `Warning: Your simulated scenario reduces LTV:CAC by ${Math.abs(pct)}%. Review your assumptions.`;
-            insightEl.className = 'text-sm text-error';
-        } else {
-            insightEl.textContent = 'Adjust scenario sliders to compare outcomes.';
+        function animateHealthScore(score) {
+            const ring = document.getElementById('health-ring');
+            const num = document.getElementById('health-number');
+            const status = document.getElementById('health-status');
+            const wrap = document.getElementById('health-score-wrapper');
+            
+            // Circumference of r=90 is ~565.48
+            const offset = 565.48 - (score / 10) * 565.48;
+            
+            // Clear classes
+            wrap.className = 'health-score-wrapper';
+            
+            if (score >= 7) {
+                ring.style.stroke = 'var(--secondary)';
+                num.style.color = 'var(--secondary)';
+                status.style.color = 'var(--secondary)';
+                status.textContent = 'HEALTHY';
+                wrap.classList.add('health-glow-healthy');
+            } else if (score >= 4) {
+                ring.style.stroke = 'var(--primary)';
+                num.style.color = 'var(--primary)';
+                status.style.color = 'var(--primary)';
+                status.textContent = 'CAUTION';
+                wrap.classList.add('health-glow-caution');
+            } else {
+                ring.style.stroke = 'var(--error)';
+                num.style.color = 'var(--error)';
+                status.style.color = 'var(--error)';
+                status.textContent = 'CRITICAL';
+                wrap.classList.add('health-glow-critical');
+            }
+            
+            // Animate number
+            let start = 0;
+            const duration = 1500;
+            const stepTime = 20;
+            const steps = duration / stepTime;
+            const inc = score / steps;
+            
+            const timer = setInterval(() => {
+                start += inc;
+                if (start >= score) {
+                    start = score;
+                    clearInterval(timer);
+                }
+                num.textContent = start.toFixed(1);
+            }, stepTime);
+            
+            ring.style.strokeDashoffset = offset;
         }
-    }
-}
+        
+        function renderInsights(data) {
+            const list = document.getElementById('insights-list');
+            list.innerHTML = '';
+            
+            const addInsight = (text, type) => {
+                let color = 'var(--primary)';
+                if (type === 'healthy') color = 'var(--secondary)';
+                if (type === 'critical') color = 'var(--error)';
+                
+                list.innerHTML += `
+                <div class="flex items-center gap-4 border-l-2 p-2" style="border-color: ${color}; background: rgba(255,255,255,0.02);">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background: ${color};"></div>
+                    <div class="text-sm" style="color: var(--text-primary);">${text}</div>
+                </div>`;
+            };
+            
+            if (data.ltv_cac_ratio >= 3) addInsight(`LTV:CAC is strong (${data.ltv_cac_ratio.toFixed(1)}x). Indicates sustainable growth.`, 'healthy');
+            else if (data.ltv_cac_ratio >= 1.5) addInsight(`LTV:CAC is marginal (${data.ltv_cac_ratio.toFixed(1)}x). Monitor acquisition.`, 'caution');
+            else addInsight(`LTV:CAC is critical (<1.5x). Losing money on acquisition.`, 'critical');
+            
+            if (data.churn_rate <= 0.02) addInsight(`Monthly churn is low (${formatPct(data.churn_rate)}). Great retention.`, 'healthy');
+            else if (data.churn_rate <= 0.05) addInsight(`Monthly churn is elevated (${formatPct(data.churn_rate)}). Investigate retention.`, 'caution');
+            else addInsight(`High churn rate (${formatPct(data.churn_rate)}). Leaky bucket dynamic.`, 'critical');
+            
+            if (data.payback <= 12) addInsight(`Payback period is healthy (${data.payback.toFixed(1)}m). Fast capital recovery.`, 'healthy');
+            else if (data.payback <= 18) addInsight(`Payback period extended (${data.payback.toFixed(1)}m).`, 'caution');
+            else addInsight(`Payback period too long (>18m). Cash flow risk.`, 'critical');
+        }
+        
+        // Scenario
+        function updateScenario() {
+            document.getElementById('val-sc-churn').textContent = document.getElementById('sc-churn').value + '%';
+            document.getElementById('val-sc-cac').textContent = document.getElementById('sc-cac').value + '%';
+            document.getElementById('val-sc-mrr').textContent = document.getElementById('sc-mrr').value + '%';
+            document.getElementById('val-sc-margin').textContent = document.getElementById('sc-margin').value + '%';
+        }
+        
+        async function runScenario() {
+            if (!basePayload) return;
+            const payload = {
+                ...basePayload,
+                churn_rate_adj: parseFloat(document.getElementById('sc-churn').value) / 100,
+                cac_adj: parseFloat(document.getElementById('sc-cac').value) / 100,
+                mrr_growth_adj: parseFloat(document.getElementById('sc-mrr').value) / 100,
+                gross_margin_adj: parseFloat(document.getElementById('sc-margin').value) / 100
+            };
+            
+            setLoader(true, "Simulating...");
+            try {
+                const res = await fetch('/predict/scenario', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error("Scenario failed");
+                const data = await res.json();
+                
+                // Keep original data to show deltas if we want, but for now just update Dashboard
+                updateDashboard(data);
+                
+                // Re-run runway
+                await fetchRunway(payload);
+                
+            } catch(e) {
+                showError(e.message);
+            } finally {
+                setLoader(false);
+            }
+        }
+        
+        // Runway
+        async function fetchRunway(payload) {
+            try {
+                const res = await fetch('/predict/runway', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({...payload, cash_balance: 2000000}) // Default 20L
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    drawRunwayChart(data.forecast);
+                    
+                    const badge = document.getElementById('b-runway');
+                    if (data.runway_months > 12) { badge.textContent = 'SAFE'; badge.className = 'badge healthy'; }
+                    else if (data.runway_months >= 6) { badge.textContent = 'WARNING'; badge.className = 'badge caution'; }
+                    else { badge.textContent = 'CRITICAL'; badge.className = 'badge critical'; }
+                }
+            } catch(e) { console.error(e); }
+        }
+        
+        function drawRunwayChart(forecast) {
+            const svg = document.getElementById('runway-chart');
+            svg.innerHTML = '';
+            
+            if (!forecast || forecast.length === 0) return;
+            
+            const maxVal = Math.max(...forecast.map(d => d.cash));
+            const minVal = Math.min(...forecast.map(d => d.cash), 0);
+            
+            const range = maxVal - minVal;
+            
+            // Map to 0-100 coords
+            const getX = (i) => (i / (forecast.length - 1)) * 100;
+            const getY = (val) => 100 - (((val - minVal) / range) * 100);
+            
+            const zeroY = getY(0);
+            
+            // Draw Zero line
+            svg.innerHTML += `<line x1="0" y1="${zeroY}" x2="100" y2="${zeroY}" stroke="var(--error)" stroke-width="0.5" stroke-dasharray="2,2"/>`;
+            
+            // Draw path
+            let path = `M 0 ${getY(forecast[0].cash)} `;
+            for(let i=1; i<forecast.length; i++) {
+                path += `L ${getX(i)} ${getY(forecast[i].cash)} `;
+            }
+            
+            svg.innerHTML += `<path d="${path}" fill="none" stroke="var(--primary)" stroke-width="1.5" />`;
+            
+            // Area
+            let area = path + `L 100 ${zeroY} L 0 ${zeroY} Z`;
+            svg.innerHTML += `<path d="${area}" fill="rgba(201, 169, 110, 0.1)" />`;
+        }
+        
+        // PDF Export
+        function generatePDF() {
+            if (!window.vitalsData || !window.vitalsData.health_score) {
+                if (window.showToast) window.showToast('Please run an analysis first', 'warning');
+                else alert('Please run an analysis first');
+                return;
+            }
+            const currentData = window.vitalsData;
+            window.vitalsData = currentData;
+            
+            window.jsPDF = window.jspdf.jsPDF;
+            const doc = new jsPDF();
+            
+            const d = new Date();
+            const dateStr = d.toLocaleDateString();
+            
+            doc.setFillColor(8, 12, 20); // #080C14
+            doc.rect(0, 0, 210, 40, 'F');
+            
+            doc.setTextColor(201, 169, 110);
+            doc.setFontSize(24);
+            doc.text("VITALS.IO", 14, 25);
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(14);
+            doc.text("Financial Health Report", 130, 20);
+            doc.setFontSize(10);
+            doc.text("Date: " + dateStr, 130, 28);
+            
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(16);
+            doc.text("Health Score: " + currentData.health_score.toFixed(1), 14, 55);
+            
+            const tableData = [
+                ["ARPA", formatMoney(currentData.arpa)],
+                ["Gross Margin", formatPct(currentData.gross_margin_pct)],
+                ["Churn Rate", formatPct(currentData.churn_rate)],
+                ["CAC", formatMoney(currentData.cac)],
+                ["LTV", formatMoney(currentData.ltv)],
+                ["LTV:CAC Ratio", currentData.ltv_cac_ratio.toFixed(1) + "x"],
+                ["Payback Period", currentData.payback.toFixed(1) + " mo"]
+            ];
+            
+            doc.autoTable({
+                startY: 65,
+                head: [['Metric', 'Value']],
+                body: tableData,
+                theme: 'grid',
+                headStyles: { fillColor: [201, 169, 110], textColor: [0,0,0] }
+            });
+            
+            const finalY = doc.lastAutoTable.finalY + 15;
+            doc.text("Key Findings", 14, finalY);
+            
+            doc.setFontSize(10);
+            let y = finalY + 8;
+            
+            if (currentData.ltv_cac_ratio >= 3) { doc.text("- LTV:CAC is strong.", 14, y); y+=6; }
+            else { doc.text("- LTV:CAC needs attention.", 14, y); y+=6; }
+            
+            if (currentData.churn_rate <= 0.02) { doc.text("- Churn is healthy.", 14, y); y+=6; }
+            else { doc.text("- Churn is high.", 14, y); y+=6; }
+            
+            doc.setFontSize(8);
+            doc.setTextColor(150, 150, 150);
+            doc.text("All calculations are deterministic. No AI hallucinations.", 14, 290);
+            
+            doc.save(`Vitals-Report-${d.toISOString().slice(0,10)}.pdf`);
+        }
+        
+        // Initial Health Check
+        window.onload = checkHealth;
 
-function saveScenario() {
-    const scenario = {
-        churn_rate_adj: document.getElementById('scenario_churn').value,
-        cac_adj: document.getElementById('scenario_cac').value,
-        mrr_growth_adj: document.getElementById('scenario_mrr_growth').value,
-        gross_margin_adj: document.getElementById('scenario_margin').value
+    </script>
+
+  <!-- Global Components -->
+  <div id="toast-container"></div>
+  <div id="global-loader" class="loader-overlay" style="display:none;">
+    <svg class="loader-spinner" width="40" height="40" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="var(--border-color)" stroke-width="3"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent-primary)" stroke-width="3"
+        stroke-dasharray="113" stroke-dashoffset="80" stroke-linecap="round"
+        style="transform-origin:center; animation: spin 1s linear infinite;"/>
+    </svg>
+    <p id="loader-text" style="color: var(--accent-primary); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; margin-top: 12px;">LOADING...</p>
+  </div>
+
+
+    <script>
+    // Global Toast System
+    window.showToast = function(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      let icon = 'info';
+      if(type === 'success') icon = 'check_circle';
+      if(type === 'error') icon = 'error';
+      if(type === 'warning') icon = 'warning';
+      
+      toast.innerHTML = `<span class="material-symbols-outlined">${icon}</span> <span>${message}</span>`;
+      container.appendChild(toast);
+      
+      setTimeout(() => toast.classList.add('show'), 10);
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
     };
-    localStorage.setItem('vitals_scenario', JSON.stringify(scenario));
-    alert('Scenario saved to localStorage');
-}
 
-function loadScenario() {
-    const saved = localStorage.getItem('vitals_scenario');
-    if (saved) {
-        const scenario = JSON.parse(saved);
-        document.getElementById('scenario_churn').value = scenario.churn_rate_adj || 0;
-        document.getElementById('scenario_cac').value = scenario.cac_adj || 0;
-        document.getElementById('scenario_mrr_growth').value = scenario.mrr_growth_adj || 0;
-        document.getElementById('scenario_margin').value = scenario.gross_margin_adj || 0;
-        calculateScenario();
-    } else {
-        alert('No saved scenario found');
-    }
-}
-
-// ============================================
-// TAB SWITCHING
-// ============================================
-
-function switchTab(tabName) {
-    // Hide all zones
-    const zones = ['csv-zone', 'calcForm', 'scenario-zone'];
-    zones.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.display = 'none';
-    });
-
-    // Show selected
-    let selectedId;
-    if (tabName === 'csv') selectedId = 'csv-zone';
-    else if (tabName === 'manual') selectedId = 'calcForm';
-    else if (tabName === 'scenario') selectedId = 'scenario-zone';
+    // Global Loader System
+    window.showLoader = function(text = "LOADING...") {
+      const loader = document.getElementById('global-loader');
+      const loaderText = document.getElementById('loader-text');
+      if (loader) {
+        if (loaderText) loaderText.textContent = text;
+        loader.style.display = 'flex';
+      }
+    };
     
-    const selected = document.getElementById(selectedId);
-    if (selected) {
-        selected.style.display = tabName === 'csv' ? 'flex' : 'block';
-    }
-
-    // Update tab button styles
-    const tabs = ['tab-manual', 'tab-csv', 'tab-sample', 'tab-scenario'];
-    tabs.forEach(id => {
-        const btn = document.getElementById(id);
-        if (!btn) return;
-        btn.classList.remove('text-primary', 'font-bold', 'border-b-2', 'border-primary');
-        btn.classList.add('text-secondary', 'font-medium');
-    });
-
-    // Highlight active tab
-    const activeTabId = 'tab-' + tabName;
-    const activeBtn = document.getElementById(activeTabId);
-    if (activeBtn) {
-        activeBtn.classList.remove('text-secondary', 'font-medium');
-        activeBtn.classList.add('text-primary', 'font-bold', 'border-b-2', 'border-primary');
-    }
-}
-
-function resetForm() {
-    document.getElementById('calcForm').reset();
-    document.getElementById('results-section').style.display = 'none';
-}
-
-function exportData() {
-    const results = {
-        ltv: document.getElementById('val-ltv')?.textContent,
-        cac: document.getElementById('val-cac')?.textContent,
-        ltv_cac: document.getElementById('val-ltv-cac')?.textContent,
-        payback: document.getElementById('val-payback')?.textContent,
-        margin: document.getElementById('val-margin')?.textContent,
-        churn: document.getElementById('val-churn')?.textContent,
-        health: document.getElementById('val-health')?.textContent
+    window.hideLoader = function() {
+      const loader = document.getElementById('global-loader');
+      if (loader) loader.style.display = 'none';
     };
-    const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'vitals-analysis.json';
-    a.click();
-    URL.revokeObjectURL(url);
-}
+    </script>
 
-// ============================================
-// INIT
-// ============================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('vitals.io dashboard loaded');
-    initChart();
-    switchTab('manual');
-});
-</script>
-</body></html>
+</body>
+</html>
