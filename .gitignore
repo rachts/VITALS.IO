@@ -1,4 +1,6 @@
+# ─────────────────────────────────────────
 # Python
+# ─────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
@@ -20,70 +22,116 @@ wheels/
 .installed.cfg
 *.egg
 
+# ─────────────────────────────────────────
 # Virtual environments
+# ─────────────────────────────────────────
 .venv/
 venv/
 ENV/
 env/
 
-# Pytest
+# ─────────────────────────────────────────
+# Pytest / Coverage
+# ─────────────────────────────────────────
 .pytest_cache/
 .coverage
 htmlcov/
 
-# IDEs
+# ─────────────────────────────────────────
+# IDEs & Editors
+# ─────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
+# ─────────────────────────────────────────
 # OS
+# ─────────────────────────────────────────
 .DS_Store
 Thumbs.db
 
-# PDFs and logs
-Vitals.Io.pdf
-server.log
-
-# Environment Variables
+# ─────────────────────────────────────────
+# Environment & Secrets
+# ─────────────────────────────────────────
 .env
 .env.*
+.env.local
 
-# FastAPI / Uvicorn
+# ─────────────────────────────────────────
+# Logs
+# ─────────────────────────────────────────
 *.log
+server.log
 
-# Data files (generated datasets — keep only a sample if needed)
-*.csv
-!sample_single_month.csv
+# ─────────────────────────────────────────
+# Data files — keep only sample datasets
+# ─────────────────────────────────────────
+data/
 !data/healthy_startup.csv
 !data/struggling_startup.csv
 !data/exploding_startup.csv
 
-# Temporary / patch scripts used during development
+# ─────────────────────────────────────────
+# PDFs & Design Exports
+# ─────────────────────────────────────────
+*.pdf
+Vitals_Institutional_Redesign/
+
+# ─────────────────────────────────────────
+# Temporary / Utility Scripts
+# ─────────────────────────────────────────
 patch_*.py
 fix_*.py
 update_script*.py
 bigdata.py
 test_api.py
-test_endpoints.py
+test_upload.py
+download_screens.py
+extract_design.py
 
-# Duplicate HTML files in root (actual pages are in templates/)
-/features.html
-/solutions.html
+# ─────────────────────────────────────────
+# Test Artifacts
+# ─────────────────────────────────────────
+test_*.html
+test_pdf.html
 
-# Image assets not used in app (screenshots, etc.)
+# ─────────────────────────────────────────
+# Frontend — Node & Build Output
+# ─────────────────────────────────────────
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Optional: ignore package-lock for cleaner repo
+# frontend/package-lock.json
+
+# ─────────────────────────────────────────
+# Default Scaffold Assets (unused)
+# ─────────────────────────────────────────
+frontend/src/assets/react.svg
+frontend/src/assets/vite.svg
+
+# ─────────────────────────────────────────
+# Images — ignore screenshots, allow app assets
+# ─────────────────────────────────────────
 **/*.png
-*.jpg
-*.jpeg
-!static/**/*.png
-!static/**/*.jpg
+**/*.jpg
+**/*.jpeg
+!frontend/src/assets/hero.png
+!frontend/public/**/*.svg
+!frontend/public/**/*.png
+!frontend/public/**/*.jpg
 
-# Antigravity / AI artifacts
+# ─────────────────────────────────────────
+# AI / Prompt artifacts
+# ─────────────────────────────────────────
 *.prompt.txt
 
-# Node (if any)
-node_modules/
-
-# Design assets / Figma exports
-Vitals_Institutional_Redesign/
+# ─────────────────────────────────────────
+# Duplicate root HTML pages
+# (your actual pages live in templates/)
+# ─────────────────────────────────────────
+/features.html
+/solutions.html
