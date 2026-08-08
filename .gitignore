@@ -76,14 +76,3 @@ test_endpoints.py
 
 # Node (if any)
 node_modules/
-# Frontend generated folder (not used in this Jinja2 project)
-frontend/
-
-# Downloaded Stitch design assets
-Vitals_Institutional_Redesign/
-download_screens.py
-extract_design.py
-
-# PDFs and logs
-Vitals.Io.pdf
-server.log
