@@ -515,6 +515,32 @@
             margin-top: 16px;
             position: relative;
         }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .advisor-tip {
+            animation: fade-in-up 0.4s ease both;
+            margin-bottom: 14px;
+        }
+        .advisor-tip:last-child { margin-bottom: 0; }
+        .advisor-tip-priority {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .advisor-tip-action {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
     </style>
 </head>
 
@@ -550,6 +576,9 @@
                 </div>
                 <button class="btn btn-ghost" onclick="generatePDF()">
                     Export PDF
+                </button>
+                <button class="btn btn-secondary" onclick="handleLogout()" style="padding: 6px 12px; font-size: 13px;">
+                    Sign Out
                 </button>
             </div>
         </div>
@@ -701,6 +730,24 @@
                         </div>
                     </div>
 
+                    <div class="insights-panel" id="advisor-panel" style="margin-top: 20px; border-left: 3px solid var(--primary); padding-left: 16px;">
+                        <div class="insights-title" style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                            <span style="font-weight: 600;">AI Advisor</span>
+                            <span id="advisor-badge" style="margin-left: auto; font-size: 11px; padding: 2px 8px; border-radius: 4px; background: var(--primary); color: var(--bg-base); font-weight: 600; display: none;">AI POWERED</span>
+                        </div>
+                        <div id="advisor-content">
+                            <div class="insight-item">
+                                <div class="insight-dot" style="background: var(--primary); animation: pulse-dot 1.5s ease-in-out infinite;"></div>
+                                <span style="color: var(--text-muted); font-size: 14px;">Consulting AI advisor...</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card stagger-item" style="animation-delay: 0.9s;">
                         <div class="flex justify-between items-center">
                             <h3 class="label-caps">Runway Forecast</h3>
@@ -764,10 +811,169 @@
             <div class="footer-meta">All calculations are deterministic. No AI hallucinations.</div>
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        const supabaseUrl = '{{ SUPABASE_URL | safe }}';
+        const supabaseKey = '{{ SUPABASE_ANON_KEY | safe }}';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Supabase Auth Check
+        supabaseClient.auth.getSession().then(({ data: { session } }) => {
+            if (!session) {
+                window.location.href = '/login';
+            }
+        });
+        
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            sessionStorage.removeItem('isAuthenticated');
+            window.location.href = '/login';
+        }
         let currentData = null;
         window.vitalsData = currentData; // Store for PDF and Scenario payload
         let basePayload = null; // Store base payload for scenarios
+
+        const MISTRAL_API_KEY = '{{ MISTRAL_API_KEY | safe }}'; // from .env.local
+
+        async function getAdvisorTips(metrics) {
+            const fallbackTips = buildFallbackTips(metrics);
+            
+            if (!MISTRAL_API_KEY || MISTRAL_API_KEY === 'YOUR_MISTRAL_API_KEY_HERE') {
+                return { tips: fallbackTips, source: 'deterministic' };
+            }
+            
+            try {
+                const prompt = `You are a ruthless SaaS advisor. A startup has these exact metrics:
+- ARPA: ₹${Math.round(metrics.arpa).toLocaleString('en-IN')}
+- Gross Margin: ${(metrics.gross_margin_pct * 100).toFixed(1)}%
+- Monthly Churn: ${(metrics.churn_rate * 100).toFixed(2)}%
+- CAC: ₹${Math.round(metrics.cac).toLocaleString('en-IN')}
+- LTV: ₹${Math.round(metrics.ltv).toLocaleString('en-IN')}
+- LTV:CAC Ratio: ${metrics.ltv_cac_ratio !== null ? metrics.ltv_cac_ratio.toFixed(2) + 'x' : 'Infinite'}
+- Payback Period: ${metrics.payback !== null ? metrics.payback.toFixed(1) + ' months' : 'N/A'}
+- Health Score: ${metrics.health_score}/10
+
+Give exactly 3 ultra-specific, one-sentence actionable recommendations. 
+Order by impact (highest first). 
+Each must mention a specific metric number.
+Return ONLY this JSON, no markdown, no explanation:
+{"tips":[{"priority":"high|medium|low","category":"churn|cac|pricing|retention|margins|growth","action":"..."}]}`;
+
+                const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${MISTRAL_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: 'mistral-small-latest',
+                        messages: [{ role: 'user', content: prompt }],
+                        temperature: 0.3,
+                        max_tokens: 500
+                    })
+                });
+                
+                if (!response.ok) throw new Error(`Mistral error: ${response.status}`);
+                
+                const result = await response.json();
+                const text = result.choices[0].message.content;
+                const clean = text.replace(/```json|```/g, '').trim();
+                const parsed = JSON.parse(clean);
+                
+                if (parsed.tips && parsed.tips.length > 0) {
+                    return { tips: parsed.tips.slice(0, 3), source: 'mistral' };
+                }
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    return { tips: parsed.slice(0, 3), source: 'mistral' };
+                }
+                throw new Error('Invalid format');
+                
+            } catch (err) {
+                console.log('Mistral fallback:', err.message);
+                return { tips: fallbackTips, source: 'deterministic' };
+            }
+        }
+
+        function buildFallbackTips(metrics) {
+            // New backend provides diagnosis! Use it directly if available.
+            if (metrics.diagnosis && metrics.diagnosis.recommendations && metrics.diagnosis.recommendations.length > 0) {
+                return metrics.diagnosis.recommendations.map(r => ({
+                    priority: 'medium', 
+                    category: 'optimization', 
+                    action: r
+                })).slice(0, 3);
+            }
+
+            const tips = [];
+            
+            if (metrics.ltv_cac_ratio !== null && metrics.ltv_cac_ratio < 1.5) {
+                tips.push({priority: 'high', category: 'unit economics', action: `LTV:CAC of ${metrics.ltv_cac_ratio.toFixed(1)}x is critically low. Halt all paid acquisition immediately and pivot to organic growth.`});
+            } else if (metrics.ltv_cac_ratio !== null && metrics.ltv_cac_ratio < 3.0) {
+                tips.push({priority: 'high', category: 'cac', action: `LTV:CAC of ${metrics.ltv_cac_ratio.toFixed(1)}x is below the 3.0x benchmark. Test lower-cost channels and shorten the sales cycle.`});
+            }
+            
+            if (metrics.churn_rate > 0.05) {
+                tips.push({priority: 'high', category: 'churn', action: `Monthly churn of ${(metrics.churn_rate * 100).toFixed(1)}% is lethal. Deploy exit interviews and a customer success playbook within 7 days.`});
+            } else if (metrics.churn_rate > 0.02) {
+                tips.push({priority: 'medium', category: 'retention', action: `Churn at ${(metrics.churn_rate * 100).toFixed(1)}% erodes LTV. Reducing it by 1% would add ₹${Math.round(metrics.arpa * 10).toLocaleString('en-IN')} in lifetime value per customer.`});
+            }
+            
+            if (metrics.payback !== null && metrics.payback > 18) {
+                tips.push({priority: 'high', category: 'pricing', action: `Payback period of ${metrics.payback.toFixed(0)} months is unsustainable. Switch to annual billing to recover CAC upfront.`});
+            } else if (metrics.payback !== null && metrics.payback > 12) {
+                tips.push({priority: 'medium', category: 'cash flow', action: `Payback of ${metrics.payback.toFixed(0)} months strains cash flow. Optimize sales costs or raise prices by 15%.`});
+            }
+            
+            if (metrics.gross_margin_pct < 0.5) {
+                tips.push({priority: 'medium', category: 'margins', action: `Gross margin of ${(metrics.gross_margin_pct * 100).toFixed(0)}% is thin. Audit infrastructure and hosting spend for immediate savings.`});
+            }
+            
+            if (tips.length === 0) {
+                tips.push({priority: 'low', category: 'growth', action: `Strong unit economics. Double down on scalable acquisition.`});
+            }
+            
+            return tips.slice(0, 3);
+        }
+
+        async function renderAdvisorPanel(metrics) {
+            const contentEl = document.getElementById('advisor-content');
+            const badgeEl = document.getElementById('advisor-badge');
+            if (!contentEl) return;
+            
+            contentEl.innerHTML = `
+                <div class="insight-item">
+                    <div class="insight-dot" style="background: var(--primary); animation: pulse-dot 1.5s ease-in-out infinite;"></div>
+                    <span style="color: var(--text-muted); font-size: 14px;">Consulting AI advisor...</span>
+                </div>
+            `;
+            
+            const advice = await getAdvisorTips(metrics);
+            window.vitalsData.aiAdvice = advice; // Store for PDF export
+            
+            if (badgeEl) {
+                badgeEl.style.display = advice.source === 'mistral' ? 'inline-block' : 'none';
+                badgeEl.textContent = advice.source === 'mistral' ? 'AI POWERED' : '';
+            }
+            
+            const priorityColor = {
+                high: 'var(--error)',
+                medium: 'var(--primary)',
+                low: 'var(--secondary)'
+            };
+            
+            contentEl.innerHTML = advice.tips.map((tip, i) => `
+                <div class="advisor-tip" style="animation-delay: ${i * 0.15}s;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                        <div class="insight-dot" style="background: ${priorityColor[tip.priority] || 'var(--text-muted)'};"></div>
+                        <span class="advisor-tip-priority" style="color: ${priorityColor[tip.priority] || 'var(--text-muted)'};">
+                            ${tip.category} · ${tip.priority}
+                        </span>
+                    </div>
+                    <div class="advisor-tip-action">${tip.action}</div>
+                </div>
+            `).join('');
+        }
+
 
         // Currency Formatter
         const formatMoney = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
@@ -831,22 +1037,24 @@
             try {
                 const res = await fetch('/upload', { method: 'POST', body: formData });
                 if (!res.ok) throw new Error("Upload failed: " + res.statusText);
-                const data = await res.json();
-
-                // We need the base payload to run scenarios, but /upload only returns the results. 
-                // Wait, if it only returns results, we can't do scenarios easily unless we assume a base.
-                // Let's just update the dashboard for now.
+                const result = await res.json();
+                
+                // The /upload endpoint returns { status, data: {..., inputs: {...}} }
+                const metrics = result.data;
+                const inputs = result.data.inputs;
+                
+                // We use the actual inputs from the CSV as our basePayload for scenarios!
                 basePayload = {
-                    mrr: data.arpa * 100, // rough estimate
-                    total_customers: 100,
-                    new_customers: 10,
-                    churned_customers: Math.round(data.churn_rate * 100),
-                    ad_spend: data.cac * 10,
-                    sales_cost: 0,
-                    cogs: 0
+                    mrr: inputs.mrr,
+                    total_customers: inputs.total_customers,
+                    new_customers: inputs.new_customers,
+                    churned_customers: inputs.churned_customers,
+                    ad_spend: inputs.ad_spend,
+                    sales_cost: inputs.sales_cost,
+                    cogs: inputs.cogs
                 };
 
-                updateDashboard(data);
+                updateDashboard(metrics);
                 await fetchRunway(basePayload);
             } catch (e) {
                 showError(e.message);
@@ -906,8 +1114,8 @@
             document.getElementById('m-churn').textContent = formatPct(data.churn_rate);
             document.getElementById('m-cac').textContent = formatMoney(data.cac);
             document.getElementById('m-ltv').textContent = formatMoney(data.ltv);
-            document.getElementById('m-ltvcac').textContent = data.ltv_cac_ratio.toFixed(1) + 'x';
-            document.getElementById('m-payback').textContent = data.payback.toFixed(1) + ' mo';
+            document.getElementById('m-ltvcac').textContent = data.ltv_cac_ratio !== null ? data.ltv_cac_ratio.toFixed(1) + 'x' : '∞';
+            document.getElementById('m-payback').textContent = data.payback !== null ? data.payback.toFixed(1) + ' mo' : 'N/A';
 
             // Badges
             const bMargin = document.getElementById('b-margin');
@@ -935,6 +1143,9 @@
 
             // Insights
             renderInsights(data);
+
+            // AI Advisor
+            renderAdvisorPanel(data);
         }
 
         function animateHealthScore(score) {
@@ -1045,8 +1256,7 @@
                 if (!res.ok) throw new Error("Scenario failed");
                 const data = await res.json();
 
-                // Backend doesn't return arpa for scenarios, compute locally
-                data.arpa = (basePayload.mrr * (1 + payload.mrr_growth_adj)) / basePayload.total_customers || 0;
+                // ARPA is now computed by backend, no local compute needed.
 
                 // Keep original data to show deltas if we want, but for now just update Dashboard
                 updateDashboard(data);
@@ -1071,11 +1281,12 @@
                 });
                 if (res.ok) {
                     const data = await res.json();
-                    drawRunwayChart(data.forecast);
+                    const forecast = data.projected_cash.map(m => ({ month: m.month, cash: m.cash_balance }));
+                    drawRunwayChart(forecast);
 
                     const badge = document.getElementById('b-runway');
-                    if (data.runway_months > 12) { badge.textContent = 'SAFE'; badge.className = 'badge healthy'; }
-                    else if (data.runway_months >= 6) { badge.textContent = 'WARNING'; badge.className = 'badge caution'; }
+                    if (data.months_remaining > 12) { badge.textContent = 'SAFE'; badge.className = 'badge healthy'; }
+                    else if (data.months_remaining >= 6) { badge.textContent = 'WARNING'; badge.className = 'badge caution'; }
                     else { badge.textContent = 'CRITICAL'; badge.className = 'badge critical'; }
                 }
             } catch (e) { console.error(e); }
@@ -1176,6 +1387,23 @@
 
             if (currentData.churn_rate <= 0.02) { doc.text("- Churn is healthy.", 14, y); y += 6; }
             else { doc.text("- Churn is high.", 14, y); y += 6; }
+
+            if (currentData.aiAdvice && currentData.aiAdvice.tips) {
+                y += 8;
+                doc.setFontSize(14);
+                doc.setTextColor(201, 169, 110);
+                doc.text("AI Advisor Suggestions", 14, y);
+                y += 8;
+                
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0); // Fix: Set to black so it's visible on white background
+                currentData.aiAdvice.tips.forEach(tip => {
+                    const text = `• [${tip.priority.toUpperCase()}] ${tip.category}: ${tip.action}`;
+                    const lines = doc.splitTextToSize(text, 180);
+                    doc.text(lines, 14, y);
+                    y += (lines.length * 6);
+                });
+            }
 
             doc.setFontSize(8);
             doc.setTextColor(150, 150, 150);

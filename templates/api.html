@@ -200,6 +200,20 @@ gross_margin_adj    // e.g. -0.05 = 5% decrease</pre>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // 0. Auth State Check for Navigation
+      const isLoggedIn = sessionStorage.getItem('isAuthenticated') === 'true' || 
+                         Object.keys(localStorage).some(key => key.includes('auth-token') && localStorage.getItem(key));
+      if (isLoggedIn) {
+        document.querySelectorAll('a[href="/login"]').forEach(link => {
+          const li = link.closest('li');
+          if (li) {
+            li.style.display = 'none';
+          } else {
+            link.style.display = 'none';
+          }
+        });
+      }
+
       // 1. Active Nav State
       const currentPath = window.location.pathname;
       document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(link => {

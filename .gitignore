@@ -42,6 +42,14 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
+# PDFs and logs
+Vitals.Io.pdf
+server.log
+
+# Environment Variables
+.env
+.env.*
+
 # FastAPI / Uvicorn
 *.log
 
@@ -76,3 +84,6 @@ test_endpoints.py
 
 # Node (if any)
 node_modules/
+
+# Design assets / Figma exports
+Vitals_Institutional_Redesign/

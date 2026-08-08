@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Sign In — VITALS.IO</title>
+  <title>Sign Up — VITALS.IO</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -108,11 +108,15 @@
           <span class="material-symbols-outlined" style="font-size: 32px; margin-right: 8px;">insights</span>
           <span style="font-family: var(--font-display); font-size: 24px; font-weight: 600;">VITALS.IO</span>
         </div>
-        <h1 style="font-family: var(--font-display); font-size: 28px; margin-bottom: 8px;">Welcome back</h1>
-        <p style="color: var(--text-muted); font-size: 14px;">Sign in to access your financial health dashboard.</p>
+        <h1 style="font-family: var(--font-display); font-size: 28px; margin-bottom: 8px;">Create an account</h1>
+        <p style="color: var(--text-muted); font-size: 14px;">Sign up to start monitoring your financial health.</p>
       </div>
 
-      <form id="loginForm">
+      <form id="signupForm">
+        <div>
+          <label class="label-custom" for="fullName">Full Name</label>
+          <input type="text" id="fullName" class="input input-custom" placeholder="Jane Doe" required>
+        </div>
         <div>
           <label class="label-custom" for="email">Email</label>
           <input type="email" id="email" class="input input-custom" placeholder="founder@startup.com" required>
@@ -126,18 +130,11 @@
             </button>
           </div>
         </div>
-        <div class="flex justify-between items-center mb-4">
-          <label class="flex items-center" style="gap: 8px; cursor: pointer;">
-            <input type="checkbox" id="rememberMe" class="custom-checkbox">
-            <span style="font-size: 13px; color: var(--text-secondary);">Remember me</span>
-          </label>
-        </div>
-        <button type="submit" class="btn btn-primary w-full" style="width: 100%; padding: 14px;">Sign In</button>
+        <button type="submit" class="btn btn-primary w-full mt-4" style="width: 100%; padding: 14px;">Sign Up</button>
       </form>
       
-      <div class="flex justify-between items-center mt-4">
-        <a href="#" class="text-muted" style="font-size: 13px;">Forgot password?</a>
-        <a href="/signup" class="text-muted" style="font-size: 13px;">Don't have an account? <span style="color: var(--accent-primary);">Sign up</span></a>
+      <div class="flex justify-center items-center mt-4">
+        <a href="/login" class="text-muted" style="font-size: 13px;">Already have an account? <span style="color: var(--accent-primary);">Sign in</span></a>
       </div>
     </div>
   </main>
@@ -185,38 +182,33 @@
         });
       }
 
-      // Check remember me email
-      const emailInput = document.getElementById('email');
-      const rememberMe = document.getElementById('rememberMe');
-      if (sessionStorage.getItem('rememberedEmail')) {
-        emailInput.value = sessionStorage.getItem('rememberedEmail');
-        rememberMe.checked = true;
-      }
-
       // Form submission
-      const form = document.getElementById('loginForm');
+      const form = document.getElementById('signupForm');
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        if (rememberMe.checked) {
-          sessionStorage.setItem('rememberedEmail', emailInput.value);
-        } else {
-          sessionStorage.removeItem('rememberedEmail');
-        }
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
         
-        window.showToast('Signing in...', 'info');
+        window.showToast('Creating your account...', 'info');
         
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-          email: emailInput.value,
-          password: document.getElementById('password').value
+        const { data, error } = await supabaseClient.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              full_name: fullName
+            }
+          }
         });
 
         if (error) {
           window.showToast(`Error: ${error.message}`, 'error');
         } else {
           sessionStorage.setItem('isAuthenticated', 'true');
-          sessionStorage.setItem('userEmail', emailInput.value);
-          window.showToast('Login successful! Redirecting...', 'success');
+          sessionStorage.setItem('userEmail', email);
+          window.showToast('Signup successful! Redirecting...', 'success');
           setTimeout(() => {
               window.location.href = '/economics';
           }, 1000);
