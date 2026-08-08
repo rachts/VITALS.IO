@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>vitals.io - Economics Analyzer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&amp;family=Manrope:wght@200..800&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#e4c285",
+                        "surface-container": "#201f21",
+                        "primary": "#e6c487",
+                        "on-surface": "#e5e1e4",
+                        "outline": "#998f81",
+                        "primary-container": "#c9a96e",
+                        "on-primary-fixed": "#261900",
+                        "on-tertiary-fixed": "#410007",
+                        "inverse-surface": "#e5e1e4",
+                        "on-surface-variant": "#d0c5b5",
+                        "on-primary-container": "#543d0c",
+                        "background": "#131315",
+                        "tertiary-fixed-dim": "#ffb3b0",
+                        "on-secondary-fixed": "#101f0d",
+                        "surface-container-high": "#2a2a2c",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "tertiary": "#ffb6b4",
+                        "on-primary-fixed-variant": "#5a4312",
+                        "on-tertiary": "#620f16",
+                        "primary-fixed": "#ffdea4",
+                        "surface-container-low": "#1b1b1d",
+                        "surface-dim": "#131315",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#0e0e10",
+                        "secondary-fixed-dim": "#b9ccb0",
+                        "outline-variant": "#4d463a",
+                        "secondary": "#b9ccb0",
+                        "surface-container-highest": "#353437",
+                        "surface": "#131315",
+                        "on-background": "#e5e1e4",
+                        "secondary-container": "#3d4d38",
+                        "inverse-primary": "#745a27",
+                        "secondary-fixed": "#d5e8cb",
+                        "inverse-on-surface": "#313032",
+                        "on-primary": "#412d00",
+                        "tertiary-fixed": "#ffdad8",
+                        "on-secondary": "#253421",
+                        "on-secondary-container": "#abbea2",
+                        "tertiary-container": "#ff8c8a",
+                        "on-tertiary-container": "#792125",
+                        "surface-tint": "#e4c285",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#353437",
+                        "on-secondary-fixed-variant": "#3b4b36",
+                        "surface-bright": "#39393b",
+                        "on-tertiary-fixed-variant": "#81262a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1440px",
+                        "md": "24px",
+                        "xs": "8px",
+                        "margin-mobile": "16px",
+                        "xl": "80px",
+                        "base": "4px",
+                        "lg": "48px",
+                        "sm": "16px"
+                    },
+                    "fontFamily": {
+                        "data-mono": ["Courier Prime"],
+                        "headline-lg": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "label-caps": ["Manrope"],
+                        "headline-md": ["Playfair Display"],
+                        "headline-lg-mobile": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "data-mono": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "display-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+                        "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "40px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #F5F3EF;
+            color: #1A1A1C;
+        }
+        .dark body {
+            background-color: #131315; /* Fallback for noise layer */
+        }
+        
+        /* Subtle global noise overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* Light mode overrides for content area as requested */
+        .light-content-area {
+            background-color: #F5F3EF;
+            color: #1A1A1C;
+        }
+        
+        .light-card {
+            background-color: #FFFFFF;
+            border: 1px solid #EBE9E4;
+        }
+        
+        .light-input {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #EBE9E4;
+            color: #1A1A1C;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden font-body-md text-body-md relative min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-background dark:bg-background text-primary dark:text-primary-fixed-dim border-b border-outline-variant/10 bg-background/95 backdrop-blur-sm fixed top-0 w-full z-40 flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto left-0 right-0">
+<div class="font-display-lg text-headline-md text-on-surface tracking-tight">vitals.io</div>
+<nav class="hidden md:flex items-center gap-md">
+<a class="text-on-surface-variant font-body-md hover:text-on-surface transition-colors hover:text-primary-container transition-all duration-200" href="#">Product</a>
+<a class="text-on-surface-variant font-body-md hover:text-on-surface transition-colors hover:text-primary-container transition-all duration-200" href="#">Solutions</a>
+<a class="text-primary font-body-md border-b border-primary pb-1 hover:text-primary-container transition-all duration-200" href="#">Economics</a>
+<a class="text-on-surface-variant font-body-md hover:text-on-surface transition-colors hover:text-primary-container transition-all duration-200" href="#">API</a>
+<a class="text-on-surface-variant font-body-md hover:text-on-surface transition-colors hover:text-primary-container transition-all duration-200" href="#">Contact</a>
+</nav>
+<button class="hidden md:flex items-center justify-center bg-primary-container text-on-primary-fixed px-6 py-2 rounded-DEFAULT font-label-caps text-label-caps hover:bg-primary-fixed-dim transition-colors duration-200">
+            Get Started
+        </button>
+<button class="md:hidden text-on-surface">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</header>
+<main class="flex-grow pt-[80px]"> <!-- pt compensates for fixed header -->
+<!-- Header Section (Dark) -->
+<section class="bg-surface-container-lowest text-on-surface py-xl px-gutter">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="col-span-1 md:col-span-8 md:col-start-3 text-center">
+<h1 class="font-display-lg text-display-lg mb-sm">Unit Economics Analyzer</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Evaluate your SaaS viability through rigorous LTV:CAC, payback periods, and margin analysis.</p>
+</div>
+</div>
+</section>
+<!-- Main Content Area (Light) -->
+<section class="light-content-area py-xl px-gutter min-h-screen">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Center Content Column -->
+<div class="col-span-1 md:col-span-10 md:col-start-2">
+<!-- Tabs -->
+<div class="flex justify-center mb-lg">
+<div class="inline-flex bg-[#EBE9E4] p-1 rounded-full">
+<button class="tab-btn px-6 py-2 rounded-full font-label-caps text-label-caps text-[#1A1A1C] bg-white shadow-sm transition-all duration-200" data-target="manual-tab">Manual Entry</button>
+<button class="tab-btn px-6 py-2 rounded-full font-label-caps text-label-caps text-[#737373] hover:text-[#1A1A1C] transition-all duration-200" data-target="csv-tab">Upload CSV</button>
+<button class="tab-btn px-6 py-2 rounded-full font-label-caps text-label-caps text-[#737373] hover:text-[#1A1A1C] transition-all duration-200" data-target="scenario-tab">Scenario</button>
+</div>
+</div>
+<!-- Manual Entry Tab -->
+<div class="tab-content active" id="manual-tab">
+<div class="light-card p-xl rounded-DEFAULT">
+<h2 class="font-headline-md text-headline-md text-[#1A1A1C] mb-lg border-b border-[#EBE9E4] pb-xs">Operating Metrics</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-gutter gap-y-lg">
+<!-- Form Group -->
+<div class="flex flex-col relative group">
+<label class="font-label-caps text-label-caps text-[#737373] mb-xs group-focus-within:text-primary-container transition-colors">Monthly Recurring Revenue (MRR)</label>
+<div class="relative">
+<span class="absolute left-0 bottom-2 text-[#737373] font-data-mono text-data-mono">$</span>
+<input class="w-full light-input pb-2 pl-6 font-data-mono text-data-mono text-right focus:outline-none focus:border-primary-container transition-colors" type="text" value="250,000"/>
+</div>
+</div>
+<div class="flex flex-col relative group">
+<label class="font-label-caps text-label-caps text-[#737373] mb-xs group-focus-within:text-primary-container transition-colors">Total Customers</label>
+<input class="w-full light-input pb-2 font-data-mono text-data-mono text-right focus:outline-none focus:border-primary-container transition-colors" type="text" value="1,240"/>
+</div>
+<div class="flex flex-col relative group">
+<label class="font-label-caps text-label-caps text-[#737373] mb-xs group-focus-within:text-primary-container transition-colors">New Customers (Monthly)</label>
+<input class="w-full light-input pb-2 font-data-mono text-data-mono text-right focus:outline-none focus:border-primary-container transition-colors" type="text" value="45"/>
+</div>
+<div class="flex flex-col relative group">
+<label class="font-label-caps text-label-caps text-[#737373] mb-xs group-focus-within:text-primary-container transition-colors">Churned Customers (Monthly)</label>
+<input class="w-full light-input pb-2 font-data-mono text-data-mono text-right focus:outline-none focus:border-primary-container transition-colors" type="text" value="12"/>
+</div>
+<div class="flex flex-col relative group">
+<label class="font-label-caps text-label-caps text-[#737373] mb-xs group-focus-within:text-primary-container transition-colors">Total Ad Spend (Monthly)</label>
+<div class="relative">
+<span class="absolute left-0 bottom-2 text-[#737373] font-data-mono text-data-mono">$</span>
+<input class="w-full light-input pb-2 pl-6 font-data-mono text-data-mono text-right focus:outline-none focus:border-primary-container transition-colors" type="text" value="35,000"/>
+</div>
+</div>
+<div class="flex flex-col relative group">
+<label class="font-label-caps text-label-caps text-[#737373] mb-xs group-focus-within:text-primary-container transition-colors">Sales Cost (Monthly)</label>
+<div class="relative">
+<span class="absolute left-0 bottom-2 text-[#737373] font-data-mono text-data-mono">$</span>
+<input class="w-full light-input pb-2 pl-6 font-data-mono text-data-mono text-right focus:outline-none focus:border-primary-container transition-colors" type="text" value="62,000"/>
+</div>
+</div>
+<div class="flex flex-col relative group md:col-span-2">
+<label class="font-label-caps text-label-caps text-[#737373] mb-xs group-focus-within:text-primary-container transition-colors">Cost of Goods Sold (COGS)</label>
+<div class="relative">
+<span class="absolute left-0 bottom-2 text-[#737373] font-data-mono text-data-mono">$</span>
+<input class="w-full light-input pb-2 pl-6 font-data-mono text-data-mono text-right focus:outline-none focus:border-primary-container transition-colors" type="text" value="48,000"/>
+</div>
+</div>
+</div>
+<div class="mt-xl flex justify-end">
+<button class="bg-[#1A1A1C] text-[#F5F3EF] px-8 py-3 rounded-DEFAULT font-label-caps text-label-caps hover:bg-[#2A2A2C] transition-colors duration-200">
+                                    Calculate Economics
+                                </button>
+</div>
+</div>
+<!-- Metrics Dashboard (Post-Calc preview) -->
+<div class="mt-xl grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="light-card p-md flex flex-col justify-between">
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-label-caps text-[#737373]">LTV:CAC Ratio</span>
+<span class="material-symbols-outlined text-[#8FA485]" data-icon="trending_up">trending_up</span>
+</div>
+<div>
+<div class="font-headline-lg text-headline-lg text-[#1A1A1C] mb-xs">3.8x</div>
+<div class="font-body-md text-body-md text-[#8FA485]">+0.2 from last period</div>
+</div>
+</div>
+<div class="light-card p-md flex flex-col justify-between">
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-label-caps text-[#737373]">Payback Period</span>
+<span class="material-symbols-outlined text-[#8FA485]" data-icon="check_circle">check_circle</span>
+</div>
+<div>
+<div class="font-headline-lg text-headline-lg text-[#1A1A1C] mb-xs">11 mo</div>
+<div class="font-body-md text-body-md text-[#737373]">Healthy (&lt; 12 mo target)</div>
+</div>
+</div>
+<div class="light-card p-md flex flex-col justify-between">
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-label-caps text-[#737373]">Gross Margin</span>
+<span class="material-symbols-outlined text-[#C26B68]" data-icon="trending_down">trending_down</span>
+</div>
+<div>
+<div class="font-headline-lg text-headline-lg text-[#1A1A1C] mb-xs">80.8%</div>
+<div class="font-body-md text-body-md text-[#C26B68]">-1.2% from last period</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Upload CSV Tab -->
+<div class="tab-content hidden" id="csv-tab">
+<div class="light-card p-xl border-dashed border-2 border-[#D9D7D3] hover:border-[#C9A96E] transition-colors duration-300 flex flex-col items-center justify-center min-h-[400px] cursor-pointer group">
+<div class="w-16 h-16 rounded-full bg-[#EBE9E4] flex items-center justify-center mb-md group-hover:bg-[#C9A96E]/10 transition-colors">
+<span class="material-symbols-outlined text-headline-lg text-[#737373] group-hover:text-[#C9A96E]" data-icon="upload_file">upload_file</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-[#1A1A1C] mb-xs">Upload Financial Data</h3>
+<p class="font-body-md text-body-md text-[#737373] text-center max-w-sm">Drag and drop your exported billing CSV here, or click to browse. We support Stripe, Chargebee, and Paddle formats.</p>
+</div>
+</div>
+<!-- Scenario Tab -->
+<div class="tab-content hidden" id="scenario-tab">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-xl">
+<!-- Left: Sliders -->
+<div class="flex flex-col gap-lg">
+<h2 class="font-headline-md text-headline-md text-[#1A1A1C] border-b border-[#EBE9E4] pb-xs">Stress Test Parameters</h2>
+<div>
+<div class="flex justify-between mb-xs">
+<label class="font-label-caps text-label-caps text-[#737373]">Monthly Churn Rate</label>
+<span class="font-data-mono text-data-mono text-[#1A1A1C]">1.2%</span>
+</div>
+<div class="relative w-full h-1 bg-[#EBE9E4] rounded-full mt-2">
+<div class="absolute top-0 left-0 h-full bg-[#1A1A1C] rounded-full" style="width: 20%;"></div>
+<div class="absolute top-1/2 left-[20%] w-4 h-4 bg-[#1A1A1C] rounded-full -translate-y-1/2 -translate-x-1/2 cursor-pointer shadow-md"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-xs">
+<label class="font-label-caps text-label-caps text-[#737373]">Target CAC</label>
+<span class="font-data-mono text-data-mono text-[#1A1A1C]">$2,450</span>
+</div>
+<div class="relative w-full h-1 bg-[#EBE9E4] rounded-full mt-2">
+<div class="absolute top-0 left-0 h-full bg-[#1A1A1C] rounded-full" style="width: 45%;"></div>
+<div class="absolute top-1/2 left-[45%] w-4 h-4 bg-[#1A1A1C] rounded-full -translate-y-1/2 -translate-x-1/2 cursor-pointer shadow-md"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-xs">
+<label class="font-label-caps text-label-caps text-[#737373]">MoM Growth</label>
+<span class="font-data-mono text-data-mono text-[#1A1A1C]">5.5%</span>
+</div>
+<div class="relative w-full h-1 bg-[#EBE9E4] rounded-full mt-2">
+<div class="absolute top-0 left-0 h-full bg-[#1A1A1C] rounded-full" style="width: 55%;"></div>
+<div class="absolute top-1/2 left-[55%] w-4 h-4 bg-[#1A1A1C] rounded-full -translate-y-1/2 -translate-x-1/2 cursor-pointer shadow-md"></div>
+</div>
+</div>
+</div>
+<!-- Right: Dashboard -->
+<div class="light-card p-xl rounded-DEFAULT flex flex-col items-center justify-center relative overflow-hidden">
+<!-- Subtle bg pattern -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#1A1A1C 1px, transparent 1px); background-size: 16px 16px;"></div>
+<h3 class="font-label-caps text-label-caps text-[#737373] mb-lg uppercase tracking-widest relative z-10">Projected Health Score</h3>
+<div class="relative w-48 h-48 flex items-center justify-center z-10 mb-lg">
+<!-- Simple SVG ring -->
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#EBE9E4" stroke-width="4"></circle>
+<circle cx="50" cy="50" fill="none" r="45" stroke="#C9A96E" stroke-dasharray="282.7" stroke-dashoffset="65" stroke-linecap="round" stroke-width="4"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-display-lg text-display-lg text-[#1A1A1C]">78</span>
+<span class="font-label-caps text-label-caps text-[#8FA485]">Strong</span>
+</div>
+</div>
+<div class="w-full flex justify-between px-md pt-md border-t border-[#EBE9E4] relative z-10">
+<div class="text-center">
+<div class="font-label-caps text-label-caps text-[#737373] mb-1">Proj. Runway</div>
+<div class="font-data-mono text-data-mono text-[#1A1A1C]">18 mo</div>
+</div>
+<div class="text-center">
+<div class="font-label-caps text-label-caps text-[#737373] mb-1">Burn Rate</div>
+<div class="font-data-mono text-data-mono text-[#1A1A1C]">-$45k</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest dark:bg-surface-container-lowest text-primary dark:text-primary border-t border-outline-variant/10 w-full px-gutter py-xl mt-xl grid grid-cols-1 md:grid-cols-4 gap-lg max-w-container-max mx-auto flat no shadows Standard-easing transition-all z-10">
+<div class="col-span-1 md:col-span-1 flex flex-col gap-sm">
+<span class="font-display-lg text-headline-md text-on-surface">vitals.io</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Built for HackLabify</span>
+</div>
+<div class="col-span-1 flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface font-bold mb-xs">Product</span>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Features</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Pricing</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Changelog</a>
+</div>
+<div class="col-span-1 flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface font-bold mb-xs">Resources</span>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Documentation</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">API Reference</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Blog</a>
+</div>
+<div class="col-span-1 flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface font-bold mb-xs">Company</span>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">About Us</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Careers</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Contact</a>
+</div>
+</footer>
+<script>
+        // Simple Tab Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Reset all
+                    tabs.forEach(t => {
+                        t.classList.remove('bg-white', 'text-[#1A1A1C]', 'shadow-sm');
+                        t.classList.add('text-[#737373]');
+                    });
+                    contents.forEach(c => {
+                        c.classList.remove('active');
+                        setTimeout(() => c.classList.add('hidden'), 50); // slight delay for smooth out (though minimal here)
+                    });
+
+                    // Activate clicked
+                    tab.classList.remove('text-[#737373]');
+                    tab.classList.add('bg-white', 'text-[#1A1A1C]', 'shadow-sm');
+                    
+                    const targetId = tab.getAttribute('data-target');
+                    const targetContent = document.getElementById(targetId);
+                    targetContent.classList.remove('hidden');
+                    // small timeout to allow display block to apply before opacity fade in
+                    setTimeout(() => targetContent.classList.add('active'), 10);
+                });
+            });
+        });
+    </script>
+</body></html>
