@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VITALS.IO - Institutional Unit Economics</title>
-    
-    
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@500;600&family=Manrope:wght@400;500;600&family=Courier+Prime&display=swap" rel="stylesheet">
-    
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2300E5FF'>V</text></svg>">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@500;600&family=Manrope:wght@400;500;600&family=Courier+Prime&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2300E5FF'>V</text></svg>">
     <link rel="stylesheet" href="/static/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    
+
     <style>
         :root {
             --bg-base: #0C0C0E;
@@ -28,17 +33,21 @@
             --text-primary: #F0EFEA;
             --text-secondary: #998f81;
             --border: rgba(240, 239, 234, 0.08);
-            
+
             --font-display: 'Playfair Display', serif;
             --font-body: 'Manrope', sans-serif;
             --font-mono: 'Courier Prime', monospace;
-            
+
             --radius: 4px;
             --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             background-color: var(--bg-base);
             color: var(--text-primary);
@@ -52,40 +61,45 @@
         body::before {
             content: "";
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: repeating-linear-gradient(
-                to bottom,
-                rgba(255, 255, 255, 0),
-                rgba(255, 255, 255, 0) 1px,
-                rgba(0, 0, 0, 0.03) 1px,
-                rgba(0, 0, 0, 0.03) 2px
-            );
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: repeating-linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0),
+                    rgba(255, 255, 255, 0) 1px,
+                    rgba(0, 0, 0, 0.03) 1px,
+                    rgba(0, 0, 0, 0.03) 2px);
             pointer-events: none;
             z-index: 9999;
             opacity: 0.8;
         }
-        
-        h1, h2, h3, h4, .font-serif {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-serif {
             font-family: var(--font-display);
             font-weight: 500;
         }
-        
+
         .font-mono {
             font-family: var(--font-mono);
         }
-        
+
         .container {
             max-width: 1440px;
             margin: 0 auto;
             padding: 0 24px;
         }
-        
+
         .grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             gap: 24px;
         }
-        
+
         /* Navbar */
         nav {
             border-bottom: 1px solid var(--border);
@@ -95,11 +109,13 @@
             top: 0;
             z-index: 100;
         }
+
         .nav-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .logo {
             font-family: var(--font-display);
             font-size: 24px;
@@ -107,6 +123,7 @@
             text-decoration: none;
             letter-spacing: -0.02em;
         }
+
         .api-status {
             display: flex;
             align-items: center;
@@ -116,13 +133,18 @@
             letter-spacing: 0.08em;
             color: var(--text-secondary);
         }
+
         .status-dot {
-            width: 8px; height: 8px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: var(--error);
         }
-        .status-dot.healthy { background: var(--secondary); }
-        
+
+        .status-dot.healthy {
+            background: var(--secondary);
+        }
+
         /* Buttons */
         .btn {
             font-family: var(--font-body);
@@ -138,33 +160,64 @@
             justify-content: center;
             gap: 8px;
         }
+
         .btn-primary {
             background: var(--primary);
             color: #131315;
         }
+
         .btn-primary:hover {
             filter: brightness(1.1);
         }
+
         .btn-ghost {
             background: transparent;
             border: 1px solid rgba(240, 239, 234, 0.1);
             color: var(--text-primary);
         }
+
         .btn-ghost:hover {
             background: rgba(240, 239, 234, 0.05);
         }
 
         /* Layout classes */
-        .mt-8 { margin-top: 32px; }
-        .mb-4 { margin-bottom: 16px; }
-        .mb-8 { margin-bottom: 32px; }
-        .flex { display: flex; }
-        .flex-col { display: flex; flex-direction: column; }
-        .gap-4 { gap: 16px; }
-        .gap-6 { gap: 24px; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        
+        .mt-8 {
+            margin-top: 32px;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+
+        .mb-8 {
+            margin-bottom: 32px;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gap-4 {
+            gap: 16px;
+        }
+
+        .gap-6 {
+            gap: 24px;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
         /* Cards */
         .card {
             background: var(--bg-surface);
@@ -172,20 +225,24 @@
             border-radius: var(--radius);
             padding: 24px;
         }
-        
+
         /* Input */
         .input-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-        label, .label-caps {
+
+        label,
+        .label-caps {
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--text-secondary);
         }
-        input[type="number"], input[type="text"] {
+
+        input[type="number"],
+        input[type="text"] {
             background: var(--bg-input);
             border: none;
             border-bottom: 1px solid var(--border);
@@ -195,10 +252,11 @@
             border-radius: var(--radius) var(--radius) 0 0;
             outline: none;
         }
+
         input[type="number"]:focus {
             border-bottom-color: var(--primary);
         }
-        
+
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
@@ -207,20 +265,37 @@
             border-radius: 2px;
             outline: none;
         }
+
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 16px; height: 16px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: var(--primary);
             cursor: pointer;
         }
-        
+
         /* Typography */
-        .display { font-size: 40px; letter-spacing: -0.01em; line-height: 1.2; }
-        .metric-value { font-size: 28px; font-family: var(--font-mono); }
-        .text-sm { font-size: 14px; color: var(--text-secondary); }
-        .text-primary { color: var(--primary); }
-        
+        .display {
+            font-size: 40px;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-family: var(--font-mono);
+        }
+
+        .text-sm {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .text-primary {
+            color: var(--primary);
+        }
+
         /* Badges */
         .badge {
             font-size: 11px;
@@ -231,46 +306,101 @@
             background: var(--bg-input);
             color: var(--text-secondary);
         }
-        .badge.healthy { color: var(--secondary); background: rgba(139, 157, 131, 0.1); }
-        .badge.caution { color: var(--primary); background: rgba(201, 169, 110, 0.1); }
-        .badge.critical { color: var(--error); background: rgba(199, 91, 91, 0.1); }
-        
+
+        .badge.healthy {
+            color: var(--secondary);
+            background: rgba(139, 157, 131, 0.1);
+        }
+
+        .badge.caution {
+            color: var(--primary);
+            background: rgba(201, 169, 110, 0.1);
+        }
+
+        .badge.critical {
+            color: var(--error);
+            background: rgba(199, 91, 91, 0.1);
+        }
+
         /* Animations */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .stagger-item {
             opacity: 0;
             animation: fadeUp 0.6s var(--transition) forwards;
         }
-        
+
         @keyframes breathe {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(201, 169, 110, 0.2)); }
-            50% { filter: drop-shadow(0 0 25px rgba(201, 169, 110, 0.6)); }
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 10px rgba(201, 169, 110, 0.2));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 25px rgba(201, 169, 110, 0.6));
+            }
         }
+
         @keyframes breathe-healthy {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(139, 157, 131, 0.2)); }
-            50% { filter: drop-shadow(0 0 25px rgba(139, 157, 131, 0.6)); }
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 10px rgba(139, 157, 131, 0.2));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 25px rgba(139, 157, 131, 0.6));
+            }
         }
+
         @keyframes breathe-critical {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(199, 91, 91, 0.2)); }
-            50% { filter: drop-shadow(0 0 25px rgba(199, 91, 91, 0.6)); }
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 10px rgba(199, 91, 91, 0.2));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 25px rgba(199, 91, 91, 0.6));
+            }
         }
-        
-        .health-glow-healthy { animation: breathe-healthy 4s ease-in-out infinite; }
-        .health-glow-caution { animation: breathe 4s ease-in-out infinite; }
-        .health-glow-critical { animation: breathe-critical 4s ease-in-out infinite; }
-        
+
+        .health-glow-healthy {
+            animation: breathe-healthy 4s ease-in-out infinite;
+        }
+
+        .health-glow-caution {
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        .health-glow-critical {
+            animation: breathe-critical 4s ease-in-out infinite;
+        }
+
         @media (prefers-reduced-motion: reduce) {
-            .health-glow-healthy, .health-glow-caution, .health-glow-critical, .stagger-item {
+
+            .health-glow-healthy,
+            .health-glow-caution,
+            .health-glow-critical,
+            .stagger-item {
                 animation: none;
                 filter: none;
                 opacity: 1;
                 transform: none;
             }
         }
-        
+
         /* Dropzone */
         .dropzone {
             border: 1px dashed var(--border);
@@ -280,11 +410,15 @@
             cursor: pointer;
             transition: background var(--transition);
         }
-        .dropzone:hover { background: var(--bg-input); }
-        
+
+        .dropzone:hover {
+            background: var(--bg-input);
+        }
+
         /* Loading Overlay */
         #loader {
-            position: fixed; inset: 0;
+            position: fixed;
+            inset: 0;
             background: rgba(12, 12, 14, 0.8);
             backdrop-filter: blur(4px);
             display: flex;
@@ -292,21 +426,32 @@
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            opacity: 0; pointer-events: none;
+            opacity: 0;
+            pointer-events: none;
             transition: opacity 0.3s;
         }
-        #loader.active { opacity: 1; pointer-events: all; }
-        
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        #loader.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
         .spinner {
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             border: 3px solid rgba(201, 169, 110, 0.2);
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-bottom: 16px;
         }
-        
+
         /* Error Banner */
         #error-banner {
             background: rgba(199, 91, 91, 0.1);
@@ -317,23 +462,52 @@
             margin-bottom: 24px;
             display: none;
         }
-        
+
         /* Responsive */
         @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            .col-span-3, .col-span-4, .col-span-8, .col-span-9, .col-span-12 { grid-column: span 1; }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .col-span-3,
+            .col-span-4,
+            .col-span-8,
+            .col-span-9,
+            .col-span-12 {
+                grid-column: span 1;
+            }
         }
+
         @media (min-width: 769px) {
-            .col-span-3 { grid-column: span 3; }
-            .col-span-4 { grid-column: span 4; }
-            .col-span-8 { grid-column: span 8; }
-            .col-span-9 { grid-column: span 9; }
-            .col-span-12 { grid-column: span 12; }
+            .col-span-3 {
+                grid-column: span 3;
+            }
+
+            .col-span-4 {
+                grid-column: span 4;
+            }
+
+            .col-span-8 {
+                grid-column: span 8;
+            }
+
+            .col-span-9 {
+                grid-column: span 9;
+            }
+
+            .col-span-12 {
+                grid-column: span 12;
+            }
         }
-        
-        .text-right { text-align: right; }
-        .w-full { width: 100%; }
-        
+
+        .text-right {
+            text-align: right;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
         /* Canvas */
         .chart-container {
             width: 100%;
@@ -343,50 +517,53 @@
         }
     </style>
 </head>
+
 <body>
-  <div class="scanlines"></div>
-  <div class="ambient-glow"></div>
+    <div class="scanlines"></div>
+    <div class="ambient-glow"></div>
 
 
-    
 
-      <!-- Shared Navigation -->
-  <nav class="nav">
-    <div class="container flex justify-between items-center" style="width:100%;">
-      <div class="flex items-center">
-        <a href="/" class="nav-logo">
-          <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 4px;">insights</span>
-          VITALS.IO
-        </a>
-        <ul class="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/product">Product</a></li>
-          <li><a href="/solutions">Solutions</a></li>
-          <li><a href="/economics" class="active">Economics</a></li>
-          <li><a href="/api">API</a></li>
-          <li><a href="/contact">Contact</a></li>
-        </ul>
-      </div>
-      <div class="flex items-center gap-4">
-          <div class="api-status">
-              <div id="api-dot" class="status-dot"></div>
-              <span id="api-text">Checking...</span>
-          </div>
-          <button class="btn btn-ghost" onclick="generatePDF()">
-              Export PDF
-          </button>
-      </div>
-    </div>
-  </nav>
+
+    <!-- Shared Navigation -->
+    <nav class="nav">
+        <div class="container flex justify-between items-center" style="width:100%;">
+            <div class="flex items-center">
+                <a href="/" class="nav-logo">
+                    <span class="material-symbols-outlined"
+                        style="vertical-align: middle; margin-right: 4px;">insights</span>
+                    VITALS.IO
+                </a>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/product">Product</a></li>
+                    <li><a href="/solutions">Solutions</a></li>
+                    <li><a href="/economics" class="active">Economics</a></li>
+                    <li><a href="/api">API</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="api-status">
+                    <div id="api-dot" class="status-dot"></div>
+                    <span id="api-text">Checking...</span>
+                </div>
+                <button class="btn btn-ghost" onclick="generatePDF()">
+                    Export PDF
+                </button>
+            </div>
+        </div>
+    </nav>
 
     <main class="container mt-8 mb-8">
         <div id="error-banner"></div>
-        
+
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
             <div>
                 <h1 class="display">Institutional Unit Economics</h1>
-                <p class="text-sm mt-2">Evaluate your SaaS viability through rigorous LTV:CAC, payback periods, and margin analysis.</p>
+                <p class="text-sm mt-2">Evaluate your SaaS viability through rigorous LTV:CAC, payback periods, and
+                    margin analysis.</p>
             </div>
             <button class="btn btn-primary" onclick="loadDemoData()">⚡ Load Demo Data (D)</button>
         </div>
@@ -400,7 +577,7 @@
                     <p class="label-caps mb-2">Upload CSV</p>
                     <p class="text-sm">Drag & drop or click to browse</p>
                 </div>
-                
+
                 <!-- Scenario Simulator -->
                 <div class="card">
                     <h2 class="font-serif mb-4">Scenario Simulator</h2>
@@ -437,31 +614,34 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Right Panel -->
             <div class="col-span-8 flex-col gap-6" id="dashboard" style="opacity: 0.3; pointer-events: none;">
-                
+
                 <!-- Top Metrics & Health -->
                 <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 24px;">
                     <!-- Health Score -->
-                    <div class="card flex-col items-center justify-center" style="grid-column: span 1; position: relative; overflow: visible;">
+                    <div class="card flex-col items-center justify-center"
+                        style="grid-column: span 1; position: relative; overflow: visible;">
                         <h3 class="label-caps mb-4" style="align-self: flex-start;">Financial Health</h3>
-                        
-                        <div class="health-score-wrapper" id="health-score-wrapper" style="position: relative; width: 180px; height: 180px; display:flex; justify-content:center; align-items:center;">
+
+                        <div class="health-score-wrapper" id="health-score-wrapper"
+                            style="position: relative; width: 180px; height: 180px; display:flex; justify-content:center; align-items:center;">
                             <svg width="180" height="180" viewBox="0 0 200 200" style="position:absolute;">
-                                <circle cx="100" cy="100" r="90" fill="none" stroke="var(--border)" stroke-width="8"/>
-                                <circle id="health-ring" cx="100" cy="100" r="90" fill="none" 
-                                    stroke="var(--primary)" stroke-width="8" stroke-linecap="square"
-                                    stroke-dasharray="565.48" stroke-dashoffset="565.48"
-                                    transform="rotate(-90 100 100)" style="transition: stroke-dashoffset 1.5s ease-out;"/>
+                                <circle cx="100" cy="100" r="90" fill="none" stroke="var(--border)" stroke-width="8" />
+                                <circle id="health-ring" cx="100" cy="100" r="90" fill="none" stroke="var(--primary)"
+                                    stroke-width="8" stroke-linecap="square" stroke-dasharray="565.48"
+                                    stroke-dashoffset="565.48" transform="rotate(-90 100 100)"
+                                    style="transition: stroke-dashoffset 1.5s ease-out;" />
                             </svg>
                             <div style="text-align:center; z-index: 10;">
-                                <div class="font-mono text-primary" id="health-number" style="font-size: 48px; line-height: 1;">0.0</div>
+                                <div class="font-mono text-primary" id="health-number"
+                                    style="font-size: 48px; line-height: 1;">0.0</div>
                                 <div class="label-caps mt-2" id="health-status">—</div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Core Metrics grid -->
                     <div style="grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
                         <div class="card stagger-item" style="animation-delay: 0.1s;">
@@ -488,7 +668,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Bottom Metrics -->
                 <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top:24px;">
                     <div class="card stagger-item" style="animation-delay: 0.5s;">
@@ -520,71 +700,79 @@
                             <div class="text-sm">Run analysis to see insights.</div>
                         </div>
                     </div>
-                    
+
                     <div class="card stagger-item" style="animation-delay: 0.9s;">
                         <div class="flex justify-between items-center">
                             <h3 class="label-caps">Runway Forecast</h3>
                             <span class="badge" id="b-runway">SAFE</span>
                         </div>
                         <div class="chart-container">
-                            <svg id="runway-chart" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <svg id="runway-chart" width="100%" height="100%" viewBox="0 0 100 100"
+                                preserveAspectRatio="none">
                                 <!-- Chart lines drawn by JS -->
                             </svg>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </main>
-    
-      <!-- Shared Footer -->
-  <footer class="site-footer">
-    <div class="container flex justify-between" style="align-items: flex-start;">
-      <div>
-        <div class="footer-brand">VITALS.IO</div>
-        <div class="footer-tagline">The financial health monitor for startups.</div>
-      </div>
-      
-      <div style="display: flex; gap: 48px;">
-        <div>
-          <h4 style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">PRODUCT</h4>
-          <div class="flex flex-col gap-2">
-            <a href="/product" style="color: var(--text-secondary); font-size: 14px;">Features</a>
-            <a href="/economics" style="color: var(--text-secondary); font-size: 14px;">Economics</a>
-            <a href="/api" style="color: var(--text-secondary); font-size: 14px;">API</a>
-          </div>
+
+    <!-- Shared Footer -->
+    <footer class="site-footer">
+        <div class="container flex justify-between" style="align-items: flex-start;">
+            <div>
+                <div class="footer-brand">VITALS.IO</div>
+                <div class="footer-tagline">The financial health monitor for startups.</div>
+            </div>
+
+            <div style="display: flex; gap: 48px;">
+                <div>
+                    <h4
+                        style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">
+                        PRODUCT</h4>
+                    <div class="flex flex-col gap-2">
+                        <a href="/product" style="color: var(--text-secondary); font-size: 14px;">Features</a>
+                        <a href="/economics" style="color: var(--text-secondary); font-size: 14px;">Economics</a>
+                        <a href="/api" style="color: var(--text-secondary); font-size: 14px;">API</a>
+                    </div>
+                </div>
+                <div>
+                    <h4
+                        style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">
+                        RESOURCES</h4>
+                    <div class="flex flex-col gap-2">
+                        <a href="/solutions" style="color: var(--text-secondary); font-size: 14px;">Solutions</a>
+                        <a href="/contact" style="color: var(--text-secondary); font-size: 14px;">Contact</a>
+                    </div>
+                </div>
+                <div>
+                    <h4
+                        style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">
+                        COMPANY</h4>
+                    <div class="flex flex-col gap-2">
+                        <a href="/" style="color: var(--text-secondary); font-size: 14px;">About</a>
+                        <a href="/contact" style="color: var(--text-secondary); font-size: 14px;">Contact</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-          <h4 style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">RESOURCES</h4>
-          <div class="flex flex-col gap-2">
-            <a href="/solutions" style="color: var(--text-secondary); font-size: 14px;">Solutions</a>
-            <a href="/contact" style="color: var(--text-secondary); font-size: 14px;">Contact</a>
-          </div>
+        <div class="container mt-4"
+            style="padding-top: 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between;">
+            <div class="footer-meta">© 2026 vitals.io. Built for HackLabify.</div>
+            <div class="footer-meta">All calculations are deterministic. No AI hallucinations.</div>
         </div>
-        <div>
-          <h4 style="font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); margin-bottom: 12px; letter-spacing: 0.05em;">COMPANY</h4>
-          <div class="flex flex-col gap-2">
-            <a href="/" style="color: var(--text-secondary); font-size: 14px;">About</a>
-            <a href="/contact" style="color: var(--text-secondary); font-size: 14px;">Contact</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container mt-4" style="padding-top: 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between;">
-      <div class="footer-meta">© 2026 vitals.io. Built for HackLabify.</div>
-      <div class="footer-meta">All calculations are deterministic. No AI hallucinations.</div>
-    </div>
-  </footer>
-<script>
+    </footer>
+    <script>
         let currentData = null;
-            window.vitalsData = currentData; // Store for PDF and Scenario payload
+        window.vitalsData = currentData; // Store for PDF and Scenario payload
         let basePayload = null; // Store base payload for scenarios
 
         // Currency Formatter
         const formatMoney = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
         const formatPct = (val) => (val * 100).toFixed(1) + '%';
-        
+
         // API Health
         async function checkHealth() {
             const dot = document.getElementById('api-dot');
@@ -601,16 +789,16 @@
                 text.textContent = 'API Offline';
             }
         }
-        
+
         // Global Error
         function showError(msg) {
             if (window.showToast) window.showToast(msg, "error");
             else alert(msg);
             setLoader(false);
         }
-        
+
         // Loader
-        function setLoader(active, text="Calculating...") {
+        function setLoader(active, text = "Calculating...") {
             if (active) { window.showLoader(text); }
             else { window.hideLoader(); }
         }
@@ -621,11 +809,11 @@
                 loadDemoData();
             }
         });
-        
+
         // Dropzone logic
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('csv-input');
-        
+
         dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.style.borderColor = 'var(--primary)'; });
         dropzone.addEventListener('dragleave', (e) => { e.preventDefault(); dropzone.style.borderColor = 'var(--border)'; });
         dropzone.addEventListener('drop', (e) => {
@@ -635,7 +823,7 @@
         fileInput.addEventListener('change', (e) => {
             if (e.target.files.length) handleUpload(e.target.files[0]);
         });
-        
+
         async function handleUpload(file) {
             const formData = new FormData();
             formData.append('file', file);
@@ -644,7 +832,7 @@
                 const res = await fetch('/upload', { method: 'POST', body: formData });
                 if (!res.ok) throw new Error("Upload failed: " + res.statusText);
                 const data = await res.json();
-                
+
                 // We need the base payload to run scenarios, but /upload only returns the results. 
                 // Wait, if it only returns results, we can't do scenarios easily unless we assume a base.
                 // Let's just update the dashboard for now.
@@ -657,7 +845,7 @@
                     sales_cost: 0,
                     cogs: 0
                 };
-                
+
                 updateDashboard(data);
                 await fetchRunway(basePayload);
             } catch (e) {
@@ -666,7 +854,7 @@
                 setLoader(false);
             }
         }
-        
+
         // Demo Data
         async function loadDemoData() {
             const payload = {
@@ -679,7 +867,7 @@
                 cogs: 50000
             };
             basePayload = payload;
-            
+
             setLoader(true, "Analyzing Economics...");
             try {
                 const res = await fetch('/analyze', {
@@ -690,7 +878,7 @@
                 if (!res.ok) throw new Error("Analysis failed");
                 const data = await res.json();
                 updateDashboard(data);
-                
+
                 await fetchRunway(payload);
             } catch (e) {
                 showError(e.message);
@@ -698,21 +886,21 @@
                 setLoader(false);
             }
         }
-        
+
         // Update Dashboard
         function updateDashboard(data) {
             currentData = data;
             window.vitalsData = currentData;
             document.getElementById('dashboard').style.opacity = '1';
             document.getElementById('dashboard').style.pointerEvents = 'all';
-            
+
             // Re-trigger stagger animation
             document.querySelectorAll('.stagger-item').forEach(el => {
                 el.style.animation = 'none';
                 el.offsetHeight; /* trigger reflow */
-                el.style.animation = null; 
+                el.style.animation = null;
             });
-            
+
             document.getElementById('m-arpa').textContent = formatMoney(data.arpa);
             document.getElementById('m-margin').textContent = formatPct(data.gross_margin_pct);
             document.getElementById('m-churn').textContent = formatPct(data.churn_rate);
@@ -720,47 +908,47 @@
             document.getElementById('m-ltv').textContent = formatMoney(data.ltv);
             document.getElementById('m-ltvcac').textContent = data.ltv_cac_ratio.toFixed(1) + 'x';
             document.getElementById('m-payback').textContent = data.payback.toFixed(1) + ' mo';
-            
+
             // Badges
             const bMargin = document.getElementById('b-margin');
             if (data.gross_margin_pct >= 0.7) { bMargin.textContent = 'HEALTHY'; bMargin.className = 'badge healthy'; }
             else if (data.gross_margin_pct >= 0.4) { bMargin.textContent = 'CAUTION'; bMargin.className = 'badge caution'; }
             else { bMargin.textContent = 'CRITICAL'; bMargin.className = 'badge critical'; }
-            
+
             const bChurn = document.getElementById('b-churn');
             if (data.churn_rate <= 0.02) { bChurn.textContent = 'HEALTHY'; bChurn.className = 'badge healthy'; }
             else if (data.churn_rate <= 0.05) { bChurn.textContent = 'CAUTION'; bChurn.className = 'badge caution'; }
             else { bChurn.textContent = 'CRITICAL'; bChurn.className = 'badge critical'; }
-            
+
             const bLtvcac = document.getElementById('b-ltvcac');
             if (data.ltv_cac_ratio >= 3.0) { bLtvcac.textContent = 'HEALTHY'; bLtvcac.className = 'badge healthy'; }
             else if (data.ltv_cac_ratio >= 1.5) { bLtvcac.textContent = 'CAUTION'; bLtvcac.className = 'badge caution'; }
             else { bLtvcac.textContent = 'CRITICAL'; bLtvcac.className = 'badge critical'; }
-            
+
             const bPayback = document.getElementById('b-payback');
             if (data.payback <= 12) { bPayback.textContent = 'HEALTHY'; bPayback.className = 'badge healthy'; }
             else if (data.payback <= 18) { bPayback.textContent = 'CAUTION'; bPayback.className = 'badge caution'; }
             else { bPayback.textContent = 'CRITICAL'; bPayback.className = 'badge critical'; }
-            
+
             // Health Score
             animateHealthScore(data.health_score);
-            
+
             // Insights
             renderInsights(data);
         }
-        
+
         function animateHealthScore(score) {
             const ring = document.getElementById('health-ring');
             const num = document.getElementById('health-number');
             const status = document.getElementById('health-status');
             const wrap = document.getElementById('health-score-wrapper');
-            
+
             // Circumference of r=90 is ~565.48
             const offset = 565.48 - (score / 10) * 565.48;
-            
+
             // Clear classes
             wrap.className = 'health-score-wrapper';
-            
+
             if (score >= 7) {
                 ring.style.stroke = 'var(--secondary)';
                 num.style.color = 'var(--secondary)';
@@ -780,14 +968,14 @@
                 status.textContent = 'CRITICAL';
                 wrap.classList.add('health-glow-critical');
             }
-            
+
             // Animate number
             let start = 0;
             const duration = 1500;
             const stepTime = 20;
             const steps = duration / stepTime;
             const inc = score / steps;
-            
+
             const timer = setInterval(() => {
                 start += inc;
                 if (start >= score) {
@@ -796,39 +984,39 @@
                 }
                 num.textContent = start.toFixed(1);
             }, stepTime);
-            
+
             ring.style.strokeDashoffset = offset;
         }
-        
+
         function renderInsights(data) {
             const list = document.getElementById('insights-list');
             list.innerHTML = '';
-            
+
             const addInsight = (text, type) => {
                 let color = 'var(--primary)';
                 if (type === 'healthy') color = 'var(--secondary)';
                 if (type === 'critical') color = 'var(--error)';
-                
+
                 list.innerHTML += `
                 <div class="flex items-center gap-4 border-l-2 p-2" style="border-color: ${color}; background: rgba(255,255,255,0.02);">
                     <div style="width: 8px; height: 8px; border-radius: 50%; background: ${color};"></div>
                     <div class="text-sm" style="color: var(--text-primary);">${text}</div>
                 </div>`;
             };
-            
+
             if (data.ltv_cac_ratio >= 3) addInsight(`LTV:CAC is strong (${data.ltv_cac_ratio.toFixed(1)}x). Indicates sustainable growth.`, 'healthy');
             else if (data.ltv_cac_ratio >= 1.5) addInsight(`LTV:CAC is marginal (${data.ltv_cac_ratio.toFixed(1)}x). Monitor acquisition.`, 'caution');
             else addInsight(`LTV:CAC is critical (<1.5x). Losing money on acquisition.`, 'critical');
-            
+
             if (data.churn_rate <= 0.02) addInsight(`Monthly churn is low (${formatPct(data.churn_rate)}). Great retention.`, 'healthy');
             else if (data.churn_rate <= 0.05) addInsight(`Monthly churn is elevated (${formatPct(data.churn_rate)}). Investigate retention.`, 'caution');
             else addInsight(`High churn rate (${formatPct(data.churn_rate)}). Leaky bucket dynamic.`, 'critical');
-            
+
             if (data.payback <= 12) addInsight(`Payback period is healthy (${data.payback.toFixed(1)}m). Fast capital recovery.`, 'healthy');
             else if (data.payback <= 18) addInsight(`Payback period extended (${data.payback.toFixed(1)}m).`, 'caution');
             else addInsight(`Payback period too long (>18m). Cash flow risk.`, 'critical');
         }
-        
+
         // Scenario
         function updateScenario() {
             document.getElementById('val-sc-churn').textContent = document.getElementById('sc-churn').value + '%';
@@ -836,7 +1024,7 @@
             document.getElementById('val-sc-mrr').textContent = document.getElementById('sc-mrr').value + '%';
             document.getElementById('val-sc-margin').textContent = document.getElementById('sc-margin').value + '%';
         }
-        
+
         async function runScenario() {
             if (!basePayload) return;
             const payload = {
@@ -846,7 +1034,7 @@
                 mrr_growth_adj: parseFloat(document.getElementById('sc-mrr').value) / 100,
                 gross_margin_adj: parseFloat(document.getElementById('sc-margin').value) / 100
             };
-            
+
             setLoader(true, "Simulating...");
             try {
                 const res = await fetch('/predict/scenario', {
@@ -856,73 +1044,76 @@
                 });
                 if (!res.ok) throw new Error("Scenario failed");
                 const data = await res.json();
-                
+
+                // Backend doesn't return arpa for scenarios, compute locally
+                data.arpa = (basePayload.mrr * (1 + payload.mrr_growth_adj)) / basePayload.total_customers || 0;
+
                 // Keep original data to show deltas if we want, but for now just update Dashboard
                 updateDashboard(data);
-                
+
                 // Re-run runway
                 await fetchRunway(payload);
-                
-            } catch(e) {
+
+            } catch (e) {
                 showError(e.message);
             } finally {
                 setLoader(false);
             }
         }
-        
+
         // Runway
         async function fetchRunway(payload) {
             try {
                 const res = await fetch('/predict/runway', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({...payload, cash_balance: 2000000}) // Default 20L
+                    body: JSON.stringify({ ...payload, cash_balance: 2000000 }) // Default 20L
                 });
                 if (res.ok) {
                     const data = await res.json();
                     drawRunwayChart(data.forecast);
-                    
+
                     const badge = document.getElementById('b-runway');
                     if (data.runway_months > 12) { badge.textContent = 'SAFE'; badge.className = 'badge healthy'; }
                     else if (data.runway_months >= 6) { badge.textContent = 'WARNING'; badge.className = 'badge caution'; }
                     else { badge.textContent = 'CRITICAL'; badge.className = 'badge critical'; }
                 }
-            } catch(e) { console.error(e); }
+            } catch (e) { console.error(e); }
         }
-        
+
         function drawRunwayChart(forecast) {
             const svg = document.getElementById('runway-chart');
             svg.innerHTML = '';
-            
+
             if (!forecast || forecast.length === 0) return;
-            
+
             const maxVal = Math.max(...forecast.map(d => d.cash));
             const minVal = Math.min(...forecast.map(d => d.cash), 0);
-            
+
             const range = maxVal - minVal;
-            
+
             // Map to 0-100 coords
             const getX = (i) => (i / (forecast.length - 1)) * 100;
             const getY = (val) => 100 - (((val - minVal) / range) * 100);
-            
+
             const zeroY = getY(0);
-            
+
             // Draw Zero line
             svg.innerHTML += `<line x1="0" y1="${zeroY}" x2="100" y2="${zeroY}" stroke="var(--error)" stroke-width="0.5" stroke-dasharray="2,2"/>`;
-            
+
             // Draw path
             let path = `M 0 ${getY(forecast[0].cash)} `;
-            for(let i=1; i<forecast.length; i++) {
+            for (let i = 1; i < forecast.length; i++) {
                 path += `L ${getX(i)} ${getY(forecast[i].cash)} `;
             }
-            
+
             svg.innerHTML += `<path d="${path}" fill="none" stroke="var(--primary)" stroke-width="1.5" />`;
-            
+
             // Area
             let area = path + `L 100 ${zeroY} L 0 ${zeroY} Z`;
             svg.innerHTML += `<path d="${area}" fill="rgba(201, 169, 110, 0.1)" />`;
         }
-        
+
         // PDF Export
         function generatePDF() {
             if (!window.vitalsData || !window.vitalsData.health_score) {
@@ -932,30 +1123,30 @@
             }
             const currentData = window.vitalsData;
             window.vitalsData = currentData;
-            
+
             window.jsPDF = window.jspdf.jsPDF;
             const doc = new jsPDF();
-            
+
             const d = new Date();
             const dateStr = d.toLocaleDateString();
-            
+
             doc.setFillColor(8, 12, 20); // #080C14
             doc.rect(0, 0, 210, 40, 'F');
-            
+
             doc.setTextColor(201, 169, 110);
             doc.setFontSize(24);
             doc.text("VITALS.IO", 14, 25);
-            
+
             doc.setTextColor(255, 255, 255);
             doc.setFontSize(14);
             doc.text("Financial Health Report", 130, 20);
             doc.setFontSize(10);
             doc.text("Date: " + dateStr, 130, 28);
-            
+
             doc.setTextColor(0, 0, 0);
             doc.setFontSize(16);
             doc.text("Health Score: " + currentData.health_score.toFixed(1), 14, 55);
-            
+
             const tableData = [
                 ["ARPA", formatMoney(currentData.arpa)],
                 ["Gross Margin", formatPct(currentData.gross_margin_pct)],
@@ -965,92 +1156,95 @@
                 ["LTV:CAC Ratio", currentData.ltv_cac_ratio.toFixed(1) + "x"],
                 ["Payback Period", currentData.payback.toFixed(1) + " mo"]
             ];
-            
+
             doc.autoTable({
                 startY: 65,
                 head: [['Metric', 'Value']],
                 body: tableData,
                 theme: 'grid',
-                headStyles: { fillColor: [201, 169, 110], textColor: [0,0,0] }
+                headStyles: { fillColor: [201, 169, 110], textColor: [0, 0, 0] }
             });
-            
+
             const finalY = doc.lastAutoTable.finalY + 15;
             doc.text("Key Findings", 14, finalY);
-            
+
             doc.setFontSize(10);
             let y = finalY + 8;
-            
-            if (currentData.ltv_cac_ratio >= 3) { doc.text("- LTV:CAC is strong.", 14, y); y+=6; }
-            else { doc.text("- LTV:CAC needs attention.", 14, y); y+=6; }
-            
-            if (currentData.churn_rate <= 0.02) { doc.text("- Churn is healthy.", 14, y); y+=6; }
-            else { doc.text("- Churn is high.", 14, y); y+=6; }
-            
+
+            if (currentData.ltv_cac_ratio >= 3) { doc.text("- LTV:CAC is strong.", 14, y); y += 6; }
+            else { doc.text("- LTV:CAC needs attention.", 14, y); y += 6; }
+
+            if (currentData.churn_rate <= 0.02) { doc.text("- Churn is healthy.", 14, y); y += 6; }
+            else { doc.text("- Churn is high.", 14, y); y += 6; }
+
             doc.setFontSize(8);
             doc.setTextColor(150, 150, 150);
             doc.text("All calculations are deterministic. No AI hallucinations.", 14, 290);
-            
-            doc.save(`Vitals-Report-${d.toISOString().slice(0,10)}.pdf`);
+
+            doc.save(`Vitals-Report-${d.toISOString().slice(0, 10)}.pdf`);
         }
-        
+
         // Initial Health Check
         window.onload = checkHealth;
 
     </script>
 
-  <!-- Global Components -->
-  <div id="toast-container"></div>
-  <div id="global-loader" class="loader-overlay" style="display:none;">
-    <svg class="loader-spinner" width="40" height="40" viewBox="0 0 40 40">
-      <circle cx="20" cy="20" r="18" fill="none" stroke="var(--border-color)" stroke-width="3"/>
-      <circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent-primary)" stroke-width="3"
-        stroke-dasharray="113" stroke-dashoffset="80" stroke-linecap="round"
-        style="transform-origin:center; animation: spin 1s linear infinite;"/>
-    </svg>
-    <p id="loader-text" style="color: var(--accent-primary); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; margin-top: 12px;">LOADING...</p>
-  </div>
+    <!-- Global Components -->
+    <div id="toast-container"></div>
+    <div id="global-loader" class="loader-overlay" style="display:none;">
+        <svg class="loader-spinner" width="40" height="40" viewBox="0 0 40 40">
+            <circle cx="20" cy="20" r="18" fill="none" stroke="var(--border-color)" stroke-width="3" />
+            <circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent-primary)" stroke-width="3"
+                stroke-dasharray="113" stroke-dashoffset="80" stroke-linecap="round"
+                style="transform-origin:center; animation: spin 1s linear infinite;" />
+        </svg>
+        <p id="loader-text"
+            style="color: var(--accent-primary); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; margin-top: 12px;">
+            LOADING...</p>
+    </div>
 
 
     <script>
-    // Global Toast System
-    window.showToast = function(message, type = 'info') {
-      const container = document.getElementById('toast-container');
-      if (!container) return;
-      
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      
-      let icon = 'info';
-      if(type === 'success') icon = 'check_circle';
-      if(type === 'error') icon = 'error';
-      if(type === 'warning') icon = 'warning';
-      
-      toast.innerHTML = `<span class="material-symbols-outlined">${icon}</span> <span>${message}</span>`;
-      container.appendChild(toast);
-      
-      setTimeout(() => toast.classList.add('show'), 10);
-      
-      setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    };
+        // Global Toast System
+        window.showToast = function (message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
 
-    // Global Loader System
-    window.showLoader = function(text = "LOADING...") {
-      const loader = document.getElementById('global-loader');
-      const loaderText = document.getElementById('loader-text');
-      if (loader) {
-        if (loaderText) loaderText.textContent = text;
-        loader.style.display = 'flex';
-      }
-    };
-    
-    window.hideLoader = function() {
-      const loader = document.getElementById('global-loader');
-      if (loader) loader.style.display = 'none';
-    };
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            let icon = 'info';
+            if (type === 'success') icon = 'check_circle';
+            if (type === 'error') icon = 'error';
+            if (type === 'warning') icon = 'warning';
+
+            toast.innerHTML = `<span class="material-symbols-outlined">${icon}</span> <span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 10);
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
+        // Global Loader System
+        window.showLoader = function (text = "LOADING...") {
+            const loader = document.getElementById('global-loader');
+            const loaderText = document.getElementById('loader-text');
+            if (loader) {
+                if (loaderText) loaderText.textContent = text;
+                loader.style.display = 'flex';
+            }
+        };
+
+        window.hideLoader = function () {
+            const loader = document.getElementById('global-loader');
+            if (loader) loader.style.display = 'none';
+        };
     </script>
 
 </body>
+
 </html>
