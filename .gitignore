@@ -1,4 +1,4 @@
-# Python environments & cache
+# === Python ===
 __pycache__/
 *.py[cod]
 *$py.class
@@ -19,58 +19,67 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+.mypy_cache/
+.ruff_cache/
 
-# Virtual environments
+# === Virtual Environments ===
 .venv/
 venv/
 ENV/
 env/
 
-# Pytest & Coverage
+# === Testing & Coverage ===
 .pytest_cache/
 .coverage
 htmlcov/
+.tox/
 
-# IDEs & Editor
+# === IDEs ===
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Agent / Tool Config
-.gemini/
-
-# OS specific files
+# === OS ===
 .DS_Store
 Thumbs.db
 .AppleDouble
 .LSOverride
 
-# Logs
+# === Logs ===
 *.log
 server.log
 
-# Environment variables & secrets
+# === Secrets & Environment ===
 .env
 .env.*
 !.env.example
+*.pem
+*.key
 
-# Local databases or uploads
+# === Local Databases & Uploads ===
 *.sqlite3
 *.db
 uploads/
 
-# Data files (keep sample datasets)
-data/
+# === Data: keep only sample datasets ===
+data/*
 !data/healthy_startup.csv
 !data/struggling_startup.csv
 !data/exploding_startup.csv
 
-# Temporary generated PDFs or tests
-*.pdf
+# === Node (if you ever run frontend locally) ===
+node_modules/
+frontend/dist/
+frontend/.vite/
 
-# Temporary scripts
+# === Temporary / Generated ===
+*.pdf
+*.tmp
+*.temp
+
+# === One-off scripts (don't commit throwaways) ===
 patch_*.py
 fix_*.py
 update_*.py
