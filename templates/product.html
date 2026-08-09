@@ -4,6 +4,13 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>Product | VITALS.IO</title>
+
+  <meta name="description" content="Financial health intelligence for startups. Upload financial data and calculate investor-grade unit economics, runway, scenarios and forecasts.">
+  <meta property="og:title" content="VITALS.IO — Financial Health Monitor">
+  <meta property="og:description" content="Calculate investor-grade unit economics, runway, scenarios and forecasts.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,14 +45,14 @@
       </div>
       <div class="flex items-center gap-3">
         <a href="/economics" class="btn btn-primary" style="display: var(--desktop-btn-display, flex);">Get Started</a>
-        <button class="mobile-menu-btn" aria-label="Menu">
+        <button class="mobile-menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
       </div>
     </div>
     
     <!-- Mobile Menu -->
-    <div class="mobile-menu">
+    <div class="mobile-menu" id="mobile-menu">
       <a href="/">Home</a>
       <a href="/product">Product</a>
       <a href="/solutions">Solutions</a>

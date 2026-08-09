@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /economics
+Disallow: /login
+Disallow: /signup
+
+Sitemap: https://vitals-io.onrender.com/sitemap.xml

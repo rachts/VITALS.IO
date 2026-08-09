@@ -1,4 +1,4 @@
-# Python
+# Python environments & cache
 __pycache__/
 *.py[cod]
 *$py.class
@@ -26,76 +26,54 @@ venv/
 ENV/
 env/
 
-# Pytest
+# Pytest & Coverage
 .pytest_cache/
 .coverage
 htmlcov/
 
-# IDEs
+# IDEs & Editor
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# OS
+# Agent / Tool Config
+.gemini/
+
+# OS specific files
 .DS_Store
 Thumbs.db
+.AppleDouble
+.LSOverride
 
 # Logs
 *.log
 server.log
 
-# Environment
+# Environment variables & secrets
 .env
 .env.*
-.env.local
+!.env.example
 
-# Data files
+# Local databases or uploads
+*.sqlite3
+*.db
+uploads/
+
+# Data files (keep sample datasets)
 data/
 !data/healthy_startup.csv
 !data/struggling_startup.csv
 !data/exploding_startup.csv
 
-# PDFs & design exports
+# Temporary generated PDFs or tests
 *.pdf
-Vitals_Institutional_Redesign/
 
 # Temporary scripts
 patch_*.py
 fix_*.py
-update_script*.py
+update_*.py
 bigdata.py
-test_api.py
-test_upload.py
 download_screens.py
 extract_design.py
-
-# Test artifacts
-test_*.html
-test_pdf.html
-
-# Frontend build output
-node_modules/
-frontend/node_modules/
-frontend/dist/
-
-# Default scaffold assets
-frontend/src/assets/react.svg
-frontend/src/assets/vite.svg
-
-# Images (screenshots only; allow app assets)
-**/*.png
-**/*.jpg
-**/*.jpeg
-!frontend/src/assets/hero.png
-!frontend/public/**/*.svg
-!frontend/public/**/*.png
-!frontend/public/**/*.jpg
-
-# AI artifacts
-*.prompt.txt
-
-# Duplicate root HTMLs
-/features.html
-/solutions.html

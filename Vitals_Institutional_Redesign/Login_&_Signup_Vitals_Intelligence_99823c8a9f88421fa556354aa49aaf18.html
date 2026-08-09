@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>vitals.io - Authentication</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;family=Manrope:wght@200..800&amp;family=Playfair+Display:wght@400..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#b9ccb0",
+                        "outline-variant": "#4d463a",
+                        "surface-container-highest": "#353437",
+                        "on-tertiary-fixed": "#410007",
+                        "inverse-primary": "#745a27",
+                        "inverse-surface": "#e5e1e4",
+                        "tertiary": "#ffb6b4",
+                        "on-error": "#690005",
+                        "tertiary-container": "#ff8c8a",
+                        "surface-container": "#201f21",
+                        "secondary-fixed": "#d5e8cb",
+                        "tertiary-fixed": "#ffdad8",
+                        "primary-fixed": "#ffdea4",
+                        "on-primary-fixed": "#261900",
+                        "secondary-container": "#3d4d38",
+                        "primary-fixed-dim": "#e4c285",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#e4c285",
+                        "primary-container": "#c9a96e",
+                        "background": "#131315",
+                        "on-background": "#e5e1e4",
+                        "on-surface-variant": "#d0c5b5",
+                        "surface-dim": "#131315",
+                        "surface-container-low": "#1b1b1d",
+                        "on-tertiary-fixed-variant": "#81262a",
+                        "on-surface": "#e5e1e4",
+                        "primary": "#e6c487",
+                        "on-tertiary": "#620f16",
+                        "surface-container-high": "#2a2a2c",
+                        "on-primary-container": "#543d0c",
+                        "on-secondary": "#253421",
+                        "on-primary": "#412d00",
+                        "on-primary-fixed-variant": "#5a4312",
+                        "surface-variant": "#353437",
+                        "on-tertiary-container": "#792125",
+                        "secondary": "#b9ccb0",
+                        "on-secondary-container": "#abbea2",
+                        "tertiary-fixed-dim": "#ffb3b0",
+                        "on-secondary-fixed": "#101f0d",
+                        "error-container": "#93000a",
+                        "outline": "#998f81",
+                        "on-secondary-fixed-variant": "#3b4b36",
+                        "surface-bright": "#39393b",
+                        "inverse-on-surface": "#313032",
+                        "surface-container-lowest": "#0e0e10",
+                        "surface": "#131315",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "lg": "48px",
+                        "xl": "80px",
+                        "margin-mobile": "16px",
+                        "md": "24px",
+                        "gutter": "24px",
+                        "container-max": "1440px",
+                        "sm": "16px",
+                        "xs": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Manrope"],
+                        "label-caps": ["Manrope"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "data-mono": ["Courier Prime"],
+                        "body-md": ["Manrope"],
+                        "display-lg": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "40px", "fontWeight": "500" }],
+                        "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "data-mono": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#0C0C0E] text-on-surface min-h-screen flex items-center justify-center font-body-md relative overflow-hidden">
+<div class="noise-overlay"></div>
+<main class="w-full max-w-[420px] px-margin-mobile md:px-0 z-10 fade-in-up">
+<div class="bg-[#141416] border border-[#F0EFEA]/[0.06] rounded-lg p-10 flex flex-col items-center">
+<!-- Logo -->
+<div class="mb-8">
+<h1 class="font-headline-md text-headline-md tracking-tight text-on-surface">vitals.io</h1>
+</div>
+<!-- Tabs -->
+<div class="w-full bg-[#1A1A1C] p-1 rounded-full flex mb-8">
+<button class="flex-1 py-2 text-center rounded-full bg-primary-container text-[#0C0C0E] font-label-caps text-label-caps transition-colors duration-200">
+                    Sign In
+                </button>
+<button class="flex-1 py-2 text-center rounded-full text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps transition-colors duration-200">
+                    Create Account
+                </button>
+</div>
+<!-- Form -->
+<form class="w-full space-y-6">
+<div class="space-y-1">
+<label class="block font-label-caps text-label-caps text-outline uppercase" for="email">Email</label>
+<input class="w-full bg-[#1A1A1C] border-0 border-b border-[#F0EFEA]/10 px-4 py-3 text-on-surface font-body-md focus:ring-0 focus:border-primary-container transition-colors rounded-t-sm" id="email" placeholder="name@institution.com" required="" type="email"/>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-center">
+<label class="block font-label-caps text-label-caps text-outline uppercase" for="password">Password</label>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-container transition-colors" href="#">Forgot?</a>
+</div>
+<input class="w-full bg-[#1A1A1C] border-0 border-b border-[#F0EFEA]/10 px-4 py-3 text-on-surface font-body-md focus:ring-0 focus:border-primary-container transition-colors rounded-t-sm" id="password" placeholder="••••••••" required="" type="password"/>
+</div>
+<button class="w-full bg-primary-container hover:bg-primary text-[#0C0C0E] font-label-caps text-label-caps py-4 rounded-sm transition-colors duration-200 uppercase mt-4" type="submit">
+                    Continue
+                </button>
+</form>
+<div class="w-full flex items-center justify-center my-8">
+<div class="h-px bg-[#F0EFEA]/10 flex-1"></div>
+<span class="px-4 font-label-caps text-label-caps text-outline">OR</span>
+<div class="h-px bg-[#F0EFEA]/10 flex-1"></div>
+</div>
+<!-- OAuth -->
+<div class="w-full space-y-3">
+<button class="w-full bg-[#0C0C0E] border border-[#F0EFEA]/10 hover:border-[#F0EFEA]/30 text-on-surface font-body-md py-3 px-4 rounded-sm flex items-center justify-center space-x-3 transition-colors duration-200">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+<span>Continue with Google</span>
+</button>
+<button class="w-full bg-[#0C0C0E] border border-[#F0EFEA]/10 hover:border-[#F0EFEA]/30 text-on-surface font-body-md py-3 px-4 rounded-sm flex items-center justify-center space-x-3 transition-colors duration-200">
+<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
+<path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path>
+</svg>
+<span>Continue with GitHub</span>
+</button>
+</div>
+<div class="mt-8 flex items-center justify-center space-x-2 text-outline font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span>Secured by Supabase Auth</span>
+</div>
+</div>
+</main>
+</body></html>

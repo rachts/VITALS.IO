@@ -4,6 +4,13 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>VITALS.IO — Financial Health Monitor for Startups</title>
+
+  <meta name="description" content="Financial health intelligence for startups. Upload financial data and calculate investor-grade unit economics, runway, scenarios and forecasts.">
+  <meta property="og:title" content="VITALS.IO — Financial Health Monitor">
+  <meta property="og:description" content="Calculate investor-grade unit economics, runway, scenarios and forecasts.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,14 +45,14 @@
       </div>
       <div class="flex items-center gap-3">
         <a href="/economics" class="btn btn-primary" style="display: var(--desktop-btn-display, flex);">Get Started</a>
-        <button class="mobile-menu-btn" aria-label="Menu">
+        <button class="mobile-menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
       </div>
     </div>
     
     <!-- Mobile Menu -->
-    <div class="mobile-menu">
+    <div class="mobile-menu" id="mobile-menu">
       <a href="/">Home</a>
       <a href="/product">Product</a>
       <a href="/solutions">Solutions</a>
@@ -64,7 +71,7 @@
       <div class="container grid-cols-2 items-center">
         <div>
           <p style="font-family: var(--font-mono); color: var(--text-secondary); font-size: 12px; margin-bottom: 8px; letter-spacing: 0.05em;">UNIT ECONOMICS INTELLIGENCE</p>
-          <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px;">Trusted by 100+ startups</p>
+          <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px;">Built for founders who demand accuracy.</p>
           <h1 class="text-gradient fade-in-up" style="font-size: 56px; margin-bottom: 24px;">Know If You Make Money on Every Customer</h1>
           <p class="text-secondary mb-4" style="font-size: 18px; max-width: 540px;">Most founders track total revenue and total burn. Few calculate whether they actually profit per customer. vitals.io accepts any startup's CSV, auto-detects financial columns, and delivers your LTV:CAC, Payback Period, and Health Score — in 3 seconds.</p>
           <div class="flex gap-3 mb-4 mt-4">

@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VITALS.IO - Institutional Unit Economics</title>
 
+  <meta name="description" content="Financial health intelligence for startups. Upload financial data and calculate investor-grade unit economics, runway, scenarios and forecasts.">
+  <meta property="og:title" content="VITALS.IO — Financial Health Monitor">
+  <meta property="og:description" content="Calculate investor-grade unit economics, runway, scenarios and forecasts.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -673,6 +680,9 @@
                                 <div class="label-caps mt-2" id="health-status">—</div>
                             </div>
                         </div>
+                        <div style="margin-top: 16px; font-size: 11px; color: var(--text-muted); text-align: center; max-width: 150px; line-height: 1.4;">
+                            Score based on: 50% LTV:CAC, 30% Payback, 10% Margin, 10% Churn
+                        </div>
                     </div>
 
                     <!-- Core Metrics grid -->
@@ -839,60 +849,34 @@
         window.vitalsData = currentData; // Store for PDF and Scenario payload
         let basePayload = null; // Store base payload for scenarios
 
-        const MISTRAL_API_KEY = '{{ MISTRAL_API_KEY | safe }}'; // from .env.local
+        async function getAuthHeaders() {
+            const headers = { 'Content-Type': 'application/json' };
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session && session.access_token) {
+                    headers['Authorization'] = `Bearer ${session.access_token}`;
+                }
+            } catch (e) {
+                // Ignore auth errors
+            }
+            return headers;
+        }
 
         async function getAdvisorTips(metrics) {
             const fallbackTips = buildFallbackTips(metrics);
             
-            if (!MISTRAL_API_KEY || MISTRAL_API_KEY === 'YOUR_MISTRAL_API_KEY_HERE') {
-                return { tips: fallbackTips, source: 'deterministic' };
-            }
-            
             try {
-                const prompt = `You are a ruthless SaaS advisor. A startup has these exact metrics:
-- ARPA: ₹${Math.round(metrics.arpa).toLocaleString('en-IN')}
-- Gross Margin: ${(metrics.gross_margin_pct * 100).toFixed(1)}%
-- Monthly Churn: ${(metrics.churn_rate * 100).toFixed(2)}%
-- CAC: ₹${Math.round(metrics.cac).toLocaleString('en-IN')}
-- LTV: ₹${Math.round(metrics.ltv).toLocaleString('en-IN')}
-- LTV:CAC Ratio: ${metrics.ltv_cac_ratio !== null ? metrics.ltv_cac_ratio.toFixed(2) + 'x' : 'Infinite'}
-- Payback Period: ${metrics.payback !== null ? metrics.payback.toFixed(1) + ' months' : 'N/A'}
-- Health Score: ${metrics.health_score}/10
-
-Give exactly 3 ultra-specific, one-sentence actionable recommendations. 
-Order by impact (highest first). 
-Each must mention a specific metric number.
-Return ONLY this JSON, no markdown, no explanation:
-{"tips":[{"priority":"high|medium|low","category":"churn|cac|pricing|retention|margins|growth","action":"..."}]}`;
-
-                const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
+                const headers = await getAuthHeaders();
+                const response = await fetch('/api/advisor', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${MISTRAL_API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: 'mistral-small-latest',
-                        messages: [{ role: 'user', content: prompt }],
-                        temperature: 0.3,
-                        max_tokens: 500
-                    })
+                    headers: headers,
+                    body: JSON.stringify(metrics)
                 });
                 
-                if (!response.ok) throw new Error(`Mistral error: ${response.status}`);
+                if (!response.ok) throw new Error(`Advisor error: ${response.status}`);
                 
                 const result = await response.json();
-                const text = result.choices[0].message.content;
-                const clean = text.replace(/```json|```/g, '').trim();
-                const parsed = JSON.parse(clean);
-                
-                if (parsed.tips && parsed.tips.length > 0) {
-                    return { tips: parsed.tips.slice(0, 3), source: 'mistral' };
-                }
-                if (Array.isArray(parsed) && parsed.length > 0) {
-                    return { tips: parsed.slice(0, 3), source: 'mistral' };
-                }
-                throw new Error('Invalid format');
+                return result; // Expected: { tips: [...], source: "mistral" }
                 
             } catch (err) {
                 console.log('Mistral fallback:', err.message);
@@ -991,11 +975,10 @@ Return ONLY this JSON, no markdown, no explanation:
             const text = document.getElementById('api-text');
             if (!dot || !text) return;
             try {
-                const res = await fetch('/health');
-                if (res.ok) {
-                    dot.classList.add('healthy');
-                    text.textContent = 'API Connected';
-                }
+                const res = await fetch('/api/health');
+                if (!res.ok) throw new Error("Health check failed");
+                dot.classList.add('healthy');
+                text.textContent = 'API Connected';
             } catch (e) {
                 dot.classList.remove('healthy');
                 text.textContent = 'API Offline';
@@ -1041,7 +1024,9 @@ Return ONLY this JSON, no markdown, no explanation:
             formData.append('file', file);
             setLoader(true, "Parsing CSV...");
             try {
-                const res = await fetch('/upload', { method: 'POST', body: formData });
+                const headers = await getAuthHeaders();
+                delete headers['Content-Type'];
+                const res = await fetch('/api/upload', { method: 'POST', headers, body: formData });
                 if (!res.ok) throw new Error("Upload failed: " + res.statusText);
                 const result = await res.json();
                 
@@ -1084,9 +1069,10 @@ Return ONLY this JSON, no markdown, no explanation:
 
             setLoader(true, "Analyzing Economics...");
             try {
-                const res = await fetch('/analyze', {
+                const headers = await getAuthHeaders();
+                const res = await fetch('/api/analyze', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: headers,
                     body: JSON.stringify(payload)
                 });
                 if (!res.ok) throw new Error("Analysis failed");
@@ -1260,9 +1246,10 @@ Return ONLY this JSON, no markdown, no explanation:
 
             setLoader(true, "Simulating...");
             try {
-                const res = await fetch('/predict/scenario', {
+                const headers = await getAuthHeaders();
+                const res = await fetch('/api/predict/scenario', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: headers,
                     body: JSON.stringify(payload)
                 });
                 if (!res.ok) throw new Error("Scenario failed");
@@ -1286,10 +1273,11 @@ Return ONLY this JSON, no markdown, no explanation:
         // Runway
         async function fetchRunway(payload) {
             try {
-                const res = await fetch('/predict/runway', {
+                const headers = await getAuthHeaders();
+                const res = await fetch('/api/predict/runway', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ...payload, cash_balance: 2000000 }) // Default 20L
+                    headers: headers,
+                    body: JSON.stringify(payload)
                 });
                 if (res.ok) {
                     const data = await res.json();
