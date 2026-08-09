@@ -39,6 +39,21 @@ async def verify_user(credentials: HTTPAuthorizationCredentials = Depends(securi
 
 @router.get("/health")
 async def health_check():
+    if settings.supabase_url and settings.supabase_anon_key:
+        try:
+            # Ping Supabase REST API to check if the database is awake and connected
+            async with httpx.AsyncClient() as client:
+                res = await client.get(
+                    f"{settings.supabase_url}/rest/v1/",
+                    headers={"apikey": settings.supabase_anon_key},
+                    timeout=5.0
+                )
+                res.raise_for_status()
+            return {"status": "ok", "database": "connected"}
+        except Exception:
+            # Return 503 so UptimeRobot registers a failure if the DB is down or paused
+            raise HTTPException(status_code=503, detail="Database connection failed")
+    
     return {"status": "ok"}
 
 @router.post("/analyze")
