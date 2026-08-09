@@ -38,6 +38,7 @@ async def verify_user(credentials: HTTPAuthorizationCredentials = Depends(securi
 
 
 @router.get("/health")
+@router.head("/health")
 async def health_check():
     if settings.supabase_url and settings.supabase_anon_key:
         try:
