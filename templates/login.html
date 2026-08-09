@@ -77,7 +77,9 @@
           <li><a href="/economics">Economics</a></li>
           <li><a href="/api">API</a></li>
           <li><a href="/contact">Contact</a></li>
-          <li><a href="/login" class="active" style="color: var(--accent-primary);">Login</a></li>
+          <li class="auth-login-link"><a href="/login" class="auth-login-link" style="color: var(--accent-primary);">Login</a>
+      <a href="#" class="auth-logout-link" onclick="handleLogout(event)" style="display: none; color: var(--text-secondary);">Sign Out</a></li>
+          <li class="auth-logout-link" style="display: none;"><a href="#" onclick="handleLogout(event)" style="color: var(--text-secondary);">Sign Out</a></li>
         </ul>
       </div>
       <div class="flex items-center gap-3">
@@ -96,7 +98,8 @@
       <a href="/economics">Economics</a>
       <a href="/api">API</a>
       <a href="/contact">Contact</a>
-      <a href="/login" class="active" style="color: var(--accent-primary);">Login</a>
+      <a href="/login" class="active auth-login-link" style="color: var(--accent-primary);">Login</a>
+      <a href="#" class="auth-logout-link" onclick="handleLogout(event)" style="display: none; color: var(--text-secondary);">Sign Out</a>
       <a href="/economics" class="btn btn-primary mt-2">Get Started</a>
     </div>
   </nav>
@@ -136,7 +139,7 @@
       </form>
       
       <div class="flex justify-between items-center mt-4">
-        <a href="#" class="text-muted" style="font-size: 13px;">Forgot password?</a>
+        <span class="text-muted" style="font-size: 13px;">Forgot password? Contact support.</span>
         <a href="/signup" class="text-muted" style="font-size: 13px;">Don't have an account? <span style="color: var(--accent-primary);">Sign up</span></a>
       </div>
     </div>
@@ -154,19 +157,19 @@
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
     document.addEventListener('DOMContentLoaded', () => {
+      
+      // Hide loader just in case it is stuck
+      setTimeout(() => {
+        const loader = document.getElementById('global-loader');
+        if (loader && loader.style.display !== 'flex') loader.style.display = 'none';
+      }, 500);
+
       // 0. Auth State Check for Navigation
       const isLoggedIn = sessionStorage.getItem('isAuthenticated') === 'true' || 
                          Object.keys(localStorage).some(key => key.includes('auth-token') && localStorage.getItem(key));
-      if (isLoggedIn) {
-        document.querySelectorAll('a[href="/login"]').forEach(link => {
-          const li = link.closest('li');
-          if (li) {
-            li.style.display = 'none';
-          } else {
-            link.style.display = 'none';
-          }
-        });
-      }
+      
+      document.querySelectorAll('.auth-login-link').forEach(el => el.style.display = isLoggedIn ? 'none' : '');
+      document.querySelectorAll('.auth-logout-link').forEach(el => el.style.display = isLoggedIn ? '' : 'none');
 
       // Mobile Menu Logic
       const menuBtn = document.querySelector('.mobile-menu-btn');
@@ -259,6 +262,13 @@
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 300);
       }, 3000);
+    };
+
+    window.handleLogout = async function(e) {
+      if(e) e.preventDefault();
+      sessionStorage.removeItem('isAuthenticated');
+      if (typeof supabaseClient !== 'undefined') await supabaseClient.auth.signOut();
+      window.location.href = '/login';
     };
   </script>
 </body>

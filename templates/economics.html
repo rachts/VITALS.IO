@@ -572,14 +572,17 @@
             <div class="flex items-center gap-4">
                 <div class="api-status">
                     <div id="api-dot" class="status-dot"></div>
-                    <span id="api-text">Checking...</span>
+                    <span id="api-text">API Status</span>
                 </div>
                 <button class="btn btn-ghost" onclick="generatePDF()">
                     Export PDF
                 </button>
-                <button class="btn btn-secondary" onclick="handleLogout()" style="padding: 6px 12px; font-size: 13px;">
+                <button class="btn btn-secondary auth-logout-link" onclick="handleLogout(event)" style="padding: 6px 12px; font-size: 13px;">
                     Sign Out
                 </button>
+                <a href="/login" class="btn btn-secondary auth-login-link" style="display:none; padding: 6px 12px; font-size: 13px;">
+                    Login
+                </a>
             </div>
         </div>
     </nav>
@@ -608,7 +611,8 @@
                 </div>
 
                 <!-- Scenario Simulator -->
-                <div class="card">
+                <div class="card" id="scenario-simulator" style="opacity: 0.3; pointer-events: none; position: relative;">
+                    <p id="scenario-helper" style="position: absolute; top: 16px; right: 16px; font-size: 12px; color: var(--text-muted);">Upload data to simulate</p>
                     <h2 class="font-serif mb-4">Scenario Simulator</h2>
                     <div class="flex-col gap-4">
                         <div class="input-group">
@@ -738,12 +742,12 @@
                                 <path d="M2 12l10 5 10-5"/>
                             </svg>
                             <span style="font-weight: 600;">AI Advisor</span>
-                            <span id="advisor-badge" style="margin-left: auto; font-size: 11px; padding: 2px 8px; border-radius: 4px; background: var(--primary); color: var(--bg-base); font-weight: 600; display: none;">AI POWERED</span>
+                            <span id="advisor-badge" style="margin-left: auto; font-size: 11px; padding: 2px 8px; border-radius: 4px; background: var(--primary); color: var(--bg-base); font-weight: 600; display: none;">LLM-Powered Insights</span>
                         </div>
                         <div id="advisor-content">
                             <div class="insight-item">
                                 <div class="insight-dot" style="background: var(--primary); animation: pulse-dot 1.5s ease-in-out infinite;"></div>
-                                <span style="color: var(--text-muted); font-size: 14px;">Consulting AI advisor...</span>
+                                <span style="color: var(--text-muted); font-size: 14px;">Upload data or run analysis to get AI insights.</span>
                             </div>
                         </div>
                     </div>
@@ -751,9 +755,10 @@
                     <div class="card stagger-item" style="animation-delay: 0.9s;">
                         <div class="flex justify-between items-center">
                             <h3 class="label-caps">Runway Forecast</h3>
-                            <span class="badge" id="b-runway">SAFE</span>
+                            <span class="badge" id="b-runway">—</span>
                         </div>
-                        <div class="chart-container">
+                        <div class="chart-container" style="position: relative;">
+                            <p class="text-sm text-center" id="runway-helper" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--text-muted);">Upload data to see runway forecast</p>
                             <svg id="runway-chart" width="100%" height="100%" viewBox="0 0 100 100"
                                 preserveAspectRatio="none">
                                 <!-- Chart lines drawn by JS -->
@@ -800,6 +805,7 @@
                         COMPANY</h4>
                     <div class="flex flex-col gap-2">
                         <a href="/" style="color: var(--text-secondary); font-size: 14px;">About</a>
+                        <a href="/login" style="color: var(--text-secondary); font-size: 14px;">Login</a>
                         <a href="/contact" style="color: var(--text-secondary); font-size: 14px;">Contact</a>
                     </div>
                 </div>
@@ -807,8 +813,8 @@
         </div>
         <div class="container mt-4"
             style="padding-top: 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between;">
-            <div class="footer-meta">© 2026 vitals.io. Built for HackLabify.</div>
-            <div class="footer-meta">All calculations are deterministic. No AI hallucinations.</div>
+            <div class="footer-meta">© 2026 vitals.io.</div>
+            <div class="footer-meta">Core metrics are deterministic. AI insights are advisory.</div>
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -943,7 +949,7 @@ Return ONLY this JSON, no markdown, no explanation:
             contentEl.innerHTML = `
                 <div class="insight-item">
                     <div class="insight-dot" style="background: var(--primary); animation: pulse-dot 1.5s ease-in-out infinite;"></div>
-                    <span style="color: var(--text-muted); font-size: 14px;">Consulting AI advisor...</span>
+                    <span style="color: var(--text-muted); font-size: 14px;">Upload data or run analysis to get AI insights.</span>
                 </div>
             `;
             
@@ -952,7 +958,7 @@ Return ONLY this JSON, no markdown, no explanation:
             
             if (badgeEl) {
                 badgeEl.style.display = advice.source === 'mistral' ? 'inline-block' : 'none';
-                badgeEl.textContent = advice.source === 'mistral' ? 'AI POWERED' : '';
+                badgeEl.textContent = advice.source === 'mistral' ? 'LLM-Powered Insights' : '';
             }
             
             const priorityColor = {
@@ -1099,8 +1105,14 @@ Return ONLY this JSON, no markdown, no explanation:
         function updateDashboard(data) {
             currentData = data;
             window.vitalsData = currentData;
-            document.getElementById('dashboard').style.opacity = '1';
-            document.getElementById('dashboard').style.pointerEvents = 'all';
+            const dash = document.getElementById('dashboard');
+            if (dash) { dash.style.opacity = '1'; dash.style.pointerEvents = 'all'; }
+            
+            const sim = document.getElementById('scenario-simulator');
+            if (sim) { sim.style.opacity = '1'; sim.style.pointerEvents = 'all'; }
+            
+            const sHelper = document.getElementById('scenario-helper');
+            if (sHelper) sHelper.style.display = 'none';
 
             // Re-trigger stagger animation
             document.querySelectorAll('.stagger-item').forEach(el => {
@@ -1294,7 +1306,9 @@ Return ONLY this JSON, no markdown, no explanation:
 
         function drawRunwayChart(forecast) {
             const svg = document.getElementById('runway-chart');
-            svg.innerHTML = '';
+            if (svg) svg.innerHTML = '';
+            const rHelper = document.getElementById('runway-helper');
+            if (rHelper) rHelper.style.display = 'none';
 
             if (!forecast || forecast.length === 0) return;
 
@@ -1407,13 +1421,18 @@ Return ONLY this JSON, no markdown, no explanation:
 
             doc.setFontSize(8);
             doc.setTextColor(150, 150, 150);
-            doc.text("All calculations are deterministic. No AI hallucinations.", 14, 290);
+            doc.text("Core metrics are deterministic. AI insights are advisory.", 14, 290);
 
             doc.save(`Vitals-Report-${d.toISOString().slice(0, 10)}.pdf`);
         }
 
         // Initial Health Check
-        window.onload = checkHealth;
+        window.onload = () => {
+            checkHealth();
+            if (!currentData) {
+                loadDemoData();
+            }
+        };
 
     </script>
 
@@ -1426,9 +1445,7 @@ Return ONLY this JSON, no markdown, no explanation:
                 stroke-dasharray="113" stroke-dashoffset="80" stroke-linecap="round"
                 style="transform-origin:center; animation: spin 1s linear infinite;" />
         </svg>
-        <p id="loader-text"
-            style="color: var(--accent-primary); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; margin-top: 12px;">
-            LOADING...</p>
+        
     </div>
 
 
